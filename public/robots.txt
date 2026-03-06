@@ -1,14 +1,6 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Directorio de CerebroQuant Intelligence
 User-agent: *
 Allow: /
+
+# Mapa del sitio para Google
+Sitemap: https://neurolabs.com.co/sitemap.xml

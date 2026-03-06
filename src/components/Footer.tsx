@@ -4,12 +4,12 @@ const Footer = () => (
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
           <span className="font-heading text-lg font-bold tracking-tight">
-            Neuro<span className="text-gradient-gold">Metric</span> Intelligence
+            Cerebro<span className="text-gradient-gold">Quant</span> Intelligence
           </span>
-          <p className="text-sm text-primary-foreground/60 mt-1">Decoding markets with empirical precision.</p>
+          <p className="text-sm text-primary-foreground/60 mt-1">Decodificando mercados con precisión empírica.</p>
         </div>
         <p className="text-xs text-primary-foreground/40">
-          © {new Date().getFullYear()} NeuroMetric Intelligence. All rights reserved.
+          © {new Date().getFullYear()} CerebroQuant Intelligence. Todos los derechos reservados.
         </p>
       </div>
     </div>

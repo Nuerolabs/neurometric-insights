@@ -122,6 +122,29 @@ export const articles: Article[] = [
     date: "2026-03-06",
     image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"
   },
+  {
+    id: "oracle-openai-stargate-data-center-collapse-2026",
+    category: "Technology",
+    title: "The AI CapEx Crisis: Oracle Scraps Flagship OpenAI Data Center Amid $100B Debt Crunch",
+    excerpt: "In a massive blow to the much-publicized 'Stargate' initiative, Oracle and OpenAI have abandoned their Abilene, Texas expansion as financing hurdles and power grid reliability fracture the AI infrastructure boom.",
+    content: `<p>The artificial intelligence infrastructure narrative has hit a severe reality check this week. Oracle and OpenAI have officially abandoned plans to expand their flagship 2-gigawatt AI data center in Abilene, Texas. The collapse of this key site—central to the highly touted 'Stargate' initiative—exposes the growing friction between the boundless ambitions of AI developers and the harsh realities of corporate finance and physical infrastructure.</p>
+    
+    <h3>The $100 Billion Debt Burden</h3>
+    <p>Oracle's aggressive push to become the dominant cloud provider for generative AI has come at a staggering cost. Chairman Larry Ellison’s $300 billion bet on OpenAI has left the database software giant buried under more than $100 billion in debt. Wall Street has begun to penalize this capital expenditure (CapEx) burn rate, with Oracle shares losing roughly half their value since their September 2025 peak, wiping out nearly $463 billion in market capitalization.</p>
+    
+    <h3>Market Ripples and Layoffs</h3>
+    <p>The fallout extends beyond halted construction. Facing a severe cash crunch, Oracle is now reportedly preparing to cut up to 30,000 jobs across multiple divisions to free up $8 billion to $10 billion in cash flow. This mirrors a broader tech industry trend:</p>
+    <ul>
+      <li><strong>Financing Pullback:</strong> Several US banks have quietly pulled back from Oracle-linked data center financing, effectively doubling the interest rate premiums on the company’s debt.</li>
+      <li><strong>Industry Contagion:</strong> The massive CapEx requirements for AI are forcing efficiency layoffs globally, with Amazon, Microsoft, and Block recently slashing thousands of roles to fund their GPU acquisitions.</li>
+      <li><strong>Infrastructure Bottlenecks:</strong> The Abilene site suffered severe reliability issues, including days of downtime after winter weather disrupted critical liquid-cooling machinery.</li>
+    </ul>
+    
+    <h3>CerebroQuant Institutional Outlook</h3>
+    <p>The cancellation of the Abilene expansion signals a critical pivot in the AI boom: the transition from "growth at all costs" to "margin defense." Institutional investors must critically evaluate the balance sheets of legacy tech firms attempting to pivot into AI infrastructure. We recommend reducing exposure to highly leveraged cloud providers while shifting capital toward pure-play power generation and liquid-cooling hardware companies, which remain the undisputed bottlenecks of the AI revolution.</p>`,
+    date: "2026-03-07",
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80"
+  },
   
 ];
 

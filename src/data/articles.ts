@@ -99,7 +99,30 @@ export const articles: Article[] = [
     <p>The implications for the $7 trillion global education market are profound. While governments in developed nations are already integrating AI into their national curricula, traditional institutions face existential questions about their value propositions. The study's authors emphasize that the most effective implementations combine AI tutoring with human mentorship, suggesting a hybrid model rather than wholesale replacement.</p>`,
     date: "2026-03-01",
     image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80"
-  }
+  },
+  {
+    id: "us-iraq-security-realignment-energy-markets-2026",
+    category: "Economy",
+    title: "Geopolitical Shift: US-Iraq Security Realignment Triggers Volatility in Global Energy Markets",
+    excerpt: "As diplomatic channels finalize the new strategic framework between Washington and Baghdad, institutional investors brace for a structural shift in Middle Eastern risk premiums and crude oil pricing.",
+    content: `<p>The geopolitical landscape of the Middle East is undergoing a significant transformation this week. Emerging reports regarding the restructuring of the US-Iraq security partnership have immediately injected a new layer of volatility into global commodities. As Washington and Baghdad negotiate the next phase of their bilateral relationship, energy markets are rapidly pricing in potential disruptions to regional stability.</p>
+    
+    <h3>The Crude Oil Risk Premium</h3>
+    <p>Brent crude futures spiked by 3.2% within hours of the diplomatic leaks, reflecting Wall Street's sensitivity to any shifting dynamics in the Persian Gulf. Iraq, currently OPEC's second-largest producer, pumps approximately 4.3 million barrels per day. Any perceived security vacuum or shift in infrastructure protection protocols forces algorithmic trading desks to immediately elevate the geopolitical risk premium on forward contracts.</p>
+    
+    <h3>Key Market Indicators to Watch</h3>
+    <ul>
+      <li><strong>Energy Futures:</strong> We expect WTI and Brent crude to test critical resistance levels in the coming 72 hours. Options markets are showing heavy call buying at the $85/bbl strike price.</li>
+      <li><strong>Defense Sector Equities:</strong> Top-tier defense contractors (Lockheed Martin, RTX, General Dynamics) are experiencing heightened trading volumes as portfolios hedge against regional instability.</li>
+      <li><strong>Regional Sovereign Debt:</strong> Iraqi Eurobonds and neighboring Gulf state debt yields have widened by 15-25 basis points, signaling institutional capital moving to safer havens.</li>
+    </ul>
+    
+    <h3>CerebroQuant Strategic Outlook</h3>
+    <p>This is not merely a political headline; it is a macro-catalyst. Our proprietary sentiment models indicate that the market has only priced in 40% of the potential supply chain friction. We advise institutional clients to increase their exposure to North American energy infrastructure (midstream MLPs) as a strategic hedge, while maintaining a neutral-to-underweight position in Middle Eastern emerging market debt until regulatory clarity emerges.</p>`,
+    date: "2026-03-06",
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"
+  },
+  
 ];
 
 export const categories = ["Finance", "Technology", "Health", "Economy", "Education"];

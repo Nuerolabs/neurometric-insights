@@ -85,8 +85,6 @@ const ArticlePage = () => {
 
   return (
     <>
-      <ShareButtons title={article.title} />
-
       <div className="container py-8">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -113,27 +111,13 @@ const ArticlePage = () => {
             </div>
 
             {/* Title */}
-            <h1 className="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground leading-tight mb-6">
+            <h1 className="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground leading-tight mb-4">
               {article.title}
             </h1>
 
-            {/* Mobile share buttons */}
-            <div className="flex xl:hidden gap-2 mb-6">
-              <a
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(article.title)}%20${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                target="_blank" rel="noopener noreferrer"
-                className="flex h-8 items-center gap-1.5 rounded-full bg-[#25D366] px-3 text-xs text-white font-medium"
-              >WhatsApp</a>
-              <a
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}`}
-                target="_blank" rel="noopener noreferrer"
-                className="flex h-8 items-center gap-1.5 rounded-full bg-foreground px-3 text-xs text-background font-medium"
-              >X</a>
-              <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(typeof window !== "undefined" ? window.location.href : "")}`}
-                target="_blank" rel="noopener noreferrer"
-                className="flex h-8 items-center gap-1.5 rounded-full bg-[#0A66C2] px-3 text-xs text-white font-medium"
-              >LinkedIn</a>
+            {/* Share buttons — static horizontal row */}
+            <div className="mb-6">
+              <ShareButtons title={article.title} />
             </div>
 
             {/* Hero image */}

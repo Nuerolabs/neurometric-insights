@@ -87,6 +87,7 @@ const ArticlePage = () => {
 
   return (
     <>
+      <ReadingProgressBar />
       <div className="container py-8">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">

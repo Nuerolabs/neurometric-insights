@@ -6,7 +6,7 @@ import AdBanner from "@/components/AdBanner";
 const Index = () => {
   const featured = articles[0];
   const latestNews = articles.slice(1, 6);
-  const moreArticles = articles.slice(1);
+  const moreArticles = articles.slice(1, 6);
 
   return (
     <div className="container py-6">

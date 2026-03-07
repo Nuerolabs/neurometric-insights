@@ -2,6 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { articles } from "@/data/articles";
 import ArticleCard from "@/components/ArticleCard";
 import AdBanner from "@/components/AdBanner";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
+import NewsletterBox from "@/components/NewsletterBox";
 
 const ShareButtons = ({ title }: { title: string }) => {
   const url = typeof window !== "undefined" ? window.location.href : "";
@@ -85,6 +87,7 @@ const ArticlePage = () => {
 
   return (
     <>
+      <ReadingProgressBar />
       <div className="container py-8">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
@@ -145,6 +148,9 @@ const ArticlePage = () => {
             />
 
             <AdBanner className="mt-10 mb-6" />
+
+            {/* Newsletter capture */}
+            <NewsletterBox />
           </article>
 
           {/* Right sidebar — 30% */}

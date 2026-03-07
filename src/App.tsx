@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import MarketTicker from "@/components/MarketTicker";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
@@ -18,8 +19,9 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col overflow-x-hidden">
           <Navbar />
+          <MarketTicker />
           <main className="flex-1">
             <Routes>
               <Route path="/" element={<Index />} />

@@ -11,6 +11,7 @@ const Index = () => {
   return (
     <div className="container py-6">
       <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr_300px] gap-6">
+        
         {/* Left sidebar — Últimas Noticias */}
         <aside className="hidden lg:block">
           <div className="sticky top-[160px]">
@@ -46,6 +47,7 @@ const Index = () => {
 
         {/* Center — Main content */}
         <div className="min-w-0">
+          
           {/* Hero */}
           <Link
             to={`/article/${featured.id}`}
@@ -104,7 +106,7 @@ const Index = () => {
         <aside className="hidden lg:block">
           <div className="sticky top-[160px] space-y-6">
             
-            {/* ANUNCIO CUADRADO SUPERIOR (300x250) */}
+            {/* ANUNCIO CUADRADO SUPERIOR (Reemplaza el maniquí de 300x250) */}
             <div className="w-[300px] overflow-hidden">
               <AdBanner dataAdSlot="7689393453" className="min-h-[250px] m-0" />
             </div>
@@ -141,7 +143,7 @@ const Index = () => {
               </ul>
             </div>
 
-            {/* ANUNCIO CUADRADO INFERIOR (300x600 - Usamos el mismo slot cuadrado para que se adapte) */}
+            {/* ANUNCIO CUADRADO INFERIOR (Reemplaza el maniquí de 300x600) */}
             <div className="w-[300px] overflow-hidden">
               <AdBanner dataAdSlot="7689393453" className="min-h-[600px] m-0" />
             </div>

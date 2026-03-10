@@ -3,92 +3,8 @@
   
   <url>
     <loc>https://neurolabs.com.co/</loc>
-    <lastmod>2026-03-09</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/fed-rate-trajectory-2026</loc>
-    <lastmod>2026-03-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/quantum-computing-enterprise</loc>
-    <lastmod>2026-03-04</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/longevity-biotech-revolution</loc>
-    <lastmod>2026-03-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/global-supply-chain-restructuring</loc>
-    <lastmod>2026-03-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/ai-education-transformation</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/us-iraq-security-realignment-energy-markets-2026</loc>
-    <lastmod>2026-03-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/oracle-openai-stargate-data-center-collapse-2026</loc>
-    <lastmod>2026-03-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/blackrock-private-credit-market-systemic-risk-2026</loc>
-    <lastmod>2026-03-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/fortune-500-agentic-ai-reskilling-boom-2026</loc>
-    <lastmod>2026-03-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/spatial-computing-medical-engineering-education</loc>
-    <lastmod>2026-03-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://neurolabs.com.co/article/traditional-mba-crisis-big-tech-micro-credentials</loc>
-    <lastmod>2026-03-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://neurolabs.com.co/</loc>
     <lastmod>2026-03-10</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
@@ -116,6 +32,7 @@
     <lastmod>2026-03-10</lastmod>
     <priority>0.8</priority>
   </url>
+
   <url>
     <loc>https://neurolabs.com.co/article/tokenized-real-world-assets-blackrock-2026</loc>
     <lastmod>2026-03-10</lastmod>
@@ -124,6 +41,43 @@
     <loc>https://neurolabs.com.co/article/apple-m6-neural-agi-chip-disrupts-cloud-2026</loc>
     <lastmod>2026-03-10</lastmod>
   </url>
-</urlset>
+  <url>
+    <loc>https://neurolabs.com.co/article/brics-digital-currency-challenges-dollar-hegemony-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/crispr-cas14-fda-approval-genetic-disease-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+
+  <url>
+    <loc>https://neurolabs.com.co/article/decentralized-accredited-education-blockchain-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/green-hydrogen-latin-america-energy-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/neural-bci-mass-market-adoption-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/ai-personalized-learning-global-impact-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+
+  <url>
+    <loc>https://neurolabs.com.co/article/fed-rate-trajectory-2026</loc>
+    <lastmod>2026-03-09</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/oracle-openai-stargate-data-center-collapse-2026</loc>
+    <lastmod>2026-03-09</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/blackrock-private-credit-market-systemic-risk-2026</loc>
+    <lastmod>2026-03-09</lastmod>
+  </url>
 
 </urlset>

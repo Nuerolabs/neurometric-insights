@@ -74,7 +74,8 @@ const Index = () => {
             </div>
           </Link>
 
-          <AdBanner className="mb-8" />
+          {/* ANUNCIO HORIZONTAL DEBAJO DEL HERO */}
+          <AdBanner dataAdSlot="6376311788" className="min-h-[90px] mb-8" />
 
           {/* Articles grid */}
           <div className="flex items-center gap-3 mb-6">
@@ -95,17 +96,17 @@ const Index = () => {
             ))}
           </div>
 
-          <AdBanner className="mt-8" />
+          {/* ANUNCIO DELGADITO AL FINAL DE LAS NOTICIAS */}
+          <AdBanner dataAdSlot="3623290748" className="min-h-[50px] mt-8" />
         </div>
 
         {/* Right sidebar — Ads & Featured */}
         <aside className="hidden lg:block">
           <div className="sticky top-[160px] space-y-6">
-            {/* 300x250 ad slot */}
-            <div className="flex items-center justify-center rounded border border-dashed border-border bg-muted/30 text-[10px] text-muted-foreground tracking-widest uppercase"
-              style={{ width: 300, height: 250 }}
-            >
-              Ad 300×250
+            
+            {/* ANUNCIO CUADRADO SUPERIOR (300x250) */}
+            <div className="w-[300px] overflow-hidden">
+              <AdBanner dataAdSlot="7689393453" className="min-h-[250px] m-0" />
             </div>
 
             {/* Featured */}
@@ -140,12 +141,11 @@ const Index = () => {
               </ul>
             </div>
 
-            {/* 300x600 ad slot */}
-            <div className="flex items-center justify-center rounded border border-dashed border-border bg-muted/30 text-[10px] text-muted-foreground tracking-widest uppercase"
-              style={{ width: 300, height: 600 }}
-            >
-              Ad 300×600
+            {/* ANUNCIO CUADRADO INFERIOR (300x600 - Usamos el mismo slot cuadrado para que se adapte) */}
+            <div className="w-[300px] overflow-hidden">
+              <AdBanner dataAdSlot="7689393453" className="min-h-[600px] m-0" />
             </div>
+            
           </div>
         </aside>
       </div>

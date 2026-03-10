@@ -84,5 +84,46 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://neurolabs.com.co/</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/category/finance</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/category/technology</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/category/health</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/category/economy</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/category/education</loc>
+    <lastmod>2026-03-10</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/tokenized-real-world-assets-blackrock-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+  <url>
+    <loc>https://neurolabs.com.co/article/apple-m6-neural-agi-chip-disrupts-cloud-2026</loc>
+    <lastmod>2026-03-10</lastmod>
+  </url>
+</urlset>
 
 </urlset>

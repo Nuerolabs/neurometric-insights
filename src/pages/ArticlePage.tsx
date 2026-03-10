@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import React from "react";
 import { articles } from "@/data/articles";
 import ArticleCard from "@/components/ArticleCard";
 import AdBanner from "@/components/AdBanner";
@@ -59,17 +60,6 @@ const ArticlePage = () => {
     );
   }
 
-  // Insert ad banners every 3 paragraphs
-  const paragraphs = article.content.split("</p>");
-  let richContent = "";
-  paragraphs.forEach((p, i) => {
-    if (!p.trim()) return;
-    richContent += p + "</p>";
-    if ((i + 1) % 3 === 0 && i < paragraphs.length - 1) {
-      richContent += `<div class="ad-inline-placeholder my-6 flex items-center justify-center rounded border border-dashed border-border bg-muted/50 py-4 text-xs text-muted-foreground tracking-wide uppercase">AD — Horizontal Banner</div>`;
-    }
-  });
-
   // Key points from excerpt
   const keyPoints = [
     article.excerpt,
@@ -77,7 +67,26 @@ const ArticlePage = () => {
     `Publicado el ${article.date}`,
   ];
 
-  // Related articles: same category first, then fill
+  // Logic to safely insert AdSense banners into the article content
+  const paragraphs = article.content.split("</p>").filter(p => p.trim() !== "");
+  const renderContentWithAds = () => {
+    return paragraphs.map((p, i) => {
+      const showAd = (i + 1) % 3 === 0 && i < paragraphs.length - 1;
+      return (
+        <React.Fragment key={i}>
+          <div dangerouslySetInnerHTML={{ __html: p + "</p>" }} className="prose prose-lg max-w-none text-foreground/90 leading-relaxed mb-5" />
+          {showAd && (
+            <div className="my-8">
+              {/* ANUNCIO HORIZONTAL INTEGRADO EN EL TEXTO */}
+              <AdBanner dataAdSlot="6376311788" className="min-h-[90px]" />
+            </div>
+          )}
+        </React.Fragment>
+      );
+    });
+  };
+
+  // Related articles
   const related = articles.filter((a) => a.id !== id && a.category === article.category);
   const otherRelated = articles.filter((a) => a.id !== id && a.category !== article.category);
   const readMore = [...related, ...otherRelated].slice(0, 3);
@@ -98,11 +107,10 @@ const ArticlePage = () => {
           <span className="text-foreground/60 truncate max-w-[200px]">{article.title}</span>
         </div>
 
-        {/* Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-8">
+          
           {/* Main content — 70% */}
           <article className="min-w-0">
-            {/* Category & date */}
             <div className="mb-3 flex items-center gap-3">
               <Link
                 to={`/category/${article.category.toLowerCase()}`}
@@ -113,22 +121,18 @@ const ArticlePage = () => {
               <span className="text-xs text-muted-foreground">{article.date}</span>
             </div>
 
-            {/* Title */}
             <h1 className="font-heading text-3xl md:text-4xl lg:text-[2.75rem] font-bold text-foreground leading-tight mb-4">
               {article.title}
             </h1>
 
-            {/* Share buttons — static horizontal row */}
             <div className="mb-6">
               <ShareButtons title={article.title} />
             </div>
 
-            {/* Hero image */}
             <div className="aspect-[16/9] overflow-hidden rounded-lg mb-8">
               <img src={article.image} alt={article.title} className="h-full w-full object-cover" />
             </div>
 
-            {/* Key points */}
             <div className="mb-8 rounded-lg border border-accent/30 bg-accent/5 p-5">
               <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-accent mb-3">Puntos Clave</h3>
               <ul className="space-y-2">
@@ -141,24 +145,24 @@ const ArticlePage = () => {
               </ul>
             </div>
 
-            {/* Article body with inline ads */}
-            <div
-              className="prose prose-lg max-w-none text-foreground/90 leading-relaxed [&_p]:mb-5"
-              dangerouslySetInnerHTML={{ __html: richContent }}
-            />
+            {/* ARTICULO + ANUNCIOS INTEGRADOS (Lógica corregida) */}
+            <div>
+              {renderContentWithAds()}
+            </div>
 
-            <AdBanner className="mt-10 mb-6" />
+            {/* ANUNCIO DELGADITO FINAL DEL ARTICULO */}
+            <AdBanner dataAdSlot="3623290748" className="mt-10 mb-6 min-h-[50px]" />
 
-            {/* Newsletter capture */}
             <NewsletterBox />
           </article>
 
           {/* Right sidebar — 30% */}
           <aside className="hidden lg:block">
             <div className="sticky top-[160px] space-y-8">
-              {/* Ad 300x600 */}
-              <div className="flex items-center justify-center rounded border border-dashed border-border bg-muted/30 text-xs text-muted-foreground tracking-wide uppercase" style={{ width: 300, height: 600 }}>
-                AD — 300×600
+              
+              {/* ANUNCIO CUADRADO GRANDE SUPERIOR */}
+              <div className="w-[300px] overflow-hidden">
+                 <AdBanner dataAdSlot="7689393453" className="min-h-[600px] m-0" />
               </div>
 
               {/* Most read */}
@@ -185,15 +189,16 @@ const ArticlePage = () => {
                 </ul>
               </div>
 
-              {/* Ad 300x250 */}
-              <div className="flex items-center justify-center rounded border border-dashed border-border bg-muted/30 text-xs text-muted-foreground tracking-wide uppercase" style={{ width: 300, height: 250 }}>
-                AD — 300×250
+              {/* ANUNCIO CUADRADO PEQUEÑO INFERIOR */}
+              <div className="w-[300px] overflow-hidden">
+                 <AdBanner dataAdSlot="7689393453" className="min-h-[250px] m-0" />
               </div>
+
             </div>
           </aside>
         </div>
 
-        {/* Read More — 3 columns */}
+        {/* Read More */}
         {readMore.length > 0 && (
           <div className="mt-14 border-t border-border pt-10">
             <h2 className="font-heading text-xl font-bold text-foreground mb-6">Leer Más</h2>

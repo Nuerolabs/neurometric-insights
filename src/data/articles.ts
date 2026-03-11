@@ -30,7 +30,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Projection</h3>
     <p>Our proprietary quantitative models suggest a <strong>65% probability of a rate hold</strong> through mid-2026. The intersection of fiscal policy uncertainty, geopolitical risk premiums, and evolving labor market conditions creates a challenging environment. We recommend institutional portfolios overweight high-quality corporate bonds and maintain strategic liquidity to capitalize on market dips.</p>`,
     date: "2026-03-05",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "quantum-computing-enterprise",
@@ -52,7 +52,7 @@ export const articles: Article[] = [
     <h3>Strategic Conclusion</h3>
     <p>The enterprise quantum ecosystem is rapidly maturing. Early adopters are building impregnable competitive moats that could reshape the dynamics of the pharmaceutical, logistics, and financial industries for the next five decades. Companies that do not integrate quantum strategies today will be technologically obsolete by 2030.</p>`,
     date: "2026-03-04",
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "longevity-biotech-revolution",
@@ -68,7 +68,7 @@ export const articles: Article[] = [
     <p>The economic implications extend far beyond healthcare. Actuarial models are being fundamentally reassessed, pension fund liabilities are being recalculated, and insurance underwriting is undergoing a paradigm shift. Nations with aging demographics stand to benefit enormously from therapies that could reduce the burden of age-related chronic disease by up to 60%.</p>
     <p><strong>CerebroQuant Verdict:</strong> Traditional pharmaceutical companies that fail to engage in M&A within the cellular longevity sector will see their market capitalizations eroded by new biotech startups over the next 5 years.</p>`,
     date: "2026-03-03",
-    image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "global-supply-chain-restructuring",
@@ -83,14 +83,14 @@ export const articles: Article[] = [
     <h3>Institutional Investment Opportunities</h3>
     <p>For institutional investors, the "Nearshoring" trend presents massive opportunities in industrial real estate, infrastructure, and logistics. Companies with diversified manufacturing footprints are commanding valuation premiums of 15% to 25% over peers. However, the capital expenditure (CapEx) requirements for building new facilities are straining corporate balance sheets, creating a bifurcation between well-capitalized leaders and overextended laggards.</p>`,
     date: "2026-03-02",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "ai-education-transformation",
     category: "Education",
     title: "AI Tutors Outperform Human Instructors in Landmark Stanford Study",
     excerpt: "A rigorous multi-year study demonstrates that adaptive AI tutoring systems achieve 2.3 standard deviations improvement over traditional classroom instruction.",
-    content: `<p>Stanford University's Graduate School of Education has published the results of a landmark five-year study comparing adaptive AI tutoring systems with traditional human instruction. The findings are striking: students using AI tutors demonstrated learning gains significantly above the control group—an effect size that exceeds virtually all known educational interventions in research literature.</p>
+    content: `<p>Stanford University's Graduate School of Education has published the results of a landmark five-year study comparing adaptive AI tutoring systems with traditional human instruction. The findings are striking: students using AI tutors demonstrated learning gains significantly above the control group—an effect size that exceed virtually all known educational interventions in research literature.</p>
     
     <h3>Closing the STEM Gap</h3>
     <p>The AI systems, which combine large language models (LLMs) with cognitive science-informed pedagogical frameworks, adapt in real-time to each student's learning pace, knowledge gaps, and preferred modalities. The systems achieved particularly dramatic results in STEM subjects, where personalized problem sets and instant feedback loops proved transformative for students.</p>
@@ -98,7 +98,7 @@ export const articles: Article[] = [
     <h3>The $7 Trillion Market Disruption</h3>
     <p>The implications for the $7 trillion global education market are profound. While governments in developed nations are already integrating AI into their national curricula, traditional institutions face existential questions about their value propositions. The study's authors emphasize that the most effective implementations combine AI tutoring with human mentorship, suggesting a hybrid model rather than wholesale replacement.</p>`,
     date: "2026-03-01",
-    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "us-iraq-security-realignment-energy-markets-2026",
@@ -120,7 +120,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Strategic Outlook</h3>
     <p>This is not merely a political headline; it is a macro-catalyst. Our proprietary sentiment models indicate that the market has only priced in 40% of the potential supply chain friction. We advise institutional clients to increase their exposure to North American energy infrastructure (midstream MLPs) as a strategic hedge, while maintaining a neutral-to-underweight position in Middle Eastern emerging market debt until regulatory clarity emerges.</p>`,
     date: "2026-03-06",
-    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "oracle-openai-stargate-data-center-collapse-2026",
@@ -143,7 +143,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Institutional Outlook</h3>
     <p>The cancellation of the Abilene expansion signals a critical pivot in the AI boom: the transition from "growth at all costs" to "margin defense." Institutional investors must critically evaluate the balance sheets of legacy tech firms attempting to pivot into AI infrastructure. We recommend reducing exposure to highly leveraged cloud providers while shifting capital toward pure-play power generation and liquid-cooling hardware companies, which remain the undisputed bottlenecks of the AI revolution.</p>`,
     date: "2026-03-07",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "blackrock-private-credit-market-systemic-risk-2026",
@@ -178,7 +178,7 @@ export const articles: Article[] = [
     
     <p>Furthermore, we advise reallocating capital toward top-tier, distressed-debt funds. As the maturity wall approaches in late 2026 and 2027, hundreds of billions of dollars in private loans will need to be refinanced at much higher rates. The funds positioned to scoop up these distressed assets at pennies on the dollar will generate the alpha that defined the post-2008 era.</p>`,
     date: "2026-03-08",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "fortune-500-agentic-ai-reskilling-boom-2026",
@@ -201,7 +201,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Institutional Perspective</h3>
     <p>The EdTech sector is experiencing a massive B2B (Business-to-Business) boom. Companies that provide adaptive, AI-driven corporate training platforms are seeing their valuations skyrocket. Institutional investors should look closely at enterprise learning management systems (LMS) that integrate directly with major cloud providers. The companies that successfully rewire their workforce will achieve operating margins previously thought impossible, while those that fail to educate their employees will face severe productivity bottlenecks.</p>`,
     date: "2026-03-07",
-    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "spatial-computing-medical-engineering-education",
@@ -224,7 +224,7 @@ export const articles: Article[] = [
     <h3>The Market Opportunity</h3>
     <p>From an investment standpoint, the hardware is only a fraction of the story. The real value lies in the specialized software developers creating proprietary XR curriculums. CerebroQuant anticipates a wave of mergers and acquisitions as legacy textbook publishers (like Pearson and McGraw Hill) scramble to acquire spatial computing startups to avoid obsolescence in the next three years.</p>`,
     date: "2026-03-06",
-    image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "traditional-mba-crisis-big-tech-micro-credentials",
@@ -247,7 +247,7 @@ export const articles: Article[] = [
     <h3>Strategic Implications for the EdTech Sector</h3>
     <p>This credentialing shift is rewiring the $7 trillion global education market. Universities that fail to integrate industry-recognized micro-credentials into their degree programs face a severe enrollment cliff. Conversely, platforms that facilitate seamless credential verification via blockchain technology—allowing employers to instantly audit a candidate's specific skill sets—represent a massive growth vector for venture capital and institutional funds.</p>`,
     date: "2026-03-05",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "tokenized-real-world-assets-blackrock-2026",
@@ -267,7 +267,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Institutional Strategy</h3>
     <p>The traditional role of the custodian bank is under existential threat. Institutional investors should aggressively overweight asset managers who have proprietary tokenization infrastructure. Furthermore, the protocol layers (Layer 1 blockchains) facilitating these transactions represent a massive asymmetric growth opportunity for the remainder of 2026.</p>`,
     date: "2026-03-09",
-    image: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "apple-m6-neural-agi-chip-disrupts-cloud-2026",
@@ -287,7 +287,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Market Outlook</h3>
     <p>This is a major bearish signal for enterprise cloud consumption growth. We expect a multi-year stagnation in Cloud Infrastructure CapEx. Investors should initiate short positions or reduce exposure to pure-play data center REITs, and rotate capital into edge-computing hardware manufacturers and localized cybersecurity firms.</p>`,
     date: "2026-03-09",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "brics-digital-currency-challenges-dollar-hegemony-2026",
@@ -308,7 +308,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Verdict</h3>
     <p>The weaponization of the US Dollar over the past decade has catalyzed this outcome. Institutional portfolios must immediately hedge against a structural devaluation of the USD. We recommend increasing allocations to physical gold, Bitcoin, and emerging market equities with direct exposure to the BRICS+ commodity supply chains.</p>`,
     date: "2026-03-09",
-    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "crispr-cas14-fda-approval-genetic-disease-2026",
@@ -328,7 +328,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Strategic Outlook</h3>
     <p>The era of chronic disease management is giving way to the era of genomic cures. Investors must rotate out of companies dependent on legacy maintenance medications. The highest alpha will be generated by the specialized biomanufacturing companies (CDMOs) that produce the viral vectors and lipid nanoparticles required to deliver these genetic payloads.</p>`,
     date: "2026-03-09",
-    image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "decentralized-accredited-education-blockchain-2026",
@@ -348,7 +348,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Analysis</h3>
     <p>Institutional investors should monitor the 'EdTech' sector closely. Legacy private universities with massive real estate debt are at high risk of insolvency. We recommend pivoting capital toward platforms that provide the infrastructure for decentralized testing and proctoring services.</p>`,
     date: "2026-03-10",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "green-hydrogen-latin-america-energy-2026",
@@ -369,7 +369,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Strategic Verdict</h3>
     <p>Latin American sovereign bonds, particularly those labeled as 'Green Bonds,' represent the best risk-adjusted return in the fixed-income market today. We are initiating a 'Strong Buy' on infrastructure conglomerates operating in the hydrogen liquefaction and transport sector.</p>`,
     date: "2026-03-10",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "neural-bci-mass-market-adoption-2026",
@@ -389,7 +389,7 @@ export const articles: Article[] = [
     <h3>CerebroQuant Market Outlook</h3>
     <p>This is a disruptive event for the hardware industry. Screens and keyboards are becoming legacy technology. We recommend investors overweight the companies producing the bio-compatible sensors and the AI layers that translate neural signals into code.</p>`,
     date: "2026-03-10",
-    image: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "ai-personalized-learning-global-impact-2026",
@@ -410,9 +410,8 @@ export const articles: Article[] = [
     <h3>CerebroQuant Verdict</h3>
     <p>The long-term economic impact of a smarter global workforce is immeasurable. However, in the short term, companies providing traditional textbooks and standardized testing are dead assets. We suggest rotating funds into high-speed satellite internet providers (like Starlink) that facilitate this global learning connectivity.</p>`,
     date: "2026-03-10",
-    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=800&q=80"
-  },
-  
+    image: "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?auto=format&fit=crop&q=80&w=800"
+  }
 ];
 
 export const categories = ["Finance", "Technology", "Health", "Economy", "Education"];

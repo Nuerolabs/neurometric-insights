@@ -11,6 +11,7 @@ import CategoryPage from "./pages/CategoryPage";
 import ArticlePage from "./pages/ArticlePage";
 import NotFound from "./pages/NotFound";
 import TerminalPage from "./pages/TerminalPage";
+import IntelligencePage from "./pages/IntelligencePage";
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ const App = () => (
               <Route path="/category/:name" element={<CategoryPage />} />
               <Route path="/article/:id" element={<ArticlePage />} />
               <Route path="/terminal" element={<TerminalPage />} />
+              <Route path="/intelligence" element={<IntelligencePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

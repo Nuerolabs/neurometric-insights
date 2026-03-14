@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { categories } from "@/data/articles";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Activity } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -89,6 +89,18 @@ const Navbar = () => {
                   {cat}
                 </Link>
               ))}
+              <Link
+                to="/terminal"
+                onClick={() => setOpen(false)}
+                className={`px-3 py-2.5 text-sm font-medium rounded transition-colors inline-flex items-center gap-1.5 ${
+                  location.pathname === "/terminal"
+                    ? "bg-accent/10 text-accent"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <Activity className="h-3.5 w-3.5" />
+                Data Terminal
+              </Link>
             </nav>
           </SheetContent>
         </Sheet>
@@ -125,6 +137,17 @@ const Navbar = () => {
               </Link>
             );
           })}
+          <Link
+            to="/terminal"
+            className={`px-4 py-1.5 text-sm font-medium rounded transition-colors inline-flex items-center gap-1.5 ${
+              location.pathname === "/terminal"
+                ? "bg-accent/10 text-accent"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Activity className="h-3.5 w-3.5" />
+            Data Terminal
+          </Link>
         </div>
       </nav>
     </header>

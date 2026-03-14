@@ -21,7 +21,7 @@ const CategoryPage = () => {
         <div className="divider-gold mt-4" />
       </div>
 
-      <AdBanner className="mb-8" />
+      <AdBanner dataAdSlot="6376311788" className="mb-8" />
 
       {filtered.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

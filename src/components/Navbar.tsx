@@ -125,6 +125,17 @@ const Navbar = () => {
               </Link>
             );
           })}
+          <Link
+            to="/terminal"
+            className={`px-4 py-1.5 text-sm font-medium rounded transition-colors inline-flex items-center gap-1.5 ${
+              location.pathname === "/terminal"
+                ? "bg-accent/10 text-accent"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Activity className="h-3.5 w-3.5" />
+            Data Terminal
+          </Link>
         </div>
       </nav>
     </header>

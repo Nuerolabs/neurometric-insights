@@ -160,8 +160,17 @@ const Navbar = () => {
             <Activity className="h-3.5 w-3.5" />
             Data Terminal
           </Link>
-        </div>
-      </nav>
+          <Link
+            to="/intelligence"
+            className={`px-4 py-1.5 text-sm font-medium rounded transition-colors inline-flex items-center gap-1.5 ${
+              location.pathname === "/intelligence"
+                ? "bg-accent/10 text-accent"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Radar className="h-3.5 w-3.5" />
+            Intelligence Hub
+          </Link>
     </header>
   );
 };

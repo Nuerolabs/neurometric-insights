@@ -171,6 +171,8 @@ const Navbar = () => {
             <Radar className="h-3.5 w-3.5" />
             Intelligence Hub
           </Link>
+        </div>
+      </nav>
     </header>
   );
 };

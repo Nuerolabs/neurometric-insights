@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { categories } from "@/data/articles";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Activity } from "lucide-react";
 import {
   Sheet,
   SheetContent,

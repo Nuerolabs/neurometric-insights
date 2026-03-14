@@ -10,6 +10,7 @@ import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import ArticlePage from "./pages/ArticlePage";
 import NotFound from "./pages/NotFound";
+import TerminalPage from "./pages/TerminalPage";
 
 const queryClient = new QueryClient();
 

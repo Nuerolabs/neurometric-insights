@@ -12,37 +12,37 @@ export const articles: Article[] = [
   {
     id: "quantum-edge-computing-2026",
     category: "Technology",
-    title: "Supremacía Cuántica en Dispositivos Edge: El Fin de la Dependencia del Cloud",
-    excerpt: "Nuevos micro-procesadores con arquitectura sub-atómica permiten ejecutar modelos de lenguaje masivos y cálculos complejos directamente en hardware local sin conexión a servidores.",
-    content: `<p>El paradigma de la computación está experimentando su mayor transformación desde la invención del microprocesador. Esta semana, investigadores en ciencia de materiales han presentado el primer prototipo funcional de un "Q-Chip" diseñado específicamente para dispositivos Edge (portátiles y servidores locales), rompiendo la barrera térmica que impedía la miniaturización cuántica.</p>
+    title: "Quantum Edge Supremacy: The End of Cloud Computing Dependency",
+    excerpt: "New microprocessors with sub-atomic architecture allow massive language models and complex calculations to run directly on local hardware without server connections.",
+    content: `<p>The computing paradigm is undergoing its most significant transformation since the invention of the microprocessor. This week, materials science researchers unveiled the first functional prototype of a "Q-Chip" designed specifically for Edge devices (laptops and local servers), breaking the thermal barrier that prevented quantum miniaturization.</p>
     
-    <h3>Descentralización del Procesamiento</h3>
-    <p>Hasta la fecha, el entrenamiento y ejecución de modelos de IA complejos (como los que superan los 500 mil millones de parámetros) requerían granjas de servidores con consumo energético masivo. La nueva arquitectura permite que estas tareas se ejecuten de manera nativa.</p>
+    <h3>Decentralization of Processing</h3>
+    <p>Until now, training and running complex AI models (like those exceeding 500 billion parameters) required server farms with massive energy consumption. The new architecture allows these tasks to run natively.</p>
     <ul>
-      <li><strong>Privacidad Absoluta:</strong> Los datos críticos en sectores como defensa y salud ya no tendrán que viajar a través de internet para ser procesados.</li>
-      <li><strong>Latencia Cero:</strong> Sistemas autónomos, desde drones hasta robótica quirúrgica, experimentarán tiempos de respuesta instantáneos.</li>
+      <li><strong>Absolute Privacy:</strong> Critical data in sectors like defense and healthcare will no longer need to travel across the internet for processing.</li>
+      <li><strong>Zero Latency:</strong> Autonomous systems, from drones to surgical robotics, will experience instantaneous response times.</li>
     </ul>
 
-    <h3>El Impacto en el Ecosistema Tech</h3>
-    <p>Esta innovación amenaza directamente el modelo de negocio basado en suscripciones en la nube (SaaS). Las empresas ahora podrán capitalizar su propio hardware, marcando un retorno hacia infraestructuras on-premise pero con capacidades que superan a los superordenadores de la década pasada.</p>`,
+    <h3>Impact on the Tech Ecosystem</h3>
+    <p>This innovation directly threatens the cloud subscription (SaaS) business model. Companies will now be able to capitalize on their own hardware, marking a return to on-premise infrastructure but with capabilities that surpass the supercomputers of the past decade.</p>`,
     date: "2026-04-22",
     image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "crispr-neuro-alzheimer-fda",
     category: "Health",
-    title: "Edición Genética In-Vivo: Terapias CRISPR Revierten Daño Neuronal en Fases Tempranas",
-    excerpt: "En un hito para la biotecnología, ensayos clínicos fase III demuestran que vectores virales modificados pueden cruzar la barrera hematoencefálica para editar genes asociados a enfermedades neurodegenerativas.",
-    content: `<p>La neurología molecular ha cruzado un umbral histórico. Tras años de optimización en los sistemas de entrega CRISPR-Cas12a, equipos de bioingeniería han logrado que nano-lípidos superen con éxito la barrera hematoencefálica humana, permitiendo la edición genética directa en el tejido cerebral de pacientes vivos.</p>
+    title: "In-Vivo Gene Editing: CRISPR Therapies Reverse Early-Stage Neural Damage",
+    excerpt: "In a milestone for biotechnology, Phase III clinical trials demonstrate that modified viral vectors can cross the blood-brain barrier to edit genes associated with neurodegenerative diseases.",
+    content: `<p>Molecular neurology has crossed a historic threshold. After years of optimization in CRISPR-Cas12a delivery systems, bioengineering teams have successfully enabled nano-lipids to bypass the human blood-brain barrier, allowing for direct genetic editing in the brain tissue of living patients.</p>
     
-    <h3>El Blanco: Placas Amiloides</h3>
-    <p>El tratamiento no se limita a ralentizar enfermedades como el Alzheimer de inicio temprano, sino que reprograma activamente la microglía (las células inmunitarias del cerebro) para que identifiquen y destruyan las acumulaciones de proteínas tóxicas de manera natural, restaurando las sinapsis neuronales.</p>
+    <h3>The Target: Amyloid Plaques</h3>
+    <p>The treatment does not merely slow down diseases like early-onset Alzheimer's; it actively reprograms microglia (the brain's immune cells) to naturally identify and destroy toxic protein accumulations, restoring neural synapses.</p>
     
-    <h3>Implicaciones Clínicas y Éticas</h3>
-    <p>Los resultados preliminares muestran una mejora del 40% en las capacidades cognitivas en una ventana de seis meses pos-inyección.</p>
+    <h3>Clinical and Ethical Implications</h3>
+    <p>Preliminary results show a 40% improvement in cognitive capabilities within a six-month post-injection window.</p>
     <ul>
-      <li><strong>Medicina Personalizada:</strong> El ARN guía se sintetiza en menos de 72 horas basándose en el mapeo genético específico de cada paciente.</li>
-      <li><strong>Costos de Producción:</strong> A medida que la impresión de biomoléculas se automatiza, se proyecta que el costo de estas terapias se reduzca drásticamente para 2028.</li>
+      <li><strong>Personalized Medicine:</strong> Guide RNA is synthesized in under 72 hours based on each patient's specific genetic mapping.</li>
+      <li><strong>Production Costs:</strong> As biomolecule printing becomes automated, the cost of these therapies is projected to drop drastically by 2028.</li>
     </ul>`,
     date: "2026-04-20",
     image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80&w=800"
@@ -50,18 +50,18 @@ export const articles: Article[] = [
   {
     id: "algorithmic-trading-defi-2026",
     category: "Finance",
-    title: "El Dominio de los Agentes Autónomos: Redes Neuronales Absorben el 65% del Trading Global",
-    excerpt: "Los mercados financieros globales son ahora operados mayoritariamente por enjambres de Inteligencia Artificial que ejecutan estrategias de arbitraje hiper-frecuente en milisegundos.",
-    content: `<p>La figura del analista financiero tradicional está cediendo su lugar a los ingenieros de Machine Learning. Datos recientes confirman que más del 65% del volumen de operaciones en los mercados de divisas (Forex) y criptoactivos institucionales está siendo ejecutado por agentes de Inteligencia Artificial de aprendizaje profundo (Deep Reinforcement Learning).</p>
+    title: "The Dominance of Autonomous Agents: Neural Networks Absorb 65% of Global Trading",
+    excerpt: "Global financial markets are now primarily operated by swarms of Artificial Intelligence executing hyper-frequency arbitrage strategies in milliseconds.",
+    content: `<p>The traditional financial analyst is stepping aside for Machine Learning engineers. Recent data confirms that over 65% of the trading volume in institutional Forex and crypto-asset markets is being executed by Deep Reinforcement Learning AI agents.</p>
     
-    <h3>Contratos Inteligentes y Liquidez</h3>
-    <p>Estos agentes no solo predicen tendencias basándose en el análisis de sentimiento global y datos macroeconómicos en tiempo real, sino que interactúan directamente con protocolos de Finanzas Descentralizadas (DeFi). Automáticamente solicitan préstamos flash, ejecutan arbitrajes complejos entre docenas de exchanges y liquidan las posiciones en una misma fracción de segundo.</p>
+    <h3>Smart Contracts and Liquidity</h3>
+    <p>These agents do more than predict trends based on real-time global sentiment analysis and macroeconomic data; they interact directly with Decentralized Finance (DeFi) protocols. They automatically request flash loans, execute complex arbitrage across dozens of exchanges, and liquidate positions within the same fraction of a second.</p>
     
-    <h3>Riesgos Sistémicos</h3>
-    <p>A pesar de la eficiencia brutal que aportan a la liquidez del mercado, los reguladores advierten sobre el riesgo de "Flash Crashes" impulsados por IA.</p>
+    <h3>Systemic Risks</h3>
+    <p>Despite the brutal efficiency they bring to market liquidity, regulators are warning about the risk of AI-driven "Flash Crashes."</p>
     <ul>
-      <li><strong>Bucles de Retroalimentación:</strong> Existe el peligro de que algoritmos competidores aprendan a sabotearse mutuamente, generando volatilidad extrema y desconectada de la economía real.</li>
-      <li><strong>Auditoría Algorítmica:</strong> Las instituciones financieras ahora enfrentan normativas que exigen que las "cajas negras" algorítmicas sean explicables y auditables matemáticamente.</li>
+      <li><strong>Feedback Loops:</strong> There is a danger of competing algorithms learning to sabotage one another, generating extreme volatility disconnected from the real economy.</li>
+      <li><strong>Algorithmic Auditing:</strong> Financial institutions now face regulations requiring algorithmic "black boxes" to be mathematically explainable and auditable.</li>
     </ul>`,
     date: "2026-04-18",
     image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=80&w=800"
@@ -69,34 +69,34 @@ export const articles: Article[] = [
   {
     id: "silicon-sovereignty-supply-chain",
     category: "Economy",
-    title: "Soberanía del Silicio: La Reestructuración de la Cadena de Suministro Tecnológica",
-    excerpt: "La carrera por asegurar la producción de semiconductores de 2 nanómetros fuerza a las potencias mundiales a redibujar el mapa logístico global, inyectando billones en subsidios industriales.",
-    content: `<p>Los semiconductores se han consolidado como el nuevo petróleo de la economía global. La escalada en las tensiones geopolíticas ha provocado un desacople agresivo de las cadenas de suministro tecnológicas, llevando a la construcción masiva de mega-fábricas (Foundries) fuera del eje asiático tradicional.</p>
+    title: "Silicon Sovereignty: The Restructuring of the Tech Supply Chain",
+    excerpt: "The race to secure 2-nanometer semiconductor production forces global powers to redraw the global logistics map, injecting trillions into industrial subsidies.",
+    content: `<p>Semiconductors have solidified their position as the new oil of the global economy. Escalating geopolitical tensions have triggered an aggressive decoupling of tech supply chains, leading to the massive construction of mega-foundries outside the traditional Asian axis.</p>
     
-    <h3>El "Nearshoring" Tecnológico Avanzado</h3>
-    <p>Países de América Latina y Europa del Este están recibiendo inyecciones masivas de Inversión Extranjera Directa para establecer ecosistemas de empaquetado, testeo y ensamblaje de microchips. La integración de la automatización robótica avanzada permite que estas nuevas instalaciones sean competitivas en costos operativos frente a los gigantes manufactureros tradicionales.</p>
+    <h3>Advanced Technological "Nearshoring"</h3>
+    <p>Countries in Latin America and Eastern Europe are receiving massive injections of Foreign Direct Investment to establish packaging, testing, and assembly ecosystems for microchips. The integration of advanced robotic automation allows these new facilities to be cost-competitive against traditional manufacturing giants.</p>
     
-    <h3>Materias Primas Estratégicas</h3>
-    <p>La atención económica se ha desviado hacia el aseguramiento de tierras raras y minerales críticos. Los fondos soberanos están adquiriendo agresivamente participaciones en empresas mineras de litio, cobalto y galio, asegurando el suministro físico necesario para sostener la demanda de hardware de IA y la electrificación del transporte.</p>`,
+    <h3>Strategic Raw Materials</h3>
+    <p>Economic focus has shifted toward securing rare earths and critical minerals. Sovereign wealth funds are aggressively acquiring stakes in lithium, cobalt, and gallium mining companies, ensuring the physical supply necessary to sustain the demand for AI hardware and transport electrification.</p>`,
     date: "2026-04-15",
     image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=800"
   },
   {
     id: "holographic-neural-interfaces-education",
     category: "Education",
-    title: "Laboratorios Sintéticos: Realidad Espacial Cierra la Brecha en la Educación STEM",
-    excerpt: "Plataformas educativas integran motores físicos precisos y computación espacial, permitiendo a estudiantes de ingeniería operar gemelos digitales de maquinaria industrial pesada desde cualquier lugar.",
-    content: `<p>Las facultades de ingeniería y ciencias aplicadas han comenzado el apagón de sus entornos de aprendizaje bidimensionales. El nuevo estándar en la educación técnica superior es el "Laboratorio Sintético": entornos de Realidad Extendida (XR) impulsados por motores de física hiper-realistas donde los errores no tienen costo material.</p>
+    title: "Synthetic Labs: Spatial Reality Closes the STEM Education Gap",
+    excerpt: "Educational platforms integrate precise physics engines and spatial computing, allowing engineering students to operate digital twins of heavy industrial machinery from anywhere.",
+    content: `<p>Faculties of engineering and applied sciences have begun phasing out their two-dimensional learning environments. The new standard in higher technical education is the "Synthetic Lab": Extended Reality (XR) environments powered by hyper-realistic physics engines where errors carry no material cost.</p>
     
-    <h3>Gemelos Digitales Académicos</h3>
-    <p>Mediante el uso de gafas de computación espacial, los estudiantes interactúan con proyecciones volumétricas de motores aeroespaciales, reacciones químicas complejas a nivel molecular y sistemas de redes eléctricas. Estos "gemelos digitales" reaccionan en tiempo real a las modificaciones del usuario, simulando estrés de materiales y dinámicas de fluidos con exactitud termodinámica.</p>
+    <h3>Academic Digital Twins</h3>
+    <p>Using spatial computing headsets, students interact with volumetric projections of aerospace engines, complex chemical reactions at the molecular level, and electrical grid systems. These "digital twins" react in real-time to user modifications, simulating material stress and fluid dynamics with thermodynamic accuracy.</p>
     
     <ul>
-      <li><strong>Curvas de Aprendizaje Aceleradas:</strong> La memoria muscular y la retención cognitiva aumentan sustancialmente cuando la teoría se aplica instantáneamente en un modelo espacial en 3D.</li>
-      <li><strong>Democratización del Hardware:</strong> Instituciones con presupuestos limitados ahora pueden ofrecer prácticas de laboratorio de grado industrial sin necesidad de invertir millones en equipos físicos que sufren obsolescencia temprana.</li>
+      <li><strong>Accelerated Learning Curves:</strong> Muscle memory and cognitive retention increase substantially when theory is instantly applied in a 3D spatial model.</li>
+      <li><strong>Hardware Democratization:</strong> Institutions with limited budgets can now offer industrial-grade lab practices without investing millions in physical equipment prone to early obsolescence.</li>
     </ul>
     
-    <p>Este avance transforma la pedagogía de un modelo basado en la lectura a uno fundamentado en la simulación experiencial continua.</p>`,
+    <p>This breakthrough transforms pedagogy from a reading-based model to one founded on continuous experiential simulation.</p>`,
     date: "2026-04-12",
     image: "https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&q=80&w=800"
   }

@@ -1,6 +1,13 @@
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const Navbar = () => {
+  const { t, i18n } = useTranslation();
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'es' : 'en';
+    i18n.changeLanguage(newLang);
+  };
   return (
     <nav className="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,20 +38,29 @@ export const Navbar = () => {
           
           <div className="hidden md:flex items-center space-x-8">
             <a href="/#soluciones" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
-              Soluciones
+              {t('navbar.solutions')}
             </a>
             <a href="/#impacto" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
-              Impacto
+              {t('navbar.impact')}
             </a>
             <a href="/#infraestructura" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
-              Infraestructura
+              {t('navbar.infrastructure')}
             </a>
             <a href="/portfolio" className="text-sm font-medium text-black hover:text-gray-600 transition-colors border-b border-transparent hover:border-black">
-              Portafolio
+              {t('navbar.portfolio')}
             </a>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center gap-6">
+            {/* Language Switcher */}
+            <button 
+              onClick={toggleLanguage}
+              className="text-xs font-bold tracking-widest text-gray-400 hover:text-black transition-colors flex items-center gap-1"
+            >
+              <span className={i18n.language === 'en' ? 'text-black' : ''}>EN</span>
+              <span className="text-gray-300">|</span>
+              <span className={i18n.language === 'es' || i18n.language === 'es-ES' ? 'text-black' : ''}>ES</span>
+            </button>
             {/* CTA Profesional Iterativo */}
             <a
               href="https://abia.neurolabs.com.co/"
@@ -55,7 +71,7 @@ export const Navbar = () => {
               <div className="absolute inset-0 bg-gray-50 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
               <span className="relative flex items-center gap-2 z-10">
                 <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-                Terminal ABIA
+                {t('navbar.terminal')}
                 <ArrowRight className="ml-1 h-3.5 w-3.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </span>
             </a>

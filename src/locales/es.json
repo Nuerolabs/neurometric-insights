@@ -1,0 +1,35 @@
+{
+  "navbar": {
+    "solutions": "Soluciones",
+    "impact": "Impacto",
+    "infrastructure": "Infraestructura",
+    "portfolio": "Portafolio",
+    "terminal": "Terminal ABIA"
+  },
+  "hero": {
+    "title_part1": "Inteligencia Institucional",
+    "title_part2": "a Escala.",
+    "subtitle": "Desarrollamos soluciones tecnológicas y automatización empresarial con propósito. Transformando datos complejos en decisiones precisas.",
+    "deploy": "Acceder al Terminal",
+    "framework": "Nuestra Visión"
+  },
+  "portfolio": {
+    "header_badge": "Acceso Corporativo",
+    "title": "Ingeniería a la medida de tu ",
+    "title_highlight": "operación.",
+    "subtitle": "Desarrollamos infraestructura de software robusta, especializándonos en tecnología educativa y motores de análisis de datos de alto rendimiento.",
+    "edu_title": "Ecosistemas Educativos",
+    "edu_desc": "Desarrollo de Sistemas de Gestión del Aprendizaje (LMS) propietarios, aulas virtuales interactivas y plataformas de administración académica diseñadas para escalar a miles de usuarios concurrentes.",
+    "edu_list1": "Arquitectura en la nube de alta disponibilidad",
+    "edu_list2": "Módulos de evaluación en tiempo real",
+    "edu_list3": "Integración segura de pagos y accesos",
+    "data_title": "Inteligencia Analítica",
+    "data_desc": "Construcción de pipelines de datos y dashboards ejecutivos en tiempo real. Transformamos datos brutos en insights accionables para optimizar la toma de decisiones empresariales.",
+    "data_list1": "Modelado de datos predictivo",
+    "data_list2": "Dashboards de Business Intelligence (BI)",
+    "data_list3": "Ingestión de datos masivos (ETL)",
+    "cta_title": "Inicia la transformación de tu operativa hoy.",
+    "cta_desc": "Agenda una demostración técnica con nuestros ingenieros para evaluar cómo nuestras soluciones se adaptan a tu ecosistema.",
+    "cta_button": "Solicitar una Muestra"
+  }
+}

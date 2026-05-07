@@ -1,0 +1,35 @@
+{
+  "navbar": {
+    "solutions": "Solutions",
+    "impact": "Impact",
+    "infrastructure": "Infrastructure",
+    "portfolio": "Portfolio",
+    "terminal": "ABIA Terminal"
+  },
+  "hero": {
+    "title_part1": "Institutional Intelligence",
+    "title_part2": "at Scale.",
+    "subtitle": "We develop technological solutions and enterprise automation with purpose. Transforming complex data into precise decisions.",
+    "deploy": "Deploy Engine",
+    "framework": "Explore Framework"
+  },
+  "portfolio": {
+    "header_badge": "Corporate Access",
+    "title": "Engineering tailored to your operation.",
+    "title_highlight": "operation.",
+    "subtitle": "We develop robust software infrastructure, specializing in educational technology and high-performance data analytics engines.",
+    "edu_title": "Educational Ecosystems",
+    "edu_desc": "Development of proprietary Learning Management Systems (LMS), interactive virtual classrooms, and academic administration platforms designed to scale to thousands of concurrent users.",
+    "edu_list1": "High-availability cloud architecture",
+    "edu_list2": "Real-time evaluation modules",
+    "edu_list3": "Secure payments and access integration",
+    "data_title": "Analytical Intelligence",
+    "data_desc": "Construction of data pipelines and real-time executive dashboards. We transform raw data into actionable insights to optimize enterprise decision-making.",
+    "data_list1": "Predictive data modeling",
+    "data_list2": "Business Intelligence (BI) Dashboards",
+    "data_list3": "Massive data ingestion (ETL)",
+    "cta_title": "Start your operational transformation today.",
+    "cta_desc": "Schedule a technical demonstration with our engineers to evaluate how our solutions adapt to your ecosystem.",
+    "cta_button": "Request a Demo"
+  }
+}

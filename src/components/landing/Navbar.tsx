@@ -36,18 +36,18 @@ export const Navbar = () => {
             </a>
           </div>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <a href="/#soluciones" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
               {t('navbar.solutions')}
             </a>
             <a href="/#impacto" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
               {t('navbar.impact')}
             </a>
-            <a href="/#infraestructura" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
-              {t('navbar.infrastructure')}
-            </a>
             <a href="/portfolio" className="text-sm font-medium text-black hover:text-gray-600 transition-colors border-b border-transparent hover:border-black">
               {t('navbar.portfolio')}
+            </a>
+            <a href="/docs" className="text-sm font-medium text-black hover:text-gray-600 transition-colors border-b border-transparent hover:border-black">
+              {t('navbar.docs')}
             </a>
           </div>
 

@@ -4,6 +4,7 @@
     "impact": "Impacto",
     "infrastructure": "Infraestructura",
     "portfolio": "Portafolio",
+    "docs": "API Docs",
     "terminal": "Terminal ABIA"
   },
   "hero": {
@@ -31,5 +32,28 @@
     "cta_title": "Inicia la transformación de tu operativa hoy.",
     "cta_desc": "Agenda una demostración técnica con nuestros ingenieros para evaluar cómo nuestras soluciones se adaptan a tu ecosistema.",
     "cta_button": "Solicitar una Muestra"
+  },
+  "playground": {
+    "badge": "Simulación en Vivo",
+    "title": "Infraestructura Interactiva",
+    "subtitle": "Prueba la latencia y profundidad analítica del motor ABIA en tiempo real.",
+    "sim_finance": "Riesgo Financiero",
+    "sim_edu": "Deserción Educativa",
+    "sim_data": "Parseo de Datos",
+    "run_btn": "Ejecutar Payload",
+    "status_idle": "Esperando comando de ejecución...",
+    "status_processing": "Estableciendo conexión segura con nodos de inferencia...",
+    "status_success": "Operación completada en 142ms."
+  },
+  "docs": {
+    "title": "Documentación",
+    "subtitle": "Integra el motor de inferencia ABIA en tu stack en minutos.",
+    "menu_intro": "Introducción",
+    "menu_auth": "Autenticación",
+    "menu_endpoints": "Endpoints",
+    "menu_sdks": "SDKs y Librerías",
+    "content_title": "Primeros Pasos",
+    "content_p1": "La API de ABIA de NeuroLabs está organizada en torno a REST. Nuestra API tiene URLs predecibles orientadas a recursos, acepta cuerpos de solicitud codificados en formulario, devuelve respuestas codificadas en JSON y utiliza códigos de respuesta HTTP estándar, autenticación y verbos.",
+    "content_p2": "Puedes usar la API en modo de prueba, lo que no afecta tus datos en vivo ni interactúa con las redes bancarias. La clave de API que utilizas para autenticar la solicitud determina si la solicitud es en modo en vivo o en modo de prueba."
   }
 }

@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { Vision } from "@/components/landing/Vision";
+import { Playground } from "@/components/landing/Playground";
 import { Ecosystem } from "@/components/landing/Ecosystem";
 import { Impact } from "@/components/landing/Impact";
 import { Infrastructure } from "@/components/landing/Infrastructure";
@@ -13,6 +14,7 @@ const Landing = () => {
       <main>
         <Hero />
         <Vision />
+        <Playground />
         <Ecosystem />
         <Impact />
         <Infrastructure />

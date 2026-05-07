@@ -1,3 +1,4 @@
+import { Navbar } from "@/components/landing/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { ArrowRight, BookOpen, BarChart3, CheckCircle2 } from "lucide-react";
 import { useTranslation } from "react-i18next";

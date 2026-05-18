@@ -15,13 +15,8 @@ export const Navbar = () => {
           <div className="flex items-center gap-2">
             <a href="/" className="flex items-center gap-3 group">
               {/* Isotipo Ejecutivo */}
-              <div className="relative flex items-center justify-center w-10 h-10 bg-[#111827] rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
-                {/* Geometría de Datos / N */}
-                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white relative z-10">
-                  <path d="M5 20V4L19 20V4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter"/>
-                </svg>
-                {/* Acento Corporativo */}
-                <div className="absolute top-0 right-0 w-5 h-5 bg-gradient-to-bl from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative flex items-center justify-center w-10 h-10 bg-white border border-gray-100 rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
+                <img src="/logo.png" alt="NeuroLab Logo" className="w-8 h-8 object-contain mix-blend-multiply" />
               </div>
               
               {/* Logotipo Tipográfico */}

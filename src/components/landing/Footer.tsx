@@ -4,10 +4,8 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="relative flex items-center justify-center w-8 h-8 bg-[#111827] rounded-md overflow-hidden">
-              <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 text-white relative z-10">
-                <path d="M5 20V4L19 20V4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="square" strokeLinejoin="miter"/>
-              </svg>
+            <div className="relative flex items-center justify-center w-8 h-8 bg-white border border-gray-100 rounded-md overflow-hidden">
+              <img src="/logo.png" alt="NeuroLab Logo" className="w-6 h-6 object-contain mix-blend-multiply" />
             </div>
             <div className="flex flex-col">
               <span className="text-[#111827] font-extrabold tracking-tight leading-none mb-1">NeuroLab</span>

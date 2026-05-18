@@ -15,17 +15,17 @@ export const Navbar = () => {
           <div className="flex items-center gap-2">
             <a href="/" className="flex items-center gap-3 group">
               {/* Isotipo Ejecutivo */}
-              <div className="relative flex items-center justify-center w-10 h-10 bg-white border border-gray-100 rounded-lg overflow-hidden group-hover:shadow-lg transition-all duration-300">
-                <img src="/logo.png" alt="NeuroLab Logo" className="w-8 h-8 object-contain mix-blend-multiply" />
+              <div className="relative flex items-center justify-center w-14 h-14 bg-white border border-gray-100 rounded-xl overflow-hidden group-hover:shadow-lg transition-all duration-300">
+                <img src="/logo.png" alt="NeuroLabs Logo" className="w-12 h-12 object-contain mix-blend-multiply" />
               </div>
               
               {/* Logotipo Tipográfico */}
-              <div className="flex flex-col justify-center">
-                <span className="text-xl font-extrabold tracking-tight text-[#111827] leading-none mb-1">
-                  NeuroLab
+              <div className="flex flex-col justify-center notranslate" translate="no">
+                <span className="text-2xl font-extrabold tracking-tight text-[#111827] leading-none mb-1">
+                  NeuroLabs Tech
                 </span>
-                <span className="text-[8px] font-bold tracking-[0.25em] text-gray-500 uppercase leading-none">
-                  Tech Solutions SAS
+                <span className="text-[10px] font-bold tracking-[0.25em] text-gray-500 uppercase leading-none">
+                  Solutions SAS
                 </span>
               </div>
             </a>

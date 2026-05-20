@@ -1,4 +1,4 @@
-import { Server, Zap, Radio, Cpu, Network } from "lucide-react";
+import { Brain, Zap, Database, ShieldCheck, Target } from "lucide-react";
 
 export const Infrastructure = () => {
   return (
@@ -6,64 +6,72 @@ export const Infrastructure = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="mb-16 md:flex md:justify-between md:items-end">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+              Fase Beta Soberana Finalizada
+            </div>
             <h2 className="text-3xl md:text-5xl font-bold text-black tracking-tight leading-tight mb-4">
-              Arquitectura de Precisión.
+              Infraestructura Algorítmica ABIA.
             </h2>
             <p className="text-lg text-gray-500 font-normal">
-              Hardware ensamblado a medida y ecosistemas de transmisión diseñados para latencia mínima. Infraestructura robusta y transparente.
+              Motor RAG cognitivo operativo capaz de realizar auditorías jurídicas y de gestión pública con precisión milimétrica. Ecosistema de inferencia híbrido de alta disponibilidad.
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[250px]">
           
-          <div className="md:col-span-2 relative bg-black border border-black p-8 flex flex-col justify-between">
+          <div className="md:col-span-2 relative bg-black border border-black rounded-xl p-8 flex flex-col justify-between overflow-hidden group">
+            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-bl from-blue-500/20 to-transparent rounded-full blur-3xl opacity-50 pointer-events-none group-hover:opacity-70 transition-opacity" />
             <div className="relative z-10 text-white">
-              <Server className="w-8 h-8 mb-4" strokeWidth={1.5} />
-              <h3 className="text-2xl font-semibold mb-2">Edge Computing Local</h3>
-              <p className="text-gray-400 font-normal max-w-sm">
-                Procesamiento de datos en el borde de la red para inferencia en milisegundos, garantizando soberanía de datos.
+              <Brain className="w-8 h-8 mb-4 text-blue-400" strokeWidth={1.5} />
+              <h3 className="text-2xl font-bold mb-3">Arquitectura Dual-Hemisphere</h3>
+              <p className="text-gray-400 font-normal max-w-lg leading-relaxed">
+                Integración sinérgica de un <strong className="text-white">Cerebro GPU remoto</strong> acoplado a un <strong className="text-white">Hipocampo Vectorial Local en ChromaDB</strong>. Diseñado para ofrecer un rigor jurisprudencial y socrático del <strong>98%</strong>.
               </p>
             </div>
           </div>
 
-          <div className="relative bg-white border border-gray-200 p-8 flex flex-col justify-between">
+          <div className="relative bg-white border border-gray-200 rounded-xl p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
             <div className="relative z-10 text-black">
               <div className="inline-flex items-center gap-2 mb-6">
-                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Latencia Promedio</span>
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Latencia Media</span>
               </div>
-              <h3 className="text-6xl font-bold mb-2 tracking-tighter">12<span className="text-2xl text-gray-400">ms</span></h3>
-              <p className="text-gray-500 font-normal text-sm">Respuesta ultrarrápida en transmisión de eventos en vivo.</p>
+              <h3 className="text-6xl font-bold mb-2 tracking-tighter">2.5<span className="text-2xl text-gray-400">s</span></h3>
+              <p className="text-gray-500 font-normal text-sm">Tiempo de respuesta sostenido por cada inferencia compleja ejecutada.</p>
             </div>
           </div>
 
-          <div className="relative bg-[#FAFAFA] border border-gray-200 p-8 flex flex-col justify-between">
-            <Radio className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
+          <div className="relative bg-[#FAFAFA] border border-gray-200 rounded-xl p-8 flex flex-col justify-between hover:bg-white transition-colors">
+            <Database className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
             <div>
-              <h3 className="text-xl font-semibold text-black mb-2">Arquitectura Streaming</h3>
+              <h3 className="text-xl font-bold text-black mb-2">Memoria de Ingestión</h3>
               <p className="text-gray-500 font-normal text-sm">
-                Soporte técnico y despliegue de protocolos HLS/RTMP con alta disponibilidad.
+                Más de <strong className="text-black">24,000 fragmentos</strong> de conocimiento jurídico asimilados a través de nuestro pipeline de "Bisturí Semántico".
               </p>
             </div>
           </div>
 
-          <div className="relative bg-[#FAFAFA] border border-gray-200 p-8 flex flex-col justify-between">
-            <Cpu className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
+          <div className="relative bg-[#FAFAFA] border border-gray-200 rounded-xl p-8 flex flex-col justify-between hover:bg-white transition-colors">
+            <ShieldCheck className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
             <div>
-              <h3 className="text-xl font-semibold text-black mb-2">Ensamblaje a Medida</h3>
+              <h3 className="text-xl font-bold text-black mb-2">100% Soberanía de Datos</h3>
               <p className="text-gray-500 font-normal text-sm">
-                Diseño térmico y arquitectónico de hardware específico para requerimientos de alto rendimiento.
+                Procesamiento y enrutamiento privado a través de túneles encriptados sin fugas hacia corporaciones externas.
               </p>
             </div>
           </div>
 
-          <div className="relative bg-[#FAFAFA] border border-gray-200 p-8 flex flex-col justify-between">
-            <Network className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
+          <div className="relative bg-[#FAFAFA] border border-gray-200 rounded-xl p-8 flex flex-col justify-between hover:bg-white transition-colors">
+            <Target className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
             <div>
-              <h3 className="text-xl font-semibold text-black mb-2">Nodos Distribuidos</h3>
-              <p className="text-gray-500 font-normal text-sm">
-                Interconexión resiliente asegurando continuidad operativa bajo cualquier escenario.
+              <div className="flex items-end gap-2 mb-2">
+                <h3 className="text-4xl font-bold text-black tracking-tight">96%</h3>
+              </div>
+              <h4 className="text-sm font-bold text-black mb-1">Inmunidad a Alucinaciones</h4>
+              <p className="text-gray-500 font-normal text-xs">
+                Control estricto de fuga de contexto para garantizar fiabilidad total en la auditoría.
               </p>
             </div>
           </div>

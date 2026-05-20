@@ -43,13 +43,14 @@ export const Infrastructure = () => {
             </div>
           </div>
 
-          <div className="relative bg-[#FAFAFA] border border-gray-200 rounded-xl p-8 flex flex-col justify-between hover:bg-white transition-colors">
-            <Database className="w-8 h-8 text-black mb-4" strokeWidth={1.5} />
-            <div>
-              <h3 className="text-xl font-bold text-black mb-2">Memoria de Ingestión</h3>
-              <p className="text-gray-500 font-normal text-sm">
-                Más de <strong className="text-black">24,000 fragmentos</strong> de conocimiento jurídico asimilados a través de nuestro pipeline de "Bisturí Semántico".
-              </p>
+          <div className="relative bg-white border border-gray-200 rounded-xl p-8 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <div className="relative z-10 text-black">
+              <div className="inline-flex items-center gap-2 mb-4">
+                <Database className="w-4 h-4 text-gray-400" strokeWidth={2} />
+                <span className="text-xs font-semibold uppercase tracking-widest text-gray-500">Recuerdos Hipocampo</span>
+              </div>
+              <h3 className="text-5xl font-bold mb-2 tracking-tighter">46,658</h3>
+              <p className="text-gray-500 font-normal text-xs">fragmentos en ChromaDB — ingestados vía <strong className="text-gray-700">Bisturí Semántico</strong></p>
             </div>
           </div>
 

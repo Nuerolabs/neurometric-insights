@@ -4,7 +4,6 @@ import { Vision } from "@/components/landing/Vision";
 import { Playground } from "@/components/landing/Playground";
 import { Ecosystem } from "@/components/landing/Ecosystem";
 import { Impact } from "@/components/landing/Impact";
-import { Infrastructure } from "@/components/landing/Infrastructure";
 import { Footer } from "@/components/landing/Footer";
 
 const Landing = () => {
@@ -17,7 +16,6 @@ const Landing = () => {
         <Playground />
         <Ecosystem />
         <Impact />
-        <Infrastructure />
       </main>
       <Footer />
     </div>
@@ -25,3 +23,4 @@ const Landing = () => {
 };
 
 export default Landing;
+

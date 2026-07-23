@@ -157,12 +157,9 @@ const PersonalAgent = () => {
 
   // Simple Markdown Parser
   const renderMessageContent = (content: string) => {
-    return content.split('\n').map((line, i) => (
-      <span key={i}>
-        {line.replace(/\*\*(.*?)\*\*/g, (_, text) => `<strong>${text}</strong>`)}
-        {i !== content.split('\n').length - 1 && <br />}
-      </span>
-    ));
+    let html = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\n/g, '<br />');
+    return html;
   };
 
   return (
@@ -259,7 +256,7 @@ const PersonalAgent = () => {
                         ? "bg-indigo-600 text-white rounded-tr-sm" 
                         : "bg-zinc-900 border border-zinc-800 text-zinc-200 rounded-tl-sm"
                     }`}>
-                      <div dangerouslySetInnerHTML={{ __html: renderMessageContent(msg.content) as any }} />
+                      <div dangerouslySetInnerHTML={{ __html: renderMessageContent(msg.content) }} />
                     </div>
                   )}
                   <span className="text-[10px] text-zinc-600 px-1">

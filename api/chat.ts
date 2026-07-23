@@ -25,7 +25,7 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { message, history, attachments, model } = req.body;
+    const { message, history, attachments, model, webSearchEnabled } = req.body;
 
     if (POOL_DE_LLAVES.length === 0) {
       return res.status(500).json({ error: "Configuración crítica del servidor ausente (Sin llaves)." });
@@ -43,10 +43,17 @@ export default async function handler(req: any, res: any) {
         // Modelo por defecto si el frontend no envía uno
         const selectedModel = model || "gemini-2.5-flash";
         
-        // Inicialización del modelo con System Instructions
+        // Configuración de herramientas
+        const tools: any[] = [];
+        if (webSearchEnabled) {
+          tools.push({ googleSearch: {} });
+        }
+        
+        // Inicialización del modelo con System Instructions y Tools
         const genModel = genAI.getGenerativeModel({ 
           model: selectedModel,
-          systemInstruction: SYSTEM_INSTRUCTION 
+          systemInstruction: SYSTEM_INSTRUCTION,
+          tools: tools.length > 0 ? tools : undefined
         });
         
         // 3. SOPORTE MULTIMODAL COMPLETO (TEXTO, IMÁGENES Y PDF)

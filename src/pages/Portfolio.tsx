@@ -34,17 +34,17 @@ const categories = [
 /* ── Project Data ── */
 const projects = [
   {
-    id: "abia",
+    id: "agentes-ia",
     category: "ia",
-    title: "ABIA — Soberanía Cognitiva",
-    desc: "Motor de inteligencia artificial soberana con arquitectura Dual-Hemisphere. Integra razonamiento jurídico, tutoría cognitiva y auditoría autónoma libre de alucinaciones.",
+    title: "Agentes de IA Empresariales",
+    desc: "Implementación de agentes conversacionales y de automatización que operan 24/7 sobre WhatsApp, web y canales corporativos. Capturan leads, califican prospectos, resuelven soporte técnico y automatizan flujos administrativos complejos.",
     metrics: [
-      { label: "Recuerdos ChromaDB", value: "46,658" },
-      { label: "Rigor Socrático", value: "98%" },
-      { label: "Anti-Alucinación", value: "96%" },
-      { label: "Latencia", value: "2.5s" },
+      { label: "Disponibilidad", value: "24/7" },
+      { label: "ROI estimado", value: "< 60d" },
+      { label: "Reducción Atención", value: "70%" },
+      { label: "Canales", value: "WA+Web" },
     ],
-    tags: ["RAG", "ChromaDB", "GPU Remota", "LLM", "Python", "FastAPI"],
+    tags: ["Llama 3.3", "DeepSeek-R1", "RAG", "WhatsApp API", "Python", "FastAPI"],
     icon: Brain,
     accent: "blue",
     featured: true,
@@ -131,20 +131,20 @@ const projects = [
     accent: "indigo",
   },
   {
-    id: "data-sovereignty",
+    id: "gestion-documental",
     category: "gov",
-    title: "Bóveda de Datos Soberana",
-    desc: "Infraestructura de almacenamiento y procesamiento de datos con enrutamiento privado mediante túneles encriptados. Cero dependencia de corporaciones externas.",
-    tags: ["Ngrok", "ChromaDB", "Encryption", "Python", "FastAPI"],
+    title: "Sistema de Gestión Documental",
+    desc: "Plataforma institucional para la radicación, trazabilidad y archivo digital de documentos. Cumplimiento pleno de la Ley 594 de 2000 y lineamientos AGN. Integración con SIGEP, SECOP y SGR.",
+    tags: ["React", "Node.js", "PostgreSQL", "Firmas Digitales", "SIGEP", "SECOP"],
     icon: ShieldCheck,
     accent: "slate",
   },
   {
-    id: "knowledge-ingestion",
+    id: "rag-soporte",
     category: "ia",
-    title: "Pipeline de Ingestión Cognitiva",
-    desc: "Sistema 'Bisturí Semántico' de fragmentación y vectorización masiva de documentos jurídicos, académicos y corporativos para alimentar motores RAG con memoria persistente.",
-    tags: ["LangChain", "ChromaDB", "PDF", "DOCX", "Embeddings"],
+    title: "Agente RAG de Soporte Operativo",
+    desc: "Agente de IA conectado a bases de conocimiento internas (manuales, inventarios, normativas). Resuelve consultas técnicas institucionales con precisión y sin intervención humana.",
+    tags: ["DeepSeek-R1", "RAG", "ChromaDB Vectorial", "PDF", "FastAPI"],
     icon: Database,
     accent: "fuchsia",
   },
@@ -169,8 +169,8 @@ const accentMap: Record<string, { bg: string; text: string; border: string; badg
 const Portfolio = () => {
   const [active, setActive] = useState("all");
   const filtered = active === "all" ? projects : projects.filter((p) => p.category === active);
-  const abiaProject = projects.find((p) => p.id === "abia")!;
-  const abiaColors = accentMap[abiaProject.accent];
+  const featuredProject = projects.find((p) => p.id === "agentes-ia")!;
+  const featuredColors = accentMap[featuredProject.accent];
 
   return (
     <div className="min-h-screen bg-white selection:bg-black selection:text-white font-sans text-black">
@@ -194,46 +194,46 @@ const Portfolio = () => {
           </div>
         </section>
 
-        {/* ─── ABIA Hero Project ─── */}
+        {/* ─── Featured Project: Agentes de IA ─── */}
         <section className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-20">
           <div className="bg-black text-white rounded-[2rem] p-10 md:p-16 relative overflow-hidden group shadow-2xl">
             <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-blue-500/15 to-transparent rounded-full blur-3xl opacity-60 pointer-events-none group-hover:opacity-80 transition-opacity" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-purple-500/10 to-transparent rounded-full blur-3xl opacity-40 pointer-events-none" />
-            
+
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left */}
               <div>
                 <div className="inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full border border-blue-400/30 bg-blue-500/10 text-blue-300 text-xs font-bold uppercase tracking-widest">
                   <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                  Proyecto Insignia
+                  Línea de Negocio Principal
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6 leading-tight">
-                  ABIA<span className="text-blue-400">.</span>
+                  Agentes de IA<span className="text-blue-400">.</span>
                 </h2>
                 <p className="text-gray-400 font-light text-lg leading-relaxed mb-8">
-                  {abiaProject.desc}
+                  {featuredProject.desc}
                 </p>
                 <div className="flex flex-wrap gap-2 mb-8">
-                  {abiaProject.tags.map((tag) => (
+                  {featuredProject.tags.map((tag) => (
                     <span key={tag} className="px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[11px] font-medium text-gray-300">
                       {tag}
                     </span>
                   ))}
                 </div>
                 <a
-                  href="https://abia.neurolabs.com.co/"
+                  href="https://wa.me/573001234567?text=Hola%2C%20quiero%20conocer%20los%20agentes%20de%20IA%20de%20NeuroLabs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group/btn inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-bold text-sm rounded-full hover:scale-105 transition-all shadow-[0_0_30px_rgba(255,255,255,0.15)]"
                 >
-                  Acceder al Terminal
+                  Solicitar Demo
                   <ExternalLink className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                 </a>
               </div>
 
-              {/* Right — Live KPIs */}
+              {/* Right — KPIs */}
               <div className="grid grid-cols-2 gap-4">
-                {abiaProject.metrics!.map((m, i) => (
+                {featuredProject.metrics!.map((m, i) => (
                   <div
                     key={i}
                     className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"

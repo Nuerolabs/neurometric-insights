@@ -1,18 +1,79 @@
 {
   "navbar": {
     "solutions": "Soluciones",
+    "agents": "Agentes IA",
+    "software": "Software",
+    "mission": "Misión",
     "impact": "Impacto",
-    "infrastructure": "Infraestructura",
     "portfolio": "Portafolio",
-    "docs": "API Docs",
-    "terminal": "Terminal ABIA"
+    "contact": "Agenda Consulta"
   },
   "hero": {
-    "title_part1": "Inteligencia Institucional",
-    "title_part2": "a Escala.",
-    "subtitle": "Desarrollamos soluciones tecnológicas y automatización empresarial con propósito. Transformando datos complejos en decisiones precisas.",
-    "deploy": "Acceder al Terminal",
-    "framework": "Nuestra Visión"
+    "title_part1": "Agentes de IA",
+    "title_part2": "para tu empresa.",
+    "subtitle": "Diseñamos e implementamos agentes de inteligencia artificial y software empresarial que automatizan procesos, capturan leads y generan resultados medibles desde el primer mes.",
+    "cta_primary": "Ver Nuestros Agentes",
+    "cta_secondary": "Nuestra Misión",
+    "trust_1": "Agentes 24/7",
+    "trust_2": "ROI en < 60 días",
+    "trust_3": "Sector Público & Privado",
+    "trust_4": "Código 100% Propietario"
+  },
+  "mission": {
+    "badge": "Propósito · Misión · Visión",
+    "title_part1": "Centro de Investigación",
+    "title_part2": "en Inteligencia Artificial.",
+    "mission_label": "Misión",
+    "mission_text": "Impulsar la transformación digital de organizaciones mediante investigación aplicada en inteligencia artificial, desarrollando soluciones tecnológicas que generan valor real, medible y sostenible desde Sitionuevo, Magdalena, hacia todo el país.",
+    "vision_label": "Visión",
+    "vision_text": "Ser el referente latinoamericano en investigación e implementación de sistemas de IA aplicada, reconocidos por la calidad técnica, la responsabilidad ética y el impacto tangible en sectores público y privado.",
+    "lines_badge": "Nuestras Líneas de Negocio",
+    "line1_label": "Agentes de IA",
+    "line1_title": "Automatización Empresarial con IA",
+    "line2_label": "Software a Medida",
+    "line2_title": "Sistemas para Sector Público y Privado"
+  },
+  "agents": {
+    "section_badge": "Agentes de IA Empresariales",
+    "title_part1": "Automatización inteligente",
+    "title_part2": "para tu operación.",
+    "subtitle": "Implementamos agentes de IA que trabajan solos, aprenden de tu negocio y generan resultados desde el primer mes.",
+    "pain_label": "Problema actual",
+    "solution_label": "Solución NeuroLabs",
+    "cta_no_agent": "¿No sabes cuál agente necesitas?",
+    "cta_free_consult": "Consulta Gratuita"
+  },
+  "software": {
+    "section_badge": "Desarrollo de Software Empresarial",
+    "title_part1": "Software a medida",
+    "title_part2": "para instituciones y empresas.",
+    "subtitle": "Desarrollamos plataformas robustas, escalables y adaptadas a los requerimientos normativos y operativos de cada cliente.",
+    "gov_integrations": "Integraciones Gobierno",
+    "payment_integrations": "Pasarelas de Pago",
+    "ideal_for": "Ideal para",
+    "custom_note": "Todos nuestros sistemas incluyen código fuente propietario, soporte técnico y capacitación al equipo."
+  },
+  "benefits": {
+    "badge": "Resultados Reales · No Promesas",
+    "title_part1": "Lo que cambia cuando",
+    "title_part2": "la IA trabaja por ti.",
+    "subtitle": "Métricas observadas en implementaciones reales con empresas colombianas que adoptaron agentes de IA en su operación.",
+    "process_badge": "Proceso de Implementación",
+    "process_title_part1": "De la consulta inicial al agente activo",
+    "process_title_part2": "en semanas.",
+    "cta_start": "Empezar Ahora",
+    "cta_catalog": "Ver catálogo de agentes"
+  },
+  "impact": {
+    "badge": "Impacto & Resultados",
+    "title_part1": "Tecnología que genera",
+    "title_part2": "impacto real.",
+    "subtitle": "Cada solución que construimos tiene un objetivo claro: mejorar la eficiencia, reducir costos y escalar tu capacidad operativa.",
+    "cta_badge": "¿Listo para comenzar?",
+    "cta_title": "Inicia la transformación digital de tu organización.",
+    "cta_desc": "Agenda una consulta gratuita. Analizamos tu operación y te presentamos la solución más adecuada, sin compromiso.",
+    "cta_button": "WhatsApp · Consulta Gratis",
+    "cta_note": "Respuesta garantizada en menos de 24 horas"
   },
   "portfolio": {
     "header_badge": "Acceso Corporativo",
@@ -29,41 +90,29 @@
     "data_list1": "Modelado de datos predictivo",
     "data_list2": "Dashboards de Business Intelligence (BI)",
     "data_list3": "Ingestión de datos masivos (ETL)",
-    "abia_title": "Soberanía Cognitiva ABIA",
-    "abia_desc": "Motor cognitivo de inteligencia artificial soberana. Integra razonamiento estratégico híbrido de doble hemisferio (RAG y SQL), análisis de datos masivos (como Saber 11) y auditoría autónoma libre de alucinaciones.",
-    "abia_list1": "Razonamiento estratégico y tutoría cognitiva",
-    "abia_list2": "Auditoría de base de datos SQL con CTE",
-    "abia_list3": "Memoria cognitiva y descubrimiento de esquemas",
-    "quant_title": "CerebroQuant Hub",
-    "quant_desc": "Portal de inteligencia científica y de mercados financieros. Sintetiza modelos macroeconómicos complejos y señales de mercado en tiempo real para inversores institucionales.",
-    "quant_list1": "Análisis de tendencias predictivas en tiempo real",
-    "quant_list2": "Ingesta de datos multicanal de alta velocidad",
-    "quant_list3": "Seguridad criptográfica y terminal interactiva",
+    "agents_title": "Agentes de IA Empresariales",
+    "agents_desc": "Implementación de agentes inteligentes para automatización comercial, soporte operativo con RAG y sistemas multi-agente corporativos para finanzas y RRHH.",
+    "agents_list1": "Agente Comercial 24/7 (WhatsApp/Web)",
+    "agents_list2": "Agente RAG para soporte y operaciones",
+    "agents_list3": "Sistemas multi-agente para flujos corporativos",
+    "software_title": "Software Empresarial a Medida",
+    "software_desc": "Gestión documental para entidades públicas con cumplimiento normativo colombiano, e-commerce con pasarelas locales y desarrollo de software personalizado.",
+    "software_list1": "Sistema de Gestión Documental (Ley 594/2000)",
+    "software_list2": "E-Commerce con PSE, Wompi y PayU",
+    "software_list3": "Desarrollo a medida sector público y privado",
     "cta_title": "Inicia la transformación de tu operativa hoy.",
     "cta_desc": "Agenda una demostración técnica con nuestros ingenieros para evaluar cómo nuestras soluciones se adaptan a tu ecosistema.",
     "cta_button": "Solicitar una Muestra"
   },
-  "playground": {
-    "badge": "Simulación en Vivo",
-    "title": "Infraestructura Interactiva",
-    "subtitle": "Prueba la latencia y profundidad analítica del motor ABIA en tiempo real.",
-    "sim_finance": "Riesgo Financiero",
-    "sim_edu": "Deserción Educativa",
-    "sim_data": "Parseo de Datos",
-    "run_btn": "Ejecutar Payload",
-    "status_idle": "Esperando comando de ejecución...",
-    "status_processing": "Estableciendo conexión segura con nodos de inferencia...",
-    "status_success": "Operación completada en 142ms."
-  },
   "docs": {
     "title": "Documentación",
-    "subtitle": "Integra el motor de inferencia ABIA en tu stack en minutos.",
+    "subtitle": "Recursos técnicos y guías de integración para desarrolladores.",
     "menu_intro": "Introducción",
     "menu_auth": "Autenticación",
     "menu_endpoints": "Endpoints",
     "menu_sdks": "SDKs y Librerías",
     "content_title": "Primeros Pasos",
-    "content_p1": "La API de ABIA de NeuroLabs está organizada en torno a REST. Nuestra API tiene URLs predecibles orientadas a recursos, acepta cuerpos de solicitud codificados en formulario, devuelve respuestas codificadas en JSON y utiliza códigos de respuesta HTTP estándar, autenticación y verbos.",
-    "content_p2": "Puedes usar la API en modo de prueba, lo que no afecta tus datos en vivo ni interactúa con las redes bancarias. La clave de API que utilizas para autenticar la solicitud determina si la solicitud es en modo en vivo o en modo de prueba."
+    "content_p1": "La API de NeuroLabs está organizada en torno a REST. Nuestra API tiene URLs predecibles orientadas a recursos, acepta cuerpos de solicitud codificados en formulario, devuelve respuestas codificadas en JSON y utiliza códigos de respuesta HTTP estándar, autenticación y verbos.",
+    "content_p2": "Puedes usar la API en modo de prueba, lo que no afecta tus datos en vivo. La clave de API que utilizas para autenticar la solicitud determina si la solicitud es en modo en vivo o en modo de prueba."
   }
 }

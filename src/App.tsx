@@ -7,6 +7,7 @@ import Landing from "./pages/Landing";
 import Portfolio from "./pages/Portfolio";
 import ApiDocs from "./pages/ApiDocs";
 import NotFound from "./pages/NotFound";
+import PersonalAgent from "./pages/admin/PersonalAgent";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
               <Route path="/" element={<Landing />} />
               <Route path="/portfolio" element={<Portfolio />} />
               <Route path="/docs" element={<ApiDocs />} />
+              <Route path="/admin/core-ai" element={<PersonalAgent />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

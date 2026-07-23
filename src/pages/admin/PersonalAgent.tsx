@@ -1,8 +1,16 @@
 import { useState, useRef, useEffect, ChangeEvent } from "react";
-import { Send, Paperclip, X, BrainCircuit, Activity, Database, FileBox, Settings, ShieldCheck, ChevronRight, Lock } from "lucide-react";
+import { Send, Paperclip, X, BrainCircuit, Activity, Database, FileBox, Settings, ShieldCheck, ChevronRight, Lock, Plus, Globe, Blocks, Workflow, Image as ImageIcon, Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -39,6 +47,7 @@ const PersonalAgent = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [model, setModel] = useState("gemini-3.1-pro-preview");
+  const [webSearchEnabled, setWebSearchEnabled] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -322,16 +331,55 @@ const PersonalAgent = () => {
                 multiple 
                 accept="image/*,.pdf,.doc,.docx,.txt"
               />
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="w-10 h-10 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl shrink-0"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <Paperclip className="w-4 h-4" />
-              </Button>
               
-              <textarea 
+              {/* Advanced Claude-like Plus Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="w-10 h-10 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-xl shrink-0"
+                  >
+                    <Plus className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-56 bg-zinc-900 border-zinc-800 text-zinc-200 shadow-2xl pb-2">
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800 focus:text-white" onClick={() => fileInputRef.current?.click()}>
+                    <Paperclip className="w-4 h-4 mr-2 text-zinc-400" /> Subir archivos o fotos
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800 focus:text-white">
+                    <ImageIcon className="w-4 h-4 mr-2 text-zinc-400" /> Tomar captura de pantalla
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  
+                  <DropdownMenuLabel className="text-[10px] uppercase text-zinc-500 tracking-wider">Herramientas</DropdownMenuLabel>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800 focus:text-white">
+                    <Blocks className="w-4 h-4 mr-2 text-indigo-400" /> Habilidades (Skills)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="py-2 cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800 focus:text-white">
+                    <Workflow className="w-4 h-4 mr-2 text-emerald-400" /> Añadir Conector
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuSeparator className="bg-zinc-800" />
+                  
+                  <DropdownMenuItem 
+                    className="py-2 cursor-pointer hover:bg-zinc-800 focus:bg-zinc-800 focus:text-white justify-between"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setWebSearchEnabled(!webSearchEnabled);
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <Globe className={`w-4 h-4 mr-2 ${webSearchEnabled ? 'text-blue-400' : 'text-zinc-400'}`} />
+                      Búsqueda Web
+                    </div>
+                    {webSearchEnabled && <Check className="w-4 h-4 text-blue-400" />}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <textarea  
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => {

@@ -38,7 +38,7 @@ const PersonalAgent = () => {
   const [input, setInput] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
-  const [model, setModel] = useState("gemini-3.1-pro-preview");
+  const [model, setModel] = useState("gemini-2.5-flash");
   const [webSearchEnabled, setWebSearchEnabled] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -190,10 +190,10 @@ const PersonalAgent = () => {
             onChange={e => setModel(e.target.value)}
             className="w-full bg-white border border-gray-200 rounded-md text-xs px-2 py-1.5 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-gray-700"
           >
-            <option value="gemini-3.1-pro-preview">Gemini 3.1 Pro (Preview)</option>
+            <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
             <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
-            <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
             <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+            <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite</option>
           </select>
         </div>
       </aside>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Printer, Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { useVentas } from '@/context/VentasContext';
 
 export default function LoginVentas() {
@@ -17,108 +17,85 @@ export default function LoginVentas() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
-    // Simulate brief async
     setTimeout(() => {
       const ok = login(usuario.trim(), contrasena);
       if (ok) {
         navigate('/ventas');
       } else {
-        setError('Usuario o contraseña incorrectos. Intenta de nuevo.');
+        setError('Usuario o contraseña incorrectos.');
       }
       setLoading(false);
-    }, 600);
+    }, 500);
   };
 
   return (
-    <div className="ventas-login-bg">
-      {/* Animated background blobs */}
-      <div className="ventas-blob ventas-blob-1" />
-      <div className="ventas-blob ventas-blob-2" />
-      <div className="ventas-blob ventas-blob-3" />
-
-      <div className="ventas-login-card">
-        {/* Header */}
-        <div className="ventas-login-header">
-          <div className="ventas-login-icon-wrap">
-            <Printer size={32} className="ventas-login-icon" />
-          </div>
-          <h1 className="ventas-login-title">PrintTrack</h1>
-          <p className="ventas-login-subtitle">Sistema de Ventas de Impresora</p>
+    <div className="pt-login-bg">
+      <div className="pt-login-card">
+        {/* Logo */}
+        <div className="pt-login-logo-wrap">
+          <img src="/logo.png" alt="Logo empresa" className="pt-login-logo" />
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="ventas-login-form">
-          <div className="ventas-input-group">
-            <label htmlFor="login-usuario" className="ventas-label">
-              Usuario
-            </label>
-            <div className="ventas-input-wrap">
-              <User size={16} className="ventas-input-icon" />
+        <h1 className="pt-login-title">Sistema de Ventas</h1>
+        <p className="pt-login-subtitle">Impresiones &amp; Copias</p>
+
+        <form onSubmit={handleSubmit} className="pt-login-form">
+          <div className="pt-input-group">
+            <label htmlFor="login-usuario" className="pt-label">Usuario</label>
+            <div className="pt-input-wrap">
+              <User size={15} className="pt-input-icon" />
               <input
                 id="login-usuario"
                 type="text"
                 autoComplete="username"
-                placeholder="Tu usuario"
+                placeholder="Usuario"
                 value={usuario}
                 onChange={(e) => setUsuario(e.target.value)}
-                className="ventas-input"
+                className="pt-input"
                 required
               />
             </div>
           </div>
 
-          <div className="ventas-input-group">
-            <label htmlFor="login-contrasena" className="ventas-label">
-              Contraseña
-            </label>
-            <div className="ventas-input-wrap">
-              <Lock size={16} className="ventas-input-icon" />
+          <div className="pt-input-group">
+            <label htmlFor="login-contrasena" className="pt-label">Contraseña</label>
+            <div className="pt-input-wrap">
+              <Lock size={15} className="pt-input-icon" />
               <input
                 id="login-contrasena"
                 type={showPass ? 'text' : 'password'}
                 autoComplete="current-password"
-                placeholder="Tu contraseña"
+                placeholder="Contraseña"
                 value={contrasena}
                 onChange={(e) => setContrasena(e.target.value)}
-                className="ventas-input"
-                style={{ paddingRight: '2.75rem' }}
+                className="pt-input"
+                style={{ paddingRight: '2.5rem' }}
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="ventas-input-toggle"
-                aria-label={showPass ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                className="pt-input-toggle"
+                aria-label="Mostrar/ocultar contraseña"
               >
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
               </button>
             </div>
           </div>
 
           {error && (
-            <div className="ventas-error" role="alert">
-              <AlertCircle size={15} />
+            <div className="pt-error" role="alert">
+              <AlertCircle size={14} />
               <span>{error}</span>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="ventas-login-btn"
-          >
-            {loading ? (
-              <span className="ventas-spinner" />
-            ) : (
-              'Ingresar al Sistema'
-            )}
+          <button type="submit" disabled={loading} className="pt-login-btn">
+            {loading ? <span className="pt-spinner" /> : 'Ingresar'}
           </button>
         </form>
 
-        <p className="ventas-login-footer">
-          Solo para uso personal &middot; PrintTrack &copy; {new Date().getFullYear()}
-        </p>
+        <p className="pt-login-footer">Acceso privado · Solo uso personal</p>
       </div>
     </div>
   );

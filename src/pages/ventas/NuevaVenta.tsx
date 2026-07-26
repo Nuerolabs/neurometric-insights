@@ -1,30 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, PlusCircle, ChevronDown } from 'lucide-react';
+import { CheckCircle2, PlusCircle, ChevronDown, User as UserIcon } from 'lucide-react';
 import { VentasLayout } from '@/components/ventas/VentasLayout';
-import {
-  useVentas,
-  TipoVenta,
-  PRECIOS_SUGERIDOS,
-  ETIQUETAS_TIPO,
-  COLORES_TIPO,
-} from '@/context/VentasContext';
+import { useVentas, TipoVenta, PRECIOS_SUGERIDOS, ETIQUETAS_TIPO, EstadoPago } from '@/context/VentasContext';
 
 const TIPOS_LISTA: TipoVenta[] = [
-  'impresion_bn',
-  'impresion_color',
-  'copia',
-  'copia_cantidad',
-  'escaneado',
-  'encuadernado',
-  'otro',
+  'impresion_bn', 'impresion_color', 'copia', 'copia_cantidad',
+  'escaneado', 'encuadernado', 'otro',
 ];
 
-const NOTAS_TIPO: Partial<Record<TipoVenta, string>> = {
+const HINTS: Partial<Record<TipoVenta, string>> = {
   impresion_bn: 'Precio estándar $700 por hoja',
   impresion_color: 'Precio estándar $1.300 por hoja',
   copia: 'Precio estándar $400 por copia',
-  copia_cantidad: 'Por cantidad — mín. $400. Ajusta el precio según el volumen.',
+  copia_cantidad: 'Por cantidad — chips rápidos abajo o escribe el precio',
 };
 
 function formatCOP(value: number) {
@@ -39,9 +28,11 @@ export default function NuevaVenta() {
   const [cantidad, setCantidad] = useState(1);
   const [precioUnitario, setPrecioUnitario] = useState(PRECIOS_SUGERIDOS['impresion_bn']);
   const [notas, setNotas] = useState('');
+  const [cliente, setCliente] = useState('');
+  const [estadoPago, setEstadoPago] = useState<EstadoPago>('pagado');
   const [success, setSuccess] = useState(false);
+  const [lastTotal, setLastTotal] = useState(0);
 
-  // Auto-set suggested price when type changes
   useEffect(() => {
     setPrecioUnitario(PRECIOS_SUGERIDOS[tipo]);
   }, [tipo]);
@@ -51,45 +42,38 @@ export default function NuevaVenta() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (cantidad <= 0 || precioUnitario < 0) return;
-    agregarVenta({ tipo, cantidad, precioUnitario, notas });
+    agregarVenta({ tipo, cantidad, precioUnitario, notas, cliente, estadoPago });
+    setLastTotal(total);
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
-      // Reset form
-      setTipo('impresion_bn');
-      setCantidad(1);
+      setCliente('');
       setNotas('');
-    }, 1800);
-  };
-
-  const handleNuevaOtra = () => {
-    setSuccess(false);
-    setTipo('impresion_bn');
-    setCantidad(1);
-    setNotas('');
+      setCantidad(1);
+      setEstadoPago('pagado');
+    }, 2000);
   };
 
   if (success) {
     return (
       <VentasLayout>
-        <div className="ventas-page">
-          <div className="ventas-success-card">
-            <div className="ventas-success-icon">
-              <CheckCircle size={56} />
-            </div>
-            <h2 className="ventas-success-title">¡Venta Registrada!</h2>
-            <p className="ventas-success-amount">{formatCOP(total)}</p>
-            <p className="ventas-success-sub">
-              {cantidad} × {ETIQUETAS_TIPO[tipo]} &rarr; {formatCOP(precioUnitario)} c/u
+        <div className="pt-page">
+          <div className="pt-success-card">
+            <CheckCircle2 size={52} className="pt-success-icon" />
+            <h2 className="pt-success-title">
+              {estadoPago === 'pagado' ? '¡Venta Registrada!' : '¡Registrado como Pendiente!'}
+            </h2>
+            <p className="pt-success-amount">{formatCOP(lastTotal)}</p>
+            <p className="pt-success-sub">
+              {cliente && <><strong>{cliente}</strong> · </>}
+              {cantidad} × {ETIQUETAS_TIPO[tipo]}
+              {estadoPago === 'pendiente' && <span className="pt-success-pending"> · Por cobrar</span>}
             </p>
-            <div className="ventas-success-actions">
-              <button onClick={handleNuevaOtra} className="ventas-cta-btn">
-                <PlusCircle size={16} /> Registrar otra
+            <div className="pt-success-actions">
+              <button onClick={() => setSuccess(false)} className="pt-cta-btn">
+                <PlusCircle size={15} /> Registrar otra
               </button>
-              <button
-                onClick={() => navigate('/ventas')}
-                className="ventas-cta-btn ventas-cta-btn--ghost"
-              >
+              <button onClick={() => navigate('/ventas')} className="pt-cta-btn pt-cta-btn--outline">
                 Ver Dashboard
               </button>
             </div>
@@ -101,147 +85,177 @@ export default function NuevaVenta() {
 
   return (
     <VentasLayout>
-      <div className="ventas-page">
-        <div className="ventas-page-header">
+      <div className="pt-page">
+        <div className="pt-page-header">
           <div>
-            <h1 className="ventas-page-title">Nueva Venta</h1>
-            <p className="ventas-page-desc">Registra un ingreso por servicio de impresora</p>
+            <h1 className="pt-page-title">Registrar Venta</h1>
+            <p className="pt-page-desc">Ingresa los datos del servicio prestado</p>
           </div>
         </div>
 
-        <div className="ventas-form-grid">
+        <div className="pt-form-grid">
           {/* Form */}
-          <form onSubmit={handleSubmit} className="ventas-form-card">
-            {/* Tipo de servicio */}
-            <div className="ventas-form-group">
-              <label htmlFor="venta-tipo" className="ventas-label">
-                Tipo de Servicio
-              </label>
-              <div className="ventas-select-wrap">
+          <form onSubmit={handleSubmit} className="pt-form-card">
+
+            {/* Cliente */}
+            <div className="pt-form-group">
+              <label htmlFor="venta-cliente" className="pt-label">Nombre del cliente (opcional)</label>
+              <div className="pt-input-wrap">
+                <UserIcon size={15} className="pt-input-icon" />
+                <input
+                  id="venta-cliente"
+                  type="text"
+                  placeholder="Ej: María López"
+                  value={cliente}
+                  onChange={(e) => setCliente(e.target.value)}
+                  className="pt-input"
+                />
+              </div>
+            </div>
+
+            {/* Tipo */}
+            <div className="pt-form-group">
+              <label htmlFor="venta-tipo" className="pt-label">Tipo de servicio</label>
+              <div className="pt-select-wrap">
                 <select
                   id="venta-tipo"
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value as TipoVenta)}
-                  className="ventas-select"
+                  className="pt-select"
                 >
                   {TIPOS_LISTA.map((t) => (
-                    <option key={t} value={t}>
-                      {ETIQUETAS_TIPO[t]}
-                    </option>
+                    <option key={t} value={t}>{ETIQUETAS_TIPO[t]}</option>
                   ))}
                 </select>
-                <ChevronDown size={16} className="ventas-select-icon" />
+                <ChevronDown size={15} className="pt-select-icon" />
               </div>
-              {NOTAS_TIPO[tipo] && (
-                <p className="ventas-hint">{NOTAS_TIPO[tipo]}</p>
-              )}
+              {HINTS[tipo] && <p className="pt-hint">{HINTS[tipo]}</p>}
             </div>
 
-            {/* Cantidad */}
-            <div className="ventas-form-group">
-              <label htmlFor="venta-cantidad" className="ventas-label">
-                Cantidad
-              </label>
-              <input
-                id="venta-cantidad"
-                type="number"
-                min={1}
-                value={cantidad}
-                onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
-                className="ventas-input ventas-input--standalone"
-              />
-            </div>
-
-            {/* Precio unitario */}
-            <div className="ventas-form-group">
-              <label htmlFor="venta-precio" className="ventas-label">
-                Precio Unitario (COP)
-              </label>
-              <div className="ventas-price-input-wrap">
-                <span className="ventas-price-prefix">$</span>
+            {/* Cantidad + precio row */}
+            <div className="pt-form-row">
+              <div className="pt-form-group">
+                <label htmlFor="venta-cantidad" className="pt-label">Cantidad</label>
                 <input
-                  id="venta-precio"
+                  id="venta-cantidad"
                   type="number"
-                  min={0}
-                  step={50}
-                  value={precioUnitario}
-                  onChange={(e) => setPrecioUnitario(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="ventas-input ventas-input--price"
+                  min={1}
+                  value={cantidad}
+                  onChange={(e) => setCantidad(Math.max(1, parseInt(e.target.value) || 1))}
+                  className="pt-input pt-input--bare"
                 />
               </div>
-              {tipo === 'copia_cantidad' && (
-                <div className="ventas-price-chips">
-                  {[400, 500, 600].map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      onClick={() => setPrecioUnitario(p)}
-                      className={`ventas-chip ${precioUnitario === p ? 'ventas-chip--active' : ''}`}
-                    >
-                      ${p}
-                    </button>
-                  ))}
+              <div className="pt-form-group">
+                <label htmlFor="venta-precio" className="pt-label">Precio unitario</label>
+                <div className="pt-price-wrap">
+                  <span className="pt-price-prefix">$</span>
+                  <input
+                    id="venta-precio"
+                    type="number"
+                    min={0}
+                    step={50}
+                    value={precioUnitario}
+                    onChange={(e) => setPrecioUnitario(Math.max(0, parseInt(e.target.value) || 0))}
+                    className="pt-input pt-input--price"
+                  />
                 </div>
-              )}
+                {tipo === 'copia_cantidad' && (
+                  <div className="pt-chips-row">
+                    {[400, 500, 600].map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setPrecioUnitario(p)}
+                        className={`pt-chip ${precioUnitario === p ? 'pt-chip--active' : ''}`}
+                      >
+                        ${p}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Estado de pago */}
+            <div className="pt-form-group">
+              <label className="pt-label">Estado del pago</label>
+              <div className="pt-pago-options">
+                <label className={`pt-pago-opt ${estadoPago === 'pagado' ? 'pt-pago-opt--active' : ''}`}>
+                  <input
+                    type="radio"
+                    name="estadoPago"
+                    value="pagado"
+                    checked={estadoPago === 'pagado'}
+                    onChange={() => setEstadoPago('pagado')}
+                  />
+                  <CheckCircle2 size={16} />
+                  <span>Pagado</span>
+                </label>
+                <label className={`pt-pago-opt pt-pago-opt--pending ${estadoPago === 'pendiente' ? 'pt-pago-opt--active-pending' : ''}`}>
+                  <input
+                    type="radio"
+                    name="estadoPago"
+                    value="pendiente"
+                    checked={estadoPago === 'pendiente'}
+                    onChange={() => setEstadoPago('pendiente')}
+                  />
+                  <span>⏳</span>
+                  <span>Queda pendiente (fía)</span>
+                </label>
+              </div>
             </div>
 
             {/* Notas */}
-            <div className="ventas-form-group">
-              <label htmlFor="venta-notas" className="ventas-label">
-                Notas (opcional)
-              </label>
+            <div className="pt-form-group">
+              <label htmlFor="venta-notas" className="pt-label">Notas (opcional)</label>
               <textarea
                 id="venta-notas"
                 rows={2}
-                placeholder="Ej: cliente habitual, tesis, etc."
+                placeholder="Ej: tesis doble cara, trae USB..."
                 value={notas}
                 onChange={(e) => setNotas(e.target.value)}
-                className="ventas-textarea"
+                className="pt-textarea"
               />
             </div>
 
-            <button type="submit" className="ventas-submit-btn">
-              <PlusCircle size={18} />
-              Registrar Venta
+            <button type="submit" className="pt-submit-btn">
+              <PlusCircle size={17} /> Registrar Venta
             </button>
           </form>
 
           {/* Live preview */}
-          <div className="ventas-preview-card">
-            <h3 className="ventas-preview-title">Resumen</h3>
-
-            <div
-              className="ventas-preview-badge"
-              style={{
-                background: `${COLORES_TIPO[tipo]}22`,
-                color: COLORES_TIPO[tipo],
-                borderColor: `${COLORES_TIPO[tipo]}44`,
-              }}
-            >
-              {ETIQUETAS_TIPO[tipo]}
-            </div>
-
-            <div className="ventas-preview-rows">
-              <div className="ventas-preview-row">
+          <div className="pt-preview-card">
+            <p className="pt-preview-label">Vista previa</p>
+            <div className="pt-preview-rows">
+              <div className="pt-preview-row">
+                <span>Cliente</span>
+                <strong>{cliente || '—'}</strong>
+              </div>
+              <div className="pt-preview-row">
+                <span>Servicio</span>
+                <strong>{ETIQUETAS_TIPO[tipo]}</strong>
+              </div>
+              <div className="pt-preview-row">
                 <span>Cantidad</span>
                 <strong>{cantidad}</strong>
               </div>
-              <div className="ventas-preview-row">
-                <span>Precio unitario</span>
+              <div className="pt-preview-row">
+                <span>Precio c/u</span>
                 <strong>{formatCOP(precioUnitario)}</strong>
               </div>
-              <div className="ventas-preview-divider" />
-              <div className="ventas-preview-row ventas-preview-row--total">
+              <div className="pt-preview-divider" />
+              <div className="pt-preview-row pt-preview-total">
                 <span>TOTAL</span>
                 <strong>{formatCOP(total)}</strong>
               </div>
+              <div className="pt-preview-row">
+                <span>Estado</span>
+                <strong style={{ color: estadoPago === 'pagado' ? '#16a34a' : '#dc2626' }}>
+                  {estadoPago === 'pagado' ? '✓ Pagado' : '⏳ Pendiente'}
+                </strong>
+              </div>
             </div>
-
-            {notas && (
-              <p className="ventas-preview-notes">
-                <em>📝 {notas}</em>
-              </p>
-            )}
+            {notas && <p className="pt-preview-notes">📝 {notas}</p>}
           </div>
         </div>
       </div>

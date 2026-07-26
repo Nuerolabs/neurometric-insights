@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Printer, LayoutDashboard, PlusCircle, ClipboardList, LogOut } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, ClipboardList, LogOut, Clock } from 'lucide-react';
 import { useVentas } from '@/context/VentasContext';
 
 interface VentasLayoutProps {
@@ -9,11 +9,12 @@ interface VentasLayoutProps {
 const navItems = [
   { to: '/ventas', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/ventas/nueva', label: 'Nueva Venta', icon: PlusCircle, end: false },
+  { to: '/ventas/pendientes', label: 'Pendientes', icon: Clock, end: false },
   { to: '/ventas/historial', label: 'Historial', icon: ClipboardList, end: false },
 ];
 
 export function VentasLayout({ children }: VentasLayoutProps) {
-  const { logout } = useVentas();
+  const { logout, ventasPendientes } = useVentas();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,43 +23,41 @@ export function VentasLayout({ children }: VentasLayoutProps) {
   };
 
   return (
-    <div className="ventas-shell">
+    <div className="pt-shell">
       {/* Sidebar */}
-      <aside className="ventas-sidebar">
-        <div className="ventas-brand">
-          <div className="ventas-brand-icon">
-            <Printer size={22} />
-          </div>
-          <div>
-            <p className="ventas-brand-title">PrintTrack</p>
-            <p className="ventas-brand-sub">Sistema de Ventas</p>
-          </div>
+      <aside className="pt-sidebar">
+        {/* Logo */}
+        <div className="pt-brand">
+          <img src="/logo.png" alt="Logo empresa" className="pt-brand-logo" />
         </div>
 
-        <nav className="ventas-nav">
+        <nav className="pt-nav">
           {navItems.map(({ to, label, icon: Icon, end }) => (
             <NavLink
               key={to}
               to={to}
               end={end}
               className={({ isActive }) =>
-                `ventas-nav-item ${isActive ? 'ventas-nav-item--active' : ''}`
+                `pt-nav-item ${isActive ? 'pt-nav-item--active' : ''}`
               }
             >
-              <Icon size={18} />
+              <Icon size={17} />
               <span>{label}</span>
+              {label === 'Pendientes' && ventasPendientes.length > 0 && (
+                <span className="pt-badge-count">{ventasPendientes.length}</span>
+              )}
             </NavLink>
           ))}
         </nav>
 
-        <button onClick={handleLogout} className="ventas-logout">
-          <LogOut size={16} />
-          <span>Cerrar sesión</span>
+        <button onClick={handleLogout} className="pt-logout">
+          <LogOut size={15} />
+          <span>Salir</span>
         </button>
       </aside>
 
       {/* Main content */}
-      <main className="ventas-main">{children}</main>
+      <main className="pt-main">{children}</main>
     </div>
   );
 }

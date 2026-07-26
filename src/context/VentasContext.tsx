@@ -9,6 +9,8 @@ export type TipoVenta =
   | 'encuadernado'
   | 'otro';
 
+export type EstadoPago = 'pagado' | 'pendiente';
+
 export interface Venta {
   id: string;
   tipo: TipoVenta;
@@ -17,6 +19,8 @@ export interface Venta {
   total: number;
   notas: string;
   fecha: string; // ISO string
+  estadoPago: EstadoPago;
+  cliente: string; // nombre del cliente (opcional)
 }
 
 export const PRECIOS_SUGERIDOS: Record<TipoVenta, number> = {
@@ -40,13 +44,13 @@ export const ETIQUETAS_TIPO: Record<TipoVenta, string> = {
 };
 
 export const COLORES_TIPO: Record<TipoVenta, string> = {
-  impresion_bn: '#6b7280',
-  impresion_color: '#f59e0b',
-  copia: '#3b82f6',
-  copia_cantidad: '#8b5cf6',
-  escaneado: '#10b981',
-  encuadernado: '#ef4444',
-  otro: '#ec4899',
+  impresion_bn: '#475569',
+  impresion_color: '#d97706',
+  copia: '#2563eb',
+  copia_cantidad: '#7c3aed',
+  escaneado: '#059669',
+  encuadernado: '#dc2626',
+  otro: '#db2777',
 };
 
 // Credenciales de acceso
@@ -60,6 +64,15 @@ const STORAGE_KEYS = {
   auth: 'ventas_impresora_auth',
 };
 
+/** Migra ventas antiguas que no tienen estadoPago ni cliente */
+function migrarVentas(raw: unknown[]): Venta[] {
+  return raw.map((v: any) => ({
+    estadoPago: 'pagado' as EstadoPago,
+    cliente: '',
+    ...v,
+  }));
+}
+
 interface VentasContextType {
   // Auth
   isAuthenticated: boolean;
@@ -69,12 +82,15 @@ interface VentasContextType {
   ventas: Venta[];
   agregarVenta: (venta: Omit<Venta, 'id' | 'fecha' | 'total'>) => void;
   eliminarVenta: (id: string) => void;
+  marcarPagado: (id: string) => void;
   // Computed
   totalHoy: number;
   totalSemana: number;
   totalMes: number;
+  totalPendiente: number;
   ventasHoy: Venta[];
   ventasPorTipo: Record<string, number>;
+  ventasPendientes: Venta[];
 }
 
 const VentasContext = createContext<VentasContextType | null>(null);
@@ -87,7 +103,9 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
   const [ventas, setVentas] = useState<Venta[]>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.ventas);
-      return stored ? JSON.parse(stored) : [];
+      if (!stored) return [];
+      const parsed = JSON.parse(stored);
+      return migrarVentas(Array.isArray(parsed) ? parsed : []);
     } catch {
       return [];
     }
@@ -129,6 +147,12 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
     setVentas((prev) => prev.filter((v) => v.id !== id));
   }, []);
 
+  const marcarPagado = useCallback((id: string) => {
+    setVentas((prev) =>
+      prev.map((v) => (v.id === id ? { ...v, estadoPago: 'pagado' } : v))
+    );
+  }, []);
+
   // ---- Computed helpers ----
   const now = new Date();
 
@@ -153,14 +177,25 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
   };
 
   const ventasHoy = ventas.filter((v) => esHoy(v.fecha));
-  const totalHoy = ventasHoy.reduce((s, v) => s + v.total, 0);
-  const totalSemana = ventas.filter((v) => esSemana(v.fecha)).reduce((s, v) => s + v.total, 0);
-  const totalMes = ventas.filter((v) => esMes(v.fecha)).reduce((s, v) => s + v.total, 0);
+  const totalHoy = ventasHoy
+    .filter((v) => v.estadoPago === 'pagado')
+    .reduce((s, v) => s + v.total, 0);
+  const totalSemana = ventas
+    .filter((v) => esSemana(v.fecha) && v.estadoPago === 'pagado')
+    .reduce((s, v) => s + v.total, 0);
+  const totalMes = ventas
+    .filter((v) => esMes(v.fecha) && v.estadoPago === 'pagado')
+    .reduce((s, v) => s + v.total, 0);
 
-  const ventasPorTipo = ventas.reduce<Record<string, number>>((acc, v) => {
-    acc[v.tipo] = (acc[v.tipo] || 0) + v.total;
-    return acc;
-  }, {});
+  const ventasPendientes = ventas.filter((v) => v.estadoPago === 'pendiente');
+  const totalPendiente = ventasPendientes.reduce((s, v) => s + v.total, 0);
+
+  const ventasPorTipo = ventas
+    .filter((v) => v.estadoPago === 'pagado')
+    .reduce<Record<string, number>>((acc, v) => {
+      acc[v.tipo] = (acc[v.tipo] || 0) + v.total;
+      return acc;
+    }, {});
 
   return (
     <VentasContext.Provider
@@ -171,11 +206,14 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
         ventas,
         agregarVenta,
         eliminarVenta,
+        marcarPagado,
         totalHoy,
         totalSemana,
         totalMes,
+        totalPendiente,
         ventasHoy,
         ventasPorTipo,
+        ventasPendientes,
       }}
     >
       {children}

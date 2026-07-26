@@ -151,6 +151,31 @@ export default function DashboardVentas() {
           </div>
         </div>
 
+        {/* Distribución Semanal */}
+        <div className="pt-card">
+          <h2 className="pt-card-title" style={{ marginBottom: '1.25rem' }}>Distribución de Ingresos (Semana Actual)</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <div className="pt-stat-card" style={{ borderLeftColor: '#8b5cf6', padding: '1rem' }}>
+              <div className="pt-stat-body">
+                <p className="pt-stat-label">Diezmo (10%)</p>
+                <p className="pt-stat-value" style={{ fontSize: '1.3rem' }}>{formatCOP(totalSemana * 0.10)}</p>
+              </div>
+            </div>
+            <div className="pt-stat-card" style={{ borderLeftColor: '#0ea5e9', padding: '1rem' }}>
+              <div className="pt-stat-body">
+                <p className="pt-stat-label">Empresa (15%)</p>
+                <p className="pt-stat-value" style={{ fontSize: '1.3rem' }}>{formatCOP(totalSemana * 0.15)}</p>
+              </div>
+            </div>
+            <div className="pt-stat-card" style={{ borderLeftColor: '#f97316', padding: '1rem' }}>
+              <div className="pt-stat-body">
+                <p className="pt-stat-label">Gastos Familiares (75%)</p>
+                <p className="pt-stat-value" style={{ fontSize: '1.3rem' }}>{formatCOP(totalSemana * 0.75)}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Recent */}
         <div className="pt-card">
           <div className="pt-card-header">

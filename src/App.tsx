@@ -15,6 +15,7 @@ import DashboardVentas from "./pages/ventas/DashboardVentas";
 import NuevaVenta from "./pages/ventas/NuevaVenta";
 import HistorialVentas from "./pages/ventas/HistorialVentas";
 import PendientesVentas from "./pages/ventas/PendientesVentas";
+import GastosVentas from "./pages/ventas/GastosVentas";
 
 
 const queryClient = new QueryClient();
@@ -48,6 +49,14 @@ const App = () => (
                   element={
                     <ProtectedRoute>
                       <NuevaVenta />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/ventas/gastos"
+                  element={
+                    <ProtectedRoute>
+                      <GastosVentas />
                     </ProtectedRoute>
                   }
                 />

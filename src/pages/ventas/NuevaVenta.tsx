@@ -6,7 +6,7 @@ import { useVentas, TipoVenta, PRECIOS_SUGERIDOS, ETIQUETAS_TIPO, EstadoPago } f
 
 const TIPOS_LISTA: TipoVenta[] = [
   'impresion_bn', 'impresion_color', 'copia', 'copia_cantidad',
-  'escaneado', 'encuadernado', 'otro',
+  'escaneado', 'encuadernado', 'trabajo_especial', 'otro',
 ];
 
 const HINTS: Partial<Record<TipoVenta, string>> = {
@@ -14,6 +14,7 @@ const HINTS: Partial<Record<TipoVenta, string>> = {
   impresion_color: 'Precio estándar $1.300 por hoja',
   copia: 'Precio estándar $400 por copia',
   copia_cantidad: 'Por cantidad — chips rápidos abajo o escribe el precio',
+  trabajo_especial: 'Escribe manualmente el valor cobrado (ej. $18.000)',
 };
 
 function formatCOP(value: number) {

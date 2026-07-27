@@ -7,6 +7,7 @@ export type TipoVenta =
   | 'copia_cantidad'
   | 'escaneado'
   | 'encuadernado'
+  | 'trabajo_especial'
   | 'otro';
 
 export type EstadoPago = 'pagado' | 'pendiente';
@@ -23,6 +24,15 @@ export interface Venta {
   cliente: string; // nombre del cliente (opcional)
 }
 
+export interface Gasto {
+  id: string;
+  descripcion: string;
+  monto: number;
+  fecha: string;
+  categoria: string;
+  tipoFondo: 'empresa' | 'familia';
+}
+
 export const PRECIOS_SUGERIDOS: Record<TipoVenta, number> = {
   impresion_bn: 700,
   impresion_color: 1300,
@@ -30,6 +40,7 @@ export const PRECIOS_SUGERIDOS: Record<TipoVenta, number> = {
   copia_cantidad: 400,
   escaneado: 500,
   encuadernado: 2000,
+  trabajo_especial: 0,
   otro: 0,
 };
 
@@ -40,6 +51,7 @@ export const ETIQUETAS_TIPO: Record<TipoVenta, string> = {
   copia_cantidad: 'Copia por Cantidad',
   escaneado: 'Escaneado',
   encuadernado: 'Encuadernado',
+  trabajo_especial: 'Trámites y Trabajos',
   otro: 'Otro',
 };
 
@@ -50,6 +62,7 @@ export const COLORES_TIPO: Record<TipoVenta, string> = {
   copia_cantidad: '#7c3aed',
   escaneado: '#059669',
   encuadernado: '#dc2626',
+  trabajo_especial: '#10b981',
   otro: '#db2777',
 };
 
@@ -61,6 +74,7 @@ const CREDENTIALS = {
 
 const STORAGE_KEYS = {
   ventas: 'ventas_impresora_data',
+  gastos: 'gastos_impresora_data',
   auth: 'ventas_impresora_auth',
 };
 
@@ -91,6 +105,14 @@ interface VentasContextType {
   ventasHoy: Venta[];
   ventasPorTipo: Record<string, number>;
   ventasPendientes: Venta[];
+  // Gastos
+  gastos: Gasto[];
+  agregarGasto: (gasto: Omit<Gasto, 'id' | 'fecha'>) => void;
+  eliminarGasto: (id: string) => void;
+  totalGastosMes: number;
+  // Config
+  porcentajeEmpresa: number;
+  setPorcentajeEmpresa: (val: number) => void;
 }
 
 const VentasContext = createContext<VentasContextType | null>(null);
@@ -111,10 +133,40 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
     }
   });
 
-  // Persist ventas to localStorage
+  const [gastos, setGastos] = useState<Gasto[]>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.gastos);
+      if (!stored) return [];
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) {
+        return parsed.map((g: any) => ({
+          tipoFondo: 'empresa' as const, // valor por defecto para los gastos antiguos
+          ...g,
+        }));
+      }
+      return [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [porcentajeEmpresa, setPorcentajeEmpresa] = useState<number>(() => {
+    const stored = localStorage.getItem('ventas_impresora_pct_empresa');
+    return stored ? Number(stored) : 15;
+  });
+
+  // Persist ventas and gastos to localStorage
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.ventas, JSON.stringify(ventas));
   }, [ventas]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEYS.gastos, JSON.stringify(gastos));
+  }, [gastos]);
+
+  useEffect(() => {
+    localStorage.setItem('ventas_impresora_pct_empresa', String(porcentajeEmpresa));
+  }, [porcentajeEmpresa]);
 
   const login = useCallback((usuario: string, contrasena: string): boolean => {
     if (usuario === CREDENTIALS.usuario && contrasena === CREDENTIALS.contrasena) {
@@ -151,6 +203,22 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
     setVentas((prev) =>
       prev.map((v) => (v.id === id ? { ...v, estadoPago: 'pagado' } : v))
     );
+  }, []);
+
+  const agregarGasto = useCallback(
+    (gasto: Omit<Gasto, 'id' | 'fecha'>) => {
+      const nuevo: Gasto = {
+        ...gasto,
+        id: `gasto-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        fecha: new Date().toISOString(),
+      };
+      setGastos((prev) => [nuevo, ...prev]);
+    },
+    []
+  );
+
+  const eliminarGasto = useCallback((id: string) => {
+    setGastos((prev) => prev.filter((g) => g.id !== id));
   }, []);
 
   // ---- Computed helpers ----
@@ -197,6 +265,10 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
       return acc;
     }, {});
 
+  const totalGastosMes = gastos
+    .filter((g) => esMes(g.fecha))
+    .reduce((s, g) => s + g.monto, 0);
+
   return (
     <VentasContext.Provider
       value={{
@@ -214,6 +286,12 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
         ventasHoy,
         ventasPorTipo,
         ventasPendientes,
+        gastos,
+        agregarGasto,
+        eliminarGasto,
+        totalGastosMes,
+        porcentajeEmpresa,
+        setPorcentajeEmpresa,
       }}
     >
       {children}

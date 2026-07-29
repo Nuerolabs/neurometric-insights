@@ -211,7 +211,6 @@ export default function DashboardVentas() {
             </div>
           )}
         </div>
-      </div>
-    </VentasLayout>
+      </VentasLayout>
   );
 }

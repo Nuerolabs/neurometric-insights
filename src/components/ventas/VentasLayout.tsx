@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, PlusCircle, ClipboardList, LogOut, Clock, Receipt } from 'lucide-react';
+import { LayoutDashboard, PlusCircle, ClipboardList, LogOut, Clock, Receipt, Briefcase } from 'lucide-react';
 import { useVentas } from '@/context/VentasContext';
 
 interface VentasLayoutProps {
@@ -11,6 +11,7 @@ const navItems = [
   { to: '/ventas/nueva', label: 'Nueva Venta', icon: PlusCircle, end: false },
   { to: '/ventas/gastos', label: 'Gastos', icon: Receipt, end: false },
   { to: '/ventas/pendientes', label: 'Pendientes', icon: Clock, end: false },
+  { to: '/ventas/business', label: 'Business', icon: Briefcase, end: false },
   { to: '/ventas/historial', label: 'Historial', icon: ClipboardList, end: false },
 ];
 

@@ -113,6 +113,12 @@ interface VentasContextType {
   // Config
   porcentajeEmpresa: number;
   setPorcentajeEmpresa: (val: number) => void;
+  porcentajeInsumos: number;
+  setPorcentajeInsumos: (val: number) => void;
+  porcentajeAdmin: number;
+  setPorcentajeAdmin: (val: number) => void;
+  diezmoHabilitado: boolean;
+  setDiezmoHabilitado: (val: boolean) => void;
 }
 
 const VentasContext = createContext<VentasContextType | null>(null);
@@ -152,7 +158,22 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
 
   const [porcentajeEmpresa, setPorcentajeEmpresa] = useState<number>(() => {
     const stored = localStorage.getItem('ventas_impresora_pct_empresa');
-    return stored ? Number(stored) : 15;
+    return stored ? Number(stored) : 40;
+  });
+
+  const [porcentajeInsumos, setPorcentajeInsumos] = useState<number>(() => {
+    const stored = localStorage.getItem('ventas_impresora_pct_insumos');
+    return stored ? Number(stored) : 20;
+  });
+
+  const [porcentajeAdmin, setPorcentajeAdmin] = useState<number>(() => {
+    const stored = localStorage.getItem('ventas_impresora_pct_admin');
+    return stored ? Number(stored) : 40;
+  });
+
+  const [diezmoHabilitado, setDiezmoHabilitado] = useState<boolean>(() => {
+    const stored = localStorage.getItem('ventas_impresora_diezmo');
+    return stored ? stored === 'true' : true;
   });
 
   // Persist ventas and gastos to localStorage
@@ -166,7 +187,10 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     localStorage.setItem('ventas_impresora_pct_empresa', String(porcentajeEmpresa));
-  }, [porcentajeEmpresa]);
+    localStorage.setItem('ventas_impresora_pct_insumos', String(porcentajeInsumos));
+    localStorage.setItem('ventas_impresora_pct_admin', String(porcentajeAdmin));
+    localStorage.setItem('ventas_impresora_diezmo', String(diezmoHabilitado));
+  }, [porcentajeEmpresa, porcentajeInsumos, porcentajeAdmin, diezmoHabilitado]);
 
   const login = useCallback((usuario: string, contrasena: string): boolean => {
     if (usuario === CREDENTIALS.usuario && contrasena === CREDENTIALS.contrasena) {
@@ -292,6 +316,12 @@ export function VentasProvider({ children }: { children: React.ReactNode }) {
         totalGastosMes,
         porcentajeEmpresa,
         setPorcentajeEmpresa,
+        porcentajeInsumos,
+        setPorcentajeInsumos,
+        porcentajeAdmin,
+        setPorcentajeAdmin,
+        diezmoHabilitado,
+        setDiezmoHabilitado,
       }}
     >
       {children}

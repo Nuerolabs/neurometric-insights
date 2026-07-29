@@ -1,6 +1,11 @@
-# Directorio de CerebroQuant Intelligence
+# NeuroLabs - robots.txt
 User-agent: *
 Allow: /
 
-# Mapa del sitio para Google
+# Bloquear rutas privadas del sistema de ventas
+Disallow: /ventas/
+Disallow: /ventas/login
+Disallow: /admin/
+
+# Sitemap
 Sitemap: https://neurolabs.com.co/sitemap.xml

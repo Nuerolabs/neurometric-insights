@@ -65,7 +65,7 @@ function useLast7Days(ventas: ReturnType<typeof useVentas>['ventas']) {
 }
 
 export default function DashboardVentas() {
-  const { ventas, gastos, totalHoy, totalSemana, totalMes, totalPendiente, ventasHoy, ventasPorTipo, ventasPendientes, totalGastosMes, porcentajeEmpresa, setPorcentajeEmpresa } = useVentas();
+  const { ventas, totalHoy, totalSemana, totalMes, totalPendiente, ventasHoy, ventasPorTipo, ventasPendientes, totalGastosMes } = useVentas();
   const barData = useLast7Days(ventas);
 
   const pieData = Object.entries(ventasPorTipo).map(([tipo, total]) => ({
@@ -75,35 +75,6 @@ export default function DashboardVentas() {
   }));
 
   const recentSales = ventas.slice(0, 6);
-
-  // Lógica de Distribución Semanal
-  const now = new Date();
-  const esSemana = (fecha: string) => {
-    const d = new Date(fecha);
-    const diff = now.getTime() - d.getTime();
-    return diff <= 7 * 24 * 60 * 60 * 1000;
-  };
-  
-  const ventasSemanales = ventas.filter((v) => esSemana(v.fecha) && v.estadoPago === 'pagado');
-  
-  // Aislar completamente Trabajos Especiales y Otros para que no sumen a la Empresa
-  const totalSemanaEspeciales = ventasSemanales.filter(v => v.tipo === 'trabajo_especial' || v.tipo === 'otro').reduce((s, v) => s + v.total, 0);
-  const totalSemanaNormal = totalSemana - totalSemanaEspeciales;
-
-  const gastosSemanales = gastos.filter(g => esSemana(g.fecha));
-  const gastosEmpresaSemana = gastosSemanales.filter(g => g.tipoFondo === 'empresa').reduce((s, g) => s + g.monto, 0);
-  const gastosFamiliaSemana = gastosSemanales.filter(g => g.tipoFondo === 'familia').reduce((s, g) => s + g.monto, 0);
-
-  const pctEmp = porcentajeEmpresa / 100;
-  const pctFam = (100 - porcentajeEmpresa) / 100;
-
-  const diezmo = totalSemana * 0.10;
-  const empresa = totalSemanaNormal * pctEmp;
-  const gastosFamiliares = totalSemanaNormal * pctFam;
-  const gananciaTrabajos = totalSemanaEspeciales * 0.90;
-
-  const empresaNeto = empresa - gastosEmpresaSemana;
-  const familiaNeto = gastosFamiliares - gastosFamiliaSemana;
 
   return (
     <VentasLayout>
@@ -184,78 +155,6 @@ export default function DashboardVentas() {
           </div>
         </div>
 
-        {/* Distribución Semanal */}
-        <div className="pt-card">
-          <div className="flex items-center justify-between" style={{ marginBottom: '1.25rem' }}>
-            <h2 className="pt-card-title" style={{ margin: 0 }}>Distribución de Ingresos (Semana Actual)</h2>
-            <div className="flex items-center gap-2 text-sm text-slate-500 bg-slate-50 px-3 py-1.5 rounded-full border border-slate-200">
-              <Settings2 size={14} />
-              <label htmlFor="pct-empresa" className="font-medium">% Empresa:</label>
-              <input 
-                id="pct-empresa"
-                type="number" 
-                min="0"
-                max="100"
-                value={porcentajeEmpresa} 
-                onChange={e => setPorcentajeEmpresa(Number(e.target.value))} 
-                className="w-12 bg-transparent border-b border-slate-300 focus:outline-none focus:border-blue-500 text-center font-semibold text-slate-700"
-              />
-            </div>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-            <div className="pt-stat-card" style={{ borderLeftColor: '#8b5cf6', padding: '1rem' }}>
-              <div className="pt-stat-body">
-                <p className="pt-stat-label">Diezmo (10% global)</p>
-                <p className="pt-stat-value" style={{ fontSize: '1.3rem' }}>{formatCOP(diezmo)}</p>
-              </div>
-            </div>
-            <div className="pt-stat-card" style={{ borderLeftColor: '#0ea5e9', padding: '1rem' }}>
-              <div className="pt-stat-body">
-                <p className="pt-stat-label">Empresa ({porcentajeEmpresa}% ventas)</p>
-                <div className="mt-1 space-y-1">
-                  <div className="flex justify-between text-sm text-slate-500">
-                    <span>Bruto:</span>
-                    <span>{formatCOP(empresa)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-red-500">
-                    <span>Gastos:</span>
-                    <span>-{formatCOP(gastosEmpresaSemana)}</span>
-                  </div>
-                  <div className="flex justify-between pt-1 border-t border-slate-100 font-semibold text-slate-900">
-                    <span>Neto:</span>
-                    <span>{formatCOP(empresaNeto)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="pt-stat-card" style={{ borderLeftColor: '#f97316', padding: '1rem' }}>
-              <div className="pt-stat-body">
-                <p className="pt-stat-label">Gastos Familiares ({100 - porcentajeEmpresa}% ventas)</p>
-                <div className="mt-1 space-y-1">
-                  <div className="flex justify-between text-sm text-slate-500">
-                    <span>Bruto:</span>
-                    <span>{formatCOP(gastosFamiliares)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-red-500">
-                    <span>Gastos:</span>
-                    <span>-{formatCOP(gastosFamiliaSemana)}</span>
-                  </div>
-                  <div className="flex justify-between pt-1 border-t border-slate-100 font-semibold text-slate-900">
-                    <span>Neto:</span>
-                    <span>{formatCOP(familiaNeto)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {totalSemanaEspeciales > 0 && (
-              <div className="pt-stat-card" style={{ borderLeftColor: '#10b981', padding: '1rem' }}>
-                <div className="pt-stat-body">
-                  <p className="pt-stat-label">Ganancia Trabajos (Libre)</p>
-                  <p className="pt-stat-value" style={{ fontSize: '1.3rem' }}>{formatCOP(gananciaTrabajos)}</p>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
 
         {/* Recent */}

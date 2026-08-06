@@ -169,8 +169,8 @@ export default function PettyCash() {
                       <Input id="f_bene" value={fundingBeneficiary} onChange={e=>setFundingBeneficiary(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Nombre de quien transfiere" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="f_ref" className="text-right text-xs">No. Transacción</Label>
-                      <Input id="f_ref" value={fundingReference} onChange={e=>setFundingReference(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Ej: TR-89541" />
+                      <Label htmlFor="f_ref" className="text-right text-xs font-semibold leading-tight">Ref. / Concepto<br/><span className="text-[10px] text-slate-400 font-normal">(Especie/Efectivo)</span></Label>
+                      <Input id="f_ref" value={fundingReference} onChange={e=>setFundingReference(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Ej: TR-Bancolombia o '2 Computadores Asus'" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="f_amount" className="text-right text-xs">Monto ($)</Label>

@@ -18,6 +18,18 @@ import PendientesVentas from "./pages/ventas/PendientesVentas";
 import GastosVentas from "./pages/ventas/GastosVentas";
 import BusinessDashboard from "./pages/ventas/BusinessDashboard";
 
+// ── Módulo Contable (ERP) ──
+import AccountingLayout from "./components/accounting/AccountingLayout";
+import AccountingDashboard from "./pages/accounting/AccountingDashboard";
+import ChartOfAccounts from "./pages/accounting/ChartOfAccounts";
+import PettyCash from "./pages/accounting/PettyCash";
+import JournalEntries from "./pages/accounting/JournalEntries";
+import EquityDashboard from "./pages/accounting/EquityDashboard";
+import Reports from "./pages/accounting/Reports";
+import AccountsReceivable from "./pages/accounting/AccountsReceivable";
+import AccountsPayable from "./pages/accounting/AccountsPayable";
+import Payroll from "./pages/accounting/Payroll";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -84,6 +96,20 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                
+                {/* ── Contabilidad (ERP) ── */}
+                <Route path="/contabilidad" element={<AccountingLayout />}>
+                  <Route index element={<AccountingDashboard />} />
+                  <Route path="reportes" element={<Reports />} />
+                  <Route path="patrimonio" element={<EquityDashboard />} />
+                  <Route path="cuentas" element={<ChartOfAccounts />} />
+                  <Route path="asientos" element={<JournalEntries />} />
+                  <Route path="facturacion" element={<AccountsReceivable />} />
+                  <Route path="cxp" element={<AccountsPayable />} />
+                  <Route path="caja-menor" element={<PettyCash />} />
+                  <Route path="nomina" element={<Payroll />} />
+                </Route>
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

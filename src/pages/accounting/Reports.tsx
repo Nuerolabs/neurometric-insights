@@ -2,9 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PieChart as PieChartIcon, TrendingUp, TrendingDown, DollarSign, Loader2 } from "lucide-react";
 import { useEquityData } from "@/hooks/accounting/useEquity";
-import { useInvoices } from "@/hooks/accounting/useInvoices";
+import { useInvoices, useBills } from "@/hooks/accounting/useErp";
 import { usePettyCashVouchers } from "@/hooks/accounting/usePettyCash";
-import { useBills } from "@/hooks/accounting/useBills";
 
 export default function Reports() {
   const { data: equityData, isLoading: loadingEquity } = useEquityData();

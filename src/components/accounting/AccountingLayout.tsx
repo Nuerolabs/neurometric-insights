@@ -10,9 +10,13 @@ import {
     PieChart,
     Users,
     Receipt,
-    Banknote
+    Banknote,
+    LogOut
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/lib/supabase";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const sidebarNavItems = [
   {
@@ -74,6 +78,17 @@ const sidebarNavItems = [
 
 export default function AccountingLayout() {
   const groups = Array.from(new Set(sidebarNavItems.map(item => item.group)));
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast.success("Sesión cerrada");
+      navigate("/contabilidad/login");
+    } catch (error) {
+      toast.error("Error al cerrar sesión");
+    }
+  };
 
   return (
     <div className="flex h-screen w-full bg-[#f8fafc] dark:bg-[#020817] flex-col md:flex-row overflow-hidden font-sans">
@@ -125,13 +140,20 @@ export default function AccountingLayout() {
           ))}
         </div>
 
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0f172a]">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#0f172a] space-y-2">
+           <button 
+              onClick={handleLogout}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 text-xs font-medium bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800/50 rounded-md shadow-sm text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-colors"
+           >
+              <LogOut className="h-3.5 w-3.5" />
+              Cerrar Sesión
+           </button>
            <NavLink 
               to="/" 
               className="flex items-center justify-center gap-2 w-full px-4 py-2 text-xs font-medium bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
            >
               <ArrowLeft className="h-3.5 w-3.5" />
-              Volver al Panel Principal
+              Volver al Inicio
            </NavLink>
         </div>
       </aside>

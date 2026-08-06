@@ -29,6 +29,8 @@ import Reports from "./pages/accounting/Reports";
 import AccountsReceivable from "./pages/accounting/AccountsReceivable";
 import AccountsPayable from "./pages/accounting/AccountsPayable";
 import Payroll from "./pages/accounting/Payroll";
+import AccountingLogin from "./pages/accounting/AccountingLogin";
+import { ProtectedAccountingRoute } from "./components/accounting/ProtectedAccountingRoute";
 
 const queryClient = new QueryClient();
 
@@ -98,7 +100,12 @@ const App = () => (
                 />
                 
                 {/* ── Contabilidad (ERP) ── */}
-                <Route path="/contabilidad" element={<AccountingLayout />}>
+                <Route path="/contabilidad/login" element={<AccountingLogin />} />
+                <Route path="/contabilidad" element={
+                    <ProtectedAccountingRoute>
+                        <AccountingLayout />
+                    </ProtectedAccountingRoute>
+                }>
                   <Route index element={<AccountingDashboard />} />
                   <Route path="reportes" element={<Reports />} />
                   <Route path="patrimonio" element={<EquityDashboard />} />

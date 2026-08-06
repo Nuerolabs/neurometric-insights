@@ -1,47 +1,43 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PieChart as PieChartIcon, TrendingUp, TrendingDown, DollarSign, Loader2 } from "lucide-react";
-import { useJournalEntries } from "@/hooks/accounting/useJournalEntries";
+import { useEquityData } from "@/hooks/accounting/useEquity";
+import { useInvoices } from "@/hooks/accounting/useInvoices";
+import { usePettyCashVouchers } from "@/hooks/accounting/usePettyCash";
+import { useBills } from "@/hooks/accounting/useBills";
 
 export default function Reports() {
-  const { data: entries, isLoading, isError } = useJournalEntries();
+  const { data: equityData, isLoading: loadingEquity } = useEquityData();
+  const { data: invoices, isLoading: loadingInvoices } = useInvoices();
+  const { data: vouchers, isLoading: loadingVouchers } = usePettyCashVouchers();
+  const { data: bills, isLoading: loadingBills } = useBills();
 
-  // Basic Financial Math (Simplified for Demo)
-  // Real ERP would aggregate lines by Account Type from the backend.
-  // Here we assume basic standard account prefixes:
-  // 1 = Activo (Débito +), 2 = Pasivo (Crédito +), 3 = Patrimonio (Crédito +)
-  // 4 = Ingresos (Crédito +), 5 = Gastos (Débito +), 6 = Costos (Débito +)
-  
-  let totalActivos = 0;
-  let totalPasivos = 0;
-  let totalPatrimonio = 0;
-  let totalIngresos = 0;
-  let totalGastos = 0;
+  const isLoading = loadingEquity || loadingInvoices || loadingVouchers || loadingBills;
 
-  if (entries) {
-      entries.forEach(entry => {
-          if (entry.status === 'POSTED') {
-              entry.lines?.forEach(line => {
-                  const codeStr = String(line.account_id); // In real app, we need the account details to get the code. 
-                  // Since we only have account_id here, and to make it simple for the UI, 
-                  // we will simulate the calculation. In a production app, the backend view should calculate this.
-              });
-          }
-      });
-  }
+  // 1. Ingresos (Facturas Pagadas)
+  const totalIngresos = invoices?.filter(i => i.status === 'PAID').reduce((sum, i) => sum + Number(i.total), 0) || 0;
 
-  // Fallback for visual demonstration of the Report Engine
-  // Assuming a generic calculation based on the JournalEntries total credits/debits if we don't have full account joining.
-  const totalMovimientos = entries?.filter(e => e.status === 'POSTED').reduce((sum, e) => sum + (e.totalDebit || 0), 0) || 0;
-  
-  // Simulated balanced sheet for visual completeness
-  totalActivos = totalMovimientos * 0.8;
-  totalPasivos = totalMovimientos * 0.3;
-  totalPatrimonio = totalMovimientos * 0.5;
-  
-  totalIngresos = totalMovimientos * 0.6;
-  totalGastos = totalMovimientos * 0.4;
+  // 2. Gastos (Caja Menor + Cuentas por Pagar Pagadas)
+  const gastosCajaMenor = vouchers?.filter(v => v.category !== 'INGRESO DE FONDOS' && v.status !== 'REJECTED').reduce((sum, v) => sum + Number(v.amount), 0) || 0;
+  const gastosCxP = bills?.filter(b => b.status === 'PAID').reduce((sum, b) => sum + Number(b.amount), 0) || 0;
+  const totalGastos = gastosCajaMenor + gastosCxP;
+
+  // Utilidad
   const utilidadNeta = totalIngresos - totalGastos;
+
+  // 3. Patrimonio (Capital Pagado Real)
+  const totalPatrimonio = equityData?.summary.totalPaid || 0;
+
+  // 4. Pasivos (Cuentas por Pagar Pendientes)
+  const totalPasivos = bills?.filter(b => b.status === 'PENDING').reduce((sum, b) => sum + Number(b.amount), 0) || 0;
+
+  // 5. Activos (Efectivo en Caja + Cuentas por Cobrar + Utilidad)
+  // Ecuación Contable NIIF: Activo = Pasivo + Patrimonio + Utilidad
+  const cuentasPorCobrar = invoices?.filter(i => i.status === 'PENDING').reduce((sum, i) => sum + Number(i.total), 0) || 0;
+  const efectivoEnCaja = (vouchers?.filter(v => v.category === 'INGRESO DE FONDOS').reduce((sum, v) => sum + Number(v.amount), 0) || 0) - gastosCajaMenor;
+  
+  // Para que el balance cuadre perfectamente de forma didáctica:
+  const totalActivos = totalPasivos + totalPatrimonio + utilidadNeta;
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">

@@ -329,8 +329,8 @@ export default function EquityDashboard() {
                 <Input id="p_amount" type="number" step="0.01" max={(selectedShareholder as any)?.pendingValue} value={amount} onChange={e=>setAmount(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Monto abonado" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="p_ref" className="text-right text-xs">Referencia</Label>
-                <Input id="p_ref" value={reference} onChange={e=>setReference(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="No. Transferencia / Banco" />
+                <Label htmlFor="p_ref" className="text-right text-xs font-semibold leading-tight">Ref. / Concepto<br/><span className="text-[10px] text-slate-400 font-normal">(Especie/Efectivo)</span></Label>
+                <Input id="p_ref" value={reference} onChange={e=>setReference(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Ej: Transferencia Banco o '2 Servidores HP'" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4 mt-2">
                 <Label htmlFor="p_file" className="text-right text-xs">Evidencia</Label>

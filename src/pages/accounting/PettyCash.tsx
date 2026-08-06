@@ -322,70 +322,72 @@ export default function PettyCash() {
                  <p className="text-xs text-slate-500">Haz clic en "Ingresar Fondos" para registrar el capital de los socios.</p>
              </div>
           ) : (
-            <Table>
-              <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
-                <TableRow className="border-slate-100 dark:border-slate-800">
-                  <TableHead className="w-[90px] text-xs font-semibold text-slate-500 h-9">Fecha</TableHead>
-                  <TableHead className="w-[100px] text-xs font-semibold text-slate-500 h-9">Referencia</TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-500 h-9">Socio / Beneficiario</TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-500 h-9">Concepto</TableHead>
-                  <TableHead className="text-xs font-semibold text-slate-500 h-9">Clasificación</TableHead>
-                  <TableHead className="text-right text-xs font-semibold text-slate-500 h-9">Ingreso (+)</TableHead>
-                  <TableHead className="text-right text-xs font-semibold text-slate-500 h-9">Egreso (-)</TableHead>
-                  <TableHead className="text-center w-[120px] text-xs font-semibold text-slate-500 h-9">Estado</TableHead>
-                  <TableHead className="w-[40px] h-9"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredVouchers.map((voucher) => {
-                  const isFunding = voucher.category === 'INGRESO DE FONDOS';
-                  return (
-                  <TableRow key={voucher.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                    <TableCell className="text-xs font-medium text-slate-700 py-3">{voucher.date}</TableCell>
-                    <TableCell className="font-mono text-xs font-bold text-slate-700 py-3">
-                        <div className="flex items-center gap-1">
-                            {voucher.receipt_url ? (
-                                <a href={voucher.receipt_url} target="_blank" rel="noreferrer" title="Ver Comprobante">
-                                    <Paperclip className="w-3.5 h-3.5 text-blue-500 hover:text-blue-700 cursor-pointer" />
-                                </a>
-                            ) : null}
-                            {voucher.voucher_number}
-                        </div>
-                    </TableCell>
-                    <TableCell className="text-xs font-bold text-slate-800 py-3">{voucher.beneficiary}</TableCell>
-                    <TableCell className="text-xs text-slate-600 py-3 max-w-[150px] truncate" title={voucher.description}>{voucher.description}</TableCell>
-                    <TableCell className="py-3">
-                      <span className={`text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded ${isFunding ? 'text-emerald-700 bg-emerald-100' : 'text-slate-500 bg-slate-100'}`}>
-                          {voucher.category}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-right text-xs font-bold text-emerald-600 py-3">
-                        {isFunding ? `$${Number(voucher.amount).toLocaleString('en-US',{minimumFractionDigits:2})}` : '-'}
-                    </TableCell>
-                    <TableCell className="text-right text-xs font-bold text-rose-600 py-3">
-                        {!isFunding ? `$${Number(voucher.amount).toLocaleString('en-US',{minimumFractionDigits:2})}` : '-'}
-                    </TableCell>
-                    <TableCell className="text-center py-3">
-                      {getStatusBadge(voucher.status, voucher.category)}
-                    </TableCell>
-                    <TableCell className="text-right py-3 pr-4">
-                      {!isFunding && (
-                          <Button 
-                            variant="ghost" 
-                            size="icon" 
-                            className="h-6 w-6 text-slate-400 hover:text-emerald-600"
-                            title="Marcar como Aprobado"
-                            onClick={() => updateMutation.mutate({ id: voucher.id, status: 'APPROVED' })}
-                            disabled={voucher.status === 'APPROVED' || updateMutation.isPending}
-                          >
-                            <CheckCircle2 className="h-3.5 w-3.5" />
-                          </Button>
-                      )}
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
+                  <TableRow className="border-slate-100 dark:border-slate-800">
+                    <TableHead className="w-[90px] text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Fecha</TableHead>
+                    <TableHead className="w-[100px] text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Referencia</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Socio / Beneficiario</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Concepto</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Clasificación</TableHead>
+                    <TableHead className="text-right text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Ingreso (+)</TableHead>
+                    <TableHead className="text-right text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Egreso (-)</TableHead>
+                    <TableHead className="text-center w-[120px] text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Estado</TableHead>
+                    <TableHead className="w-[40px] h-9 whitespace-nowrap"></TableHead>
                   </TableRow>
-                )})}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {filteredVouchers.map((voucher) => {
+                    const isFunding = voucher.category === 'INGRESO DE FONDOS';
+                    return (
+                    <TableRow key={voucher.id} className="border-slate-100 dark:border-slate-800/60 hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+                      <TableCell className="text-xs font-medium text-slate-700 py-3 whitespace-nowrap">{voucher.date}</TableCell>
+                      <TableCell className="font-mono text-xs font-bold text-slate-700 py-3 whitespace-nowrap">
+                          <div className="flex items-center gap-1">
+                              {voucher.receipt_url ? (
+                                  <a href={voucher.receipt_url} target="_blank" rel="noreferrer" title="Ver Comprobante">
+                                      <Paperclip className="w-3.5 h-3.5 text-blue-500 hover:text-blue-700 cursor-pointer" />
+                                  </a>
+                              ) : null}
+                              {voucher.voucher_number}
+                          </div>
+                      </TableCell>
+                      <TableCell className="text-xs font-bold text-slate-800 py-3 whitespace-nowrap">{voucher.beneficiary}</TableCell>
+                      <TableCell className="text-xs text-slate-600 py-3 max-w-[150px] truncate" title={voucher.description}>{voucher.description}</TableCell>
+                      <TableCell className="py-3 whitespace-nowrap">
+                        <span className={`text-[10px] font-medium uppercase tracking-wider px-2 py-1 rounded ${isFunding ? 'text-emerald-700 bg-emerald-100' : 'text-slate-500 bg-slate-100'}`}>
+                            {voucher.category}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right text-xs font-bold text-emerald-600 py-3 whitespace-nowrap">
+                          {isFunding ? `$${Number(voucher.amount).toLocaleString('en-US',{minimumFractionDigits:2})}` : '-'}
+                      </TableCell>
+                      <TableCell className="text-right text-xs font-bold text-rose-600 py-3 whitespace-nowrap">
+                          {!isFunding ? `$${Number(voucher.amount).toLocaleString('en-US',{minimumFractionDigits:2})}` : '-'}
+                      </TableCell>
+                      <TableCell className="text-center py-3 whitespace-nowrap">
+                        {getStatusBadge(voucher.status, voucher.category)}
+                      </TableCell>
+                      <TableCell className="text-right py-3 pr-4 whitespace-nowrap">
+                        {!isFunding && (
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              className="h-6 w-6 text-slate-400 hover:text-emerald-600"
+                              title="Marcar como Aprobado"
+                              onClick={() => updateMutation.mutate({ id: voucher.id, status: 'APPROVED' })}
+                              disabled={voucher.status === 'APPROVED' || updateMutation.isPending}
+                            >
+                              <CheckCircle2 className="h-3.5 w-3.5" />
+                            </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )})}
+                </TableBody>
+              </Table>
+            </div>
           )}
         </CardContent>
       </Card>

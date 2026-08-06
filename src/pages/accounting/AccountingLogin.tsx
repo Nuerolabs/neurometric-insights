@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +8,21 @@ import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 export default function AccountingLogin() {
+  useEffect(() => {
+    // Cambiar metadatos para la pestaña del navegador
+    document.title = "Acceso Restringido - ERP NeuroLabs";
+    
+    // Cambiar descripción y meta tags (solo afecta navegadores que ejecutan JS)
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", "Portal financiero y contable de uso exclusivo para el personal autorizado de NeuroLabs.");
+    }
+    
+    return () => {
+      document.title = "NeuroLabs | Inteligencia Artificial";
+    };
+  }, []);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);

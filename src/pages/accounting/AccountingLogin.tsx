@@ -45,11 +45,11 @@ export default function AccountingLogin() {
       <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 md:px-24 xl:px-32 relative z-10 animate-in fade-in slide-in-from-left-8 duration-700">
         
         {/* Logo Superior */}
-        <div className="absolute top-10 left-8 sm:left-16 md:left-24 xl:left-32 flex items-center gap-3">
-            <div className="h-10 w-10">
+        <div className="absolute top-10 left-8 sm:left-16 md:left-24 xl:left-32 flex items-center gap-4">
+            <div className="h-16 w-16">
                 <img src="/logo.png" alt="NeuroLabs Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">NeuroLabs</span>
+            <span className="font-bold text-2xl tracking-tight text-slate-900 dark:text-white">NeuroLabs</span>
         </div>
 
         <div className="max-w-[400px] w-full mx-auto mt-16">
@@ -129,9 +129,23 @@ export default function AccountingLogin() {
         {/* Floating Dashboard Elements */}
         <div className="relative z-10 w-full max-w-lg">
             
-            <div className="mb-8">
-                <h2 className="text-3xl font-light text-white tracking-tight mb-2">Operaciones Financieras</h2>
-                <h3 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">Inteligentes y Precisas</h3>
+            <div className="mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="h-12 w-12 bg-white/10 rounded-xl p-2 backdrop-blur-sm border border-white/20 shadow-lg">
+                        <img src="/logo.png" alt="NeuroLabs Logo" className="w-full h-full object-contain filter brightness-0 invert opacity-90" />
+                    </div>
+                    <span className="text-xl font-bold text-white tracking-widest uppercase opacity-90">NeuroLabs Inc.</span>
+                </div>
+                
+                <h2 className="text-4xl font-light text-white tracking-tight mb-2">ERP Corporativo</h2>
+                <h3 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300 leading-tight mb-6">
+                    Inteligencia <br />Financiera
+                </h3>
+                
+                <p className="text-slate-400 text-base max-w-md leading-relaxed">
+                    Plataforma centralizada para la gestión de capital, facturación, y nómina. 
+                    Infraestructura en la nube con encriptación y trazabilidad de grado militar.
+                </p>
             </div>
 
             <div className="grid gap-4">

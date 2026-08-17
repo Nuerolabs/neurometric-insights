@@ -53,7 +53,7 @@ const sidebarNavItems = [
     group: "Contabilidad Central"
   },
   {
-    title: "Facturación y CxC",
+    title: "Facturación & Clientes",
     href: "/contabilidad/facturacion",
     icon: <Receipt className="h-4 w-4" />,
     group: "Tesorería"

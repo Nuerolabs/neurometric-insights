@@ -20,41 +20,7 @@ export interface JournalEntry {
   lines?: JournalEntryLine[];
 }
 
-const DEFAULT_ENTRIES: (JournalEntry & { totalDebit: number; totalCredit: number; entry_number?: string })[] = [
-  {
-    id: "tx-001",
-    date: "2025-01-10",
-    reference: "AS-001",
-    entry_number: "AS-001",
-    description: "Facturación de Implementación Cliente Nova S.A.S.",
-    status: "POSTED",
-    created_at: "2025-01-10",
-    totalDebit: 2500000,
-    totalCredit: 2500000
-  },
-  {
-    id: "tx-002",
-    date: "2025-02-05",
-    reference: "AS-002",
-    entry_number: "AS-002",
-    description: "Recaudo Mensualidad Febrero Cliente Nova S.A.S. ($600.000 COP)",
-    status: "POSTED",
-    created_at: "2025-02-05",
-    totalDebit: 600000,
-    totalCredit: 600000
-  },
-  {
-    id: "tx-003",
-    date: "2025-02-01",
-    reference: "AS-003",
-    entry_number: "AS-003",
-    description: "Apertura de Fondo de Caja Menor",
-    status: "POSTED",
-    created_at: "2025-02-01",
-    totalDebit: 1000000,
-    totalCredit: 1000000
-  }
-];
+const DEFAULT_ENTRIES: (JournalEntry & { totalDebit: number; totalCredit: number; entry_number?: string })[] = [];
 
 const getLocalEntries = () => {
   try {

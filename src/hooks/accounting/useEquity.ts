@@ -22,47 +22,8 @@ export interface CapitalContribution {
   status: string;
 }
 
-const DEFAULT_SHAREHOLDERS: Shareholder[] = [
-  {
-    id: "sh-001",
-    name: "Jafet Rodríguez",
-    document_id: "1.045.789.231",
-    shares_owned: 6000,
-    subscribed_value: 30000000,
-    share_class: "Ordinarias Clase A",
-    contribution_type: "Tecnología / Capital",
-    is_founder: true
-  },
-  {
-    id: "sh-002",
-    name: "María Angélica Domínguez",
-    document_id: "1.129.445.890",
-    shares_owned: 4000,
-    subscribed_value: 20000000,
-    share_class: "Ordinarias Clase A",
-    contribution_type: "Capital / Operaciones",
-    is_founder: true
-  }
-];
-
-const DEFAULT_CONTRIBUTIONS: CapitalContribution[] = [
-  {
-    id: "cnt-001",
-    shareholder_id: "sh-001",
-    amount: 30000000,
-    payment_date: "2024-06-01",
-    reference: "ACTA-CONSTITUTIVA-001",
-    status: "APPROVED"
-  },
-  {
-    id: "cnt-002",
-    shareholder_id: "sh-002",
-    amount: 20000000,
-    payment_date: "2024-06-01",
-    reference: "ACTA-CONSTITUTIVA-002",
-    status: "APPROVED"
-  }
-];
+const DEFAULT_SHAREHOLDERS: Shareholder[] = [];
+const DEFAULT_CONTRIBUTIONS: CapitalContribution[] = [];
 
 const getLocalContributions = (): CapitalContribution[] => {
   try {

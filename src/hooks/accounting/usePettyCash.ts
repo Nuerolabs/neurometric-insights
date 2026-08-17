@@ -14,41 +14,7 @@ export interface PettyCashVoucher {
   receipt_url?: string;
 }
 
-const INITIAL_VOUCHERS: PettyCashVoucher[] = [
-  {
-    id: "vch-001",
-    voucher_number: "CH-001",
-    date: "2025-02-01",
-    beneficiary: "Caja Principal",
-    description: "Apertura y Asignación de Fondo Fijo de Caja Menor",
-    amount: 1000000,
-    category: "INGRESO DE FONDOS",
-    status: "APPROVED",
-    created_at: "2025-02-01"
-  },
-  {
-    id: "vch-002",
-    voucher_number: "CH-002",
-    date: "2025-02-06",
-    beneficiary: "Papelería & Suministros El Triunfo",
-    description: "Compra de carpetas, papelería y consumibles de oficina",
-    amount: 85000,
-    category: "PAPELERIA",
-    status: "APPROVED",
-    created_at: "2025-02-06"
-  },
-  {
-    id: "vch-003",
-    voucher_number: "CH-003",
-    date: "2025-02-12",
-    beneficiary: "Cafetería y Alimentos S.A.S.",
-    description: "Insumos de cafetería y atención de reuniones corporativas",
-    amount: 65000,
-    category: "CAFETERIA",
-    status: "APPROVED",
-    created_at: "2025-02-12"
-  }
-];
+const INITIAL_VOUCHERS: PettyCashVoucher[] = [];
 
 const getLocalVouchers = (): PettyCashVoucher[] => {
   try {

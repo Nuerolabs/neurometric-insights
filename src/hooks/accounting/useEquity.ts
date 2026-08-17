@@ -25,6 +25,21 @@ export interface CapitalContribution {
 const DEFAULT_SHAREHOLDERS: Shareholder[] = [];
 const DEFAULT_CONTRIBUTIONS: CapitalContribution[] = [];
 
+const getLocalShareholders = (): Shareholder[] => {
+  try {
+    const raw = localStorage.getItem('neurolabs_erp_equity_shareholders');
+    return raw ? JSON.parse(raw) : DEFAULT_SHAREHOLDERS;
+  } catch {
+    return DEFAULT_SHAREHOLDERS;
+  }
+};
+
+const setLocalShareholders = (data: Shareholder[]) => {
+  try {
+    localStorage.setItem('neurolabs_erp_equity_shareholders', JSON.stringify(data));
+  } catch {}
+};
+
 const getLocalContributions = (): CapitalContribution[] => {
   try {
     const raw = localStorage.getItem('neurolabs_erp_equity_contributions');
@@ -44,7 +59,7 @@ export function useEquityData() {
   return useQuery({
     queryKey: ['equity'],
     queryFn: async () => {
-      let shareholders: Shareholder[] = DEFAULT_SHAREHOLDERS;
+      let shareholders: Shareholder[] = getLocalShareholders();
       let contributions: CapitalContribution[] = getLocalContributions();
 
       try {
@@ -56,6 +71,7 @@ export function useEquityData() {
 
         if (!shError && shData && shData.length > 0) {
           shareholders = shData;
+          setLocalShareholders(shData);
         }
 
         const { data: cbData, error: cbError } = await supabase
@@ -82,7 +98,7 @@ export function useEquityData() {
         };
       });
 
-      const totalSubscribed = shareholders.reduce((sum, sh) => sum + Number(sh.subscribed_value), 0);
+      const totalSubscribed = shareholders.reduce((sum, sh) => sum + Number(sh.subscribed_value || 0), 0);
       const totalPaid = processedShareholders.reduce((sum, sh) => sum + sh.paidValue, 0);
       const totalPending = Math.max(0, totalSubscribed - totalPaid);
 
@@ -92,9 +108,44 @@ export function useEquityData() {
               totalSubscribed,
               totalPaid,
               totalPending,
-              authorizedCapital: 100000000 // Capital Autorizado
+              authorizedCapital: 100000000 // Capital Autorizado (100 Millones COP)
           }
       };
+    }
+  });
+}
+
+export function useCreateShareholder() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (shareholder: Omit<Shareholder, 'id'>) => {
+      const obj: Shareholder = {
+        ...shareholder,
+        id: `sh-${Date.now()}`
+      };
+
+      try {
+        const { data, error } = await supabase
+          .from('accounting_shareholders')
+          .insert([obj])
+          .select()
+          .single();
+
+        if (!error && data) {
+          const cur = getLocalShareholders();
+          setLocalShareholders([data, ...cur]);
+          return data;
+        }
+      } catch {}
+
+      const cur = getLocalShareholders();
+      const updated = [obj, ...cur];
+      setLocalShareholders(updated);
+      return obj;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
     }
   });
 }

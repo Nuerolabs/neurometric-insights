@@ -8,14 +8,31 @@ export function ProtectedAccountingRoute({ children }: { children: React.ReactNo
   const location = useLocation();
 
   useEffect(() => {
-    // Check active session
+    // 1. Check local session
+    const hasLocalAuth = localStorage.getItem("neurolabs_accounting_auth") === "true";
+    if (hasLocalAuth) {
+      setIsAuthenticated(true);
+      return;
+    }
+
+    // 2. Check Supabase active session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setIsAuthenticated(!!session);
+      if (session) {
+        setIsAuthenticated(true);
+      } else {
+        const stillLocal = localStorage.getItem("neurolabs_accounting_auth") === "true";
+        setIsAuthenticated(stillLocal);
+      }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsAuthenticated(!!session);
+      if (session) {
+        setIsAuthenticated(true);
+      } else {
+        const stillLocal = localStorage.getItem("neurolabs_accounting_auth") === "true";
+        setIsAuthenticated(stillLocal);
+      }
     });
 
     return () => subscription.unsubscribe();

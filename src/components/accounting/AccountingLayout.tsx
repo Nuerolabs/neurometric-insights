@@ -85,11 +85,15 @@ export default function AccountingLayout() {
 
   const handleLogout = async () => {
     try {
+      localStorage.removeItem("neurolabs_accounting_auth");
+      localStorage.removeItem("neurolabs_accounting_user");
       await supabase.auth.signOut();
       toast.success("Sesión cerrada");
       navigate("/contabilidad/login");
     } catch (error) {
-      toast.error("Error al cerrar sesión");
+      localStorage.removeItem("neurolabs_accounting_auth");
+      localStorage.removeItem("neurolabs_accounting_user");
+      navigate("/contabilidad/login");
     }
   };
 

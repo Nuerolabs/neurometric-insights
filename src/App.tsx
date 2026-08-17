@@ -8,6 +8,12 @@ import Portfolio from "./pages/Portfolio";
 import ApiDocs from "./pages/ApiDocs";
 import NotFound from "./pages/NotFound";
 import PersonalAgent from "./pages/admin/PersonalAgent";
+import UsagePage from "./app/dashboard/usage/page";
+import BillingPage from "./app/dashboard/billing/page";
+import AutomationsPage from "./app/dashboard/automations/page";
+import AnalyticsPage from "./app/dashboard/analytics/page";
+import MarketplacePage from "./app/(marketplace)/[domain]/page";
+import ProviderRegistrationPage from "./app/(marketplace)/[domain]/proveedores/registro/page";
 import { VentasProvider } from "./context/VentasContext";
 import { ProtectedRoute } from "./components/ventas/ProtectedRoute";
 import LoginVentas from "./pages/ventas/LoginVentas";
@@ -47,7 +53,19 @@ const App = () => (
                 <Route path="/" element={<Landing />} />
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/docs" element={<ApiDocs />} />
+                <Route path="/dashboard/usage" element={<UsagePage />} />
+                <Route path="/dashboard/billing" element={<BillingPage />} />
+                <Route path="/dashboard/automations" element={<AutomationsPage />} />
+                <Route path="/automations" element={<AutomationsPage />} />
+                <Route path="/dashboard/analytics" element={<AnalyticsPage />} />
+                <Route path="/analytics" element={<AnalyticsPage />} />
+                <Route path="/marketplace" element={<MarketplacePage />} />
+                <Route path="/marketplace/:domain" element={<MarketplacePage />} />
                 <Route path="/admin/core-ai" element={<PersonalAgent />} />
+                {/* ── Portal de Proveedores / Marketplace ── */}
+                <Route path="/proveedores/registro" element={<ProviderRegistrationPage />} />
+                <Route path="/:domain/proveedores/registro" element={<ProviderRegistrationPage />} />
+                <Route path="/marketplace/proveedores/registro" element={<ProviderRegistrationPage />} />
                 {/* ── Ventas ── */}
                 <Route path="/ventas/login" element={<LoginVentas />} />
                 <Route

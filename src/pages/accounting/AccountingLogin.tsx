@@ -28,26 +28,58 @@ export default function AccountingLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  const MASTER_CREDENTIALS = [
+    { email: "gerencia@neurolabs.com", pass: "neurolabs2025" },
+    { email: "admin@neurolabs.com", pass: "admin1234" },
+    { email: "mariaangelicadominguez68@gmail.com", pass: "neurolabs2025" },
+    { email: "mariaangelicadominguez68@gmail.com", pass: "admin1234" },
+  ];
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    if (!cleanEmail || !cleanPassword) {
       toast.error("Ingresa correo y contraseña");
       return;
     }
 
     setIsLoading(true);
+
+    // 1. Validar si coincide con credenciales maestras
+    const isMaster = MASTER_CREDENTIALS.some(
+      (c) => c.email.toLowerCase() === cleanEmail && c.pass === cleanPassword
+    );
+
+    if (isMaster) {
+      localStorage.setItem("neurolabs_accounting_auth", "true");
+      localStorage.setItem("neurolabs_accounting_user", cleanEmail);
+      toast.success("Acceso corporativo autorizado");
+      setIsLoading(false);
+      navigate("/contabilidad");
+      return;
+    }
+
+    // 2. Si no es credencial maestra, intentar autenticación con Supabase
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: cleanEmail,
+        password: cleanPassword,
       });
 
       if (error) throw error;
 
-      toast.success("Acceso autorizado");
+      localStorage.setItem("neurolabs_accounting_auth", "true");
+      localStorage.setItem("neurolabs_accounting_user", cleanEmail);
+      toast.success("Acceso autorizado con Supabase");
       navigate("/contabilidad");
     } catch (error: any) {
-      toast.error(error.message === "Invalid login credentials" ? "Credenciales incorrectas" : error.message);
+      toast.error(
+        error.message === "Invalid login credentials"
+          ? "Credenciales incorrectas. Usa las credenciales corporativas autorizadas."
+          : error.message || "Error al autenticar"
+      );
     } finally {
       setIsLoading(false);
     }

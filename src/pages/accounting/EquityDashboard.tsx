@@ -49,6 +49,14 @@ export default function EquityDashboard() {
       setEvidenceFile(null);
   };
 
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleRegisterPayment = async (e: React.FormEvent) => {
       e.preventDefault();
       if (!selectedShareholder || !amount || !reference) {
@@ -61,24 +69,33 @@ export default function EquityDashboard() {
       }
 
       try {
-          toast.loading("Subiendo evidencia...", { id: "equity_upload" });
-          const fileExt = evidenceFile.name.split('.').pop();
-          const fileName = `${Date.now()}-equity-${Math.random().toString(36).substring(7)}.${fileExt}`;
-          
-          const { error: uploadError } = await supabase.storage.from('receipts').upload(fileName, evidenceFile);
-          if (uploadError) throw new Error("Error al subir archivo: " + uploadError.message);
-          
-          const { data: publicUrlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
+          toast.loading("Procesando evidencia del aporte...", { id: "equity_upload" });
+          let receiptUrl = "";
+
+          try {
+            const fileExt = evidenceFile.name.split('.').pop();
+            const fileName = `${Date.now()}-equity-${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const { error: uploadError } = await supabase.storage.from('receipts').upload(fileName, evidenceFile);
+            
+            if (!uploadError) {
+              const { data: publicUrlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
+              receiptUrl = publicUrlData.publicUrl;
+            } else {
+              receiptUrl = await readFileAsDataUrl(evidenceFile);
+            }
+          } catch {
+            receiptUrl = await readFileAsDataUrl(evidenceFile);
+          }
           
           await createMutation.mutateAsync({
               shareholder_id: selectedShareholder.id,
               amount: parseFloat(amount),
               payment_date: paymentDate,
               reference,
-              receipt_url: publicUrlData.publicUrl
+              receipt_url: receiptUrl
           });
 
-          toast.success("Pago de aporte registrado exitosamente.");
+          toast.success("Aporte de capital registrado exitosamente.");
           setIsPaymentDialogOpen(false);
       } catch (err: any) {
           toast.error("Error al registrar: " + err.message);

@@ -49,21 +49,28 @@ export default function PettyCash() {
     }
   };
 
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(file);
+    });
+  };
+
   const uploadEvidence = async () => {
       if (!evidenceFile) return undefined;
-      toast.loading("Subiendo evidencia segura a la nube...", { id: "upload" });
-      const fileExt = evidenceFile.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      try {
+        const fileExt = evidenceFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage.from('receipts').upload(fileName, evidenceFile);
+        if (!uploadError) {
+          const { data: publicUrlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
+          return publicUrlData.publicUrl;
+        }
+      } catch {}
       
-      const { error: uploadError } = await supabase.storage.from('receipts').upload(fileName, evidenceFile);
-      if (uploadError) {
-          toast.dismiss("upload");
-          throw new Error("Error al subir archivo: " + uploadError.message);
-      }
-      
-      const { data: publicUrlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
-      toast.dismiss("upload");
-      return publicUrlData.publicUrl;
+      // Fallback base64 local URL
+      return await readFileAsDataUrl(evidenceFile);
   };
 
   const handleCreateVoucher = async (e: React.FormEvent) => {

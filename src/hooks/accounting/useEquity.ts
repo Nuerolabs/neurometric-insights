@@ -25,6 +25,21 @@ export interface CapitalContribution {
 const DEFAULT_SHAREHOLDERS: Shareholder[] = [];
 const DEFAULT_CONTRIBUTIONS: CapitalContribution[] = [];
 
+const getLocalAuthorizedCapital = (): number => {
+  try {
+    const raw = localStorage.getItem('neurolabs_erp_authorized_capital');
+    return raw ? parseFloat(raw) : 100000000;
+  } catch {
+    return 100000000;
+  }
+};
+
+const setLocalAuthorizedCapital = (val: number) => {
+  try {
+    localStorage.setItem('neurolabs_erp_authorized_capital', val.toString());
+  } catch {}
+};
+
 const getLocalShareholders = (): Shareholder[] => {
   try {
     const raw = localStorage.getItem('neurolabs_erp_equity_shareholders');
@@ -61,6 +76,7 @@ export function useEquityData() {
     queryFn: async () => {
       let shareholders: Shareholder[] = getLocalShareholders();
       let contributions: CapitalContribution[] = getLocalContributions();
+      let authorizedCapital = getLocalAuthorizedCapital();
 
       try {
         const { data: shData, error: shError } = await supabase
@@ -108,9 +124,23 @@ export function useEquityData() {
               totalSubscribed,
               totalPaid,
               totalPending,
-              authorizedCapital: 100000000 // Capital Autorizado (100 Millones COP)
+              authorizedCapital
           }
       };
+    }
+  });
+}
+
+export function useUpdateAuthorizedCapital() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newAmount: number) => {
+      setLocalAuthorizedCapital(newAmount);
+      return newAmount;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
     }
   });
 }
@@ -143,6 +173,52 @@ export function useCreateShareholder() {
       const updated = [obj, ...cur];
       setLocalShareholders(updated);
       return obj;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
+    }
+  });
+}
+
+export function useUpdateShareholder() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (shareholder: Shareholder) => {
+      try {
+        await supabase
+          .from('accounting_shareholders')
+          .update(shareholder)
+          .eq('id', shareholder.id);
+      } catch {}
+
+      const cur = getLocalShareholders();
+      const updated = cur.map(s => s.id === shareholder.id ? shareholder : s);
+      setLocalShareholders(updated);
+      return shareholder;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
+    }
+  });
+}
+
+export function useDeleteShareholder() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        await supabase
+          .from('accounting_shareholders')
+          .delete()
+          .eq('id', id);
+      } catch {}
+
+      const cur = getLocalShareholders();
+      const updated = cur.filter(s => s.id !== id);
+      setLocalShareholders(updated);
+      return id;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['equity'] });

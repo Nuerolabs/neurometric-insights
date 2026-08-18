@@ -14,21 +14,51 @@ import {
     Tooltip as RechartsTooltip,
     Legend
 } from "recharts";
-import { Users, Briefcase, FileSignature, CheckCircle2, AlertCircle, Plus, Loader2, UserPlus, ShieldCheck } from "lucide-react";
+import { 
+  Users, 
+  Briefcase, 
+  FileSignature, 
+  CheckCircle2, 
+  AlertCircle, 
+  Plus, 
+  Loader2, 
+  UserPlus, 
+  ShieldCheck, 
+  Pencil, 
+  Trash2,
+  Settings2
+} from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
-import { useEquityData, useCreateContribution, useCreateShareholder, Shareholder } from "@/hooks/accounting/useEquity";
+import { 
+  useEquityData, 
+  useCreateContribution, 
+  useCreateShareholder, 
+  useUpdateShareholder, 
+  useDeleteShareholder, 
+  useUpdateAuthorizedCapital, 
+  Shareholder 
+} from "@/hooks/accounting/useEquity";
 
 export default function EquityDashboard() {
   const { data, isLoading, isError } = useEquityData();
   const createContributionMutation = useCreateContribution();
   const createShareholderMutation = useCreateShareholder();
+  const updateShareholderMutation = useUpdateShareholder();
+  const deleteShareholderMutation = useDeleteShareholder();
+  const updateCapitalMutation = useUpdateAuthorizedCapital();
 
   // Modals
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [isShareholderDialogOpen, setIsShareholderDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isCapitalDialogOpen, setIsCapitalDialogOpen] = useState(false);
+  
   const [selectedShareholder, setSelectedShareholder] = useState<Shareholder | null>(null);
   
+  // Capital Autorizado Form State
+  const [newAuthorizedCapital, setNewAuthorizedCapital] = useState("");
+
   // New Shareholder Form State
   const [shName, setShName] = useState("");
   const [shDocument, setShDocument] = useState("");
@@ -37,6 +67,16 @@ export default function EquityDashboard() {
   const [shClass, setShClass] = useState("Ordinarias Clase A");
   const [shContributionType, setShContributionType] = useState("Capital & Tecnología");
   const [shIsFounder, setShIsFounder] = useState(true);
+
+  // Edit Shareholder Form State
+  const [editId, setEditId] = useState("");
+  const [editName, setEditName] = useState("");
+  const [editDocument, setEditDocument] = useState("");
+  const [editShares, setEditShares] = useState("");
+  const [editSubscribed, setEditSubscribed] = useState("");
+  const [editClass, setEditClass] = useState("");
+  const [editContributionType, setEditContributionType] = useState("");
+  const [editIsFounder, setEditIsFounder] = useState(true);
 
   // Payment Form State
   const [amount, setAmount] = useState("");
@@ -60,12 +100,40 @@ export default function EquityDashboard() {
       setEvidenceFile(null);
   };
 
+  const openEditDialog = (sh: Shareholder) => {
+    setEditId(sh.id);
+    setEditName(sh.name);
+    setEditDocument(sh.document_id);
+    setEditShares(sh.shares_owned.toString());
+    setEditSubscribed(sh.subscribed_value.toString());
+    setEditClass(sh.share_class);
+    setEditContributionType(sh.contribution_type);
+    setEditIsFounder(sh.is_founder);
+    setIsEditDialogOpen(true);
+  };
+
   const readFileAsDataUrl = (file: File): Promise<string> => {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result as string);
       reader.readAsDataURL(file);
     });
+  };
+
+  const handleUpdateCapital = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseFloat(newAuthorizedCapital);
+    if (!val || val <= 0) {
+      toast.error("Ingresa un monto válido para el capital autorizado.");
+      return;
+    }
+    try {
+      await updateCapitalMutation.mutateAsync(val);
+      toast.success("Capital autorizado actualizado exitosamente.");
+      setIsCapitalDialogOpen(false);
+    } catch (err: any) {
+      toast.error("Error al actualizar capital: " + err.message);
+    }
   };
 
   const handleCreateShareholder = async (e: React.FormEvent) => {
@@ -93,6 +161,43 @@ export default function EquityDashboard() {
       setShSubscribed("");
     } catch (err: any) {
       toast.error("Error al registrar socio: " + err.message);
+    }
+  };
+
+  const handleUpdateShareholder = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editName || !editDocument || !editSubscribed) {
+      toast.error("Por favor completa los campos obligatorios.");
+      return;
+    }
+
+    try {
+      await updateShareholderMutation.mutateAsync({
+        id: editId,
+        name: editName,
+        document_id: editDocument,
+        shares_owned: parseInt(editShares) || 0,
+        subscribed_value: parseFloat(editSubscribed) || 0,
+        share_class: editClass,
+        contribution_type: editContributionType,
+        is_founder: editIsFounder
+      });
+
+      toast.success(`Datos del socio actualizados exitosamente.`);
+      setIsEditDialogOpen(false);
+    } catch (err: any) {
+      toast.error("Error al actualizar socio: " + err.message);
+    }
+  };
+
+  const handleDeleteShareholder = async (id: string, name: string) => {
+    if (confirm(`¿Estás seguro de eliminar al socio ${name}?`)) {
+      try {
+        await deleteShareholderMutation.mutateAsync(id);
+        toast.success(`Socio ${name} eliminado.`);
+      } catch (err: any) {
+        toast.error("Error al eliminar: " + err.message);
+      }
     }
   };
 
@@ -189,7 +294,45 @@ export default function EquityDashboard() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          {/* Modal Modificar Capital Autorizado */}
+          <Dialog open={isCapitalDialogOpen} onOpenChange={setIsCapitalDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9 text-xs font-medium text-slate-700 dark:text-slate-200" onClick={() => setNewAuthorizedCapital(summary.authorizedCapital.toString())}>
+                <Settings2 className="h-4 w-4 mr-1.5 text-slate-500" />
+                Modificar Capital Autorizado
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[420px]">
+              <form onSubmit={handleUpdateCapital}>
+                <DialogHeader>
+                  <DialogTitle className="text-lg font-bold">Modificar Capital Autorizado</DialogTitle>
+                </DialogHeader>
+                <div className="py-4 space-y-3">
+                  <p className="text-xs text-slate-500">
+                    Establece el valor total del capital autorizado según los estatutos de constitución de la empresa.
+                  </p>
+                  <div>
+                    <Label className="text-xs font-semibold text-slate-600">Nuevo Capital Autorizado (COP) *</Label>
+                    <Input 
+                      type="number" 
+                      value={newAuthorizedCapital} 
+                      onChange={e=>setNewAuthorizedCapital(e.target.value)} 
+                      className="h-9 text-sm font-mono mt-1" 
+                      placeholder="100000000" 
+                      required 
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit" className="bg-slate-900 hover:bg-slate-800 text-white font-semibold w-full dark:bg-blue-600">
+                    Guardar Nuevo Capital
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
+
           {/* Modal Registrar Socio */}
           <Dialog open={isShareholderDialogOpen} onOpenChange={setIsShareholderDialogOpen}>
             <DialogTrigger asChild>
@@ -205,8 +348,8 @@ export default function EquityDashboard() {
                 </DialogHeader>
                 <div className="grid gap-3.5 py-4">
                   <div>
-                    <Label className="text-xs font-semibold text-slate-600">Nombre Completo *</Label>
-                    <Input value={shName} onChange={e=>setShName(e.target.value)} className="h-9 text-sm mt-1" placeholder="Ej: Jafet Rodríguez (Representante Legal)" required />
+                    <Label className="text-xs font-semibold text-slate-600">Nombre Completo y Rol *</Label>
+                    <Input value={shName} onChange={e=>setShName(e.target.value)} className="h-9 text-sm mt-1" placeholder="Ej: Jafet Navarro (Representante Legal)" required />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
@@ -260,10 +403,15 @@ export default function EquityDashboard() {
       {/* Resumen de Capital Social */}
       <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900">
           <div className="p-6">
-              <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
-                  <FileSignature className="h-5 w-5 text-blue-600" />
-                  Estructura del Capital Social
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <FileSignature className="h-5 w-5 text-blue-600" />
+                    Estructura del Capital Social
+                </h2>
+                <Button variant="ghost" size="sm" className="h-7 text-xs text-blue-600 font-semibold" onClick={() => { setNewAuthorizedCapital(summary.authorizedCapital.toString()); setIsCapitalDialogOpen(true); }}>
+                  <Pencil className="w-3.5 h-3.5 mr-1" /> Modificar Capital
+                </Button>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Capital Autorizado */}
@@ -334,7 +482,8 @@ export default function EquityDashboard() {
                         <div className="flex flex-col sm:flex-row">
                             {/* Panel Izquierdo: Info Socio */}
                             <div className="p-5 sm:w-2/5 border-b sm:border-b-0 sm:border-r border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850">
-                                <div className="flex items-center gap-3 mb-3">
+                                <div className="flex items-center justify-between mb-3">
+                                  <div className="flex items-center gap-3">
                                     <div className="h-10 w-10 rounded-full flex items-center justify-center font-bold text-white shadow-sm shrink-0" style={{ backgroundColor: color }}>
                                         {socio.name.charAt(0)}
                                     </div>
@@ -342,12 +491,23 @@ export default function EquityDashboard() {
                                         <h4 className="font-bold text-slate-900 dark:text-white leading-tight truncate" title={socio.name}>{socio.name}</h4>
                                         <p className="text-xs text-slate-500 font-mono mt-0.5">CC / NIT: {socio.document_id}</p>
                                     </div>
+                                  </div>
                                 </div>
-                                <div className="space-y-1.5 mt-3">
+                                
+                                <div className="space-y-1.5 mt-2">
                                     <Badge variant="outline" className="text-[10px] font-semibold bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                                       {socio.share_class || 'Ordinarias'}
                                     </Badge>
                                     <p className="text-xs text-slate-600 dark:text-slate-400"><strong>Aporte:</strong> {socio.contribution_type || 'Capital'}</p>
+                                </div>
+
+                                <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+                                  <Button size="sm" variant="ghost" className="h-6 text-[11px] px-2 text-slate-600 hover:text-slate-900 dark:text-slate-400" onClick={() => openEditDialog(socio)}>
+                                    <Pencil className="w-3 h-3 mr-1" /> Editar
+                                  </Button>
+                                  <Button size="sm" variant="ghost" className="h-6 text-[11px] px-2 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30" onClick={() => handleDeleteShareholder(socio.id, socio.name)}>
+                                    <Trash2 className="w-3 h-3 mr-1" /> Eliminar
+                                  </Button>
                                 </div>
                             </div>
                             
@@ -444,6 +604,65 @@ export default function EquityDashboard() {
         </div>
 
       </div>
+
+      {/* Modal para Editar Socio */}
+      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+        <DialogContent className="sm:max-w-[480px]">
+          <form onSubmit={handleUpdateShareholder}>
+            <DialogHeader>
+              <DialogTitle className="text-lg font-bold">Editar Accionista / Socio</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-3.5 py-4">
+              <div>
+                <Label className="text-xs font-semibold text-slate-600">Nombre Completo y Cargo *</Label>
+                <Input value={editName} onChange={e=>setEditName(e.target.value)} className="h-9 text-sm mt-1" required />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs font-semibold text-slate-600">Cédula / Documento *</Label>
+                  <Input value={editDocument} onChange={e=>setEditDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" required />
+                </div>
+                <div>
+                  <Label className="text-xs font-semibold text-slate-600">Acciones Poseídas</Label>
+                  <Input type="number" value={editShares} onChange={e=>setEditShares(e.target.value)} className="h-9 text-sm mt-1 font-mono" />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-slate-600">Capital Suscrito (COP) *</Label>
+                <Input type="number" value={editSubscribed} onChange={e=>setEditSubscribed(e.target.value)} className="h-9 text-sm font-mono mt-1" required />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <Label className="text-xs font-semibold text-slate-600">Clase de Acción / Rol</Label>
+                  <Input value={editClass} onChange={e=>setEditClass(e.target.value)} className="h-9 text-sm mt-1" />
+                </div>
+                <div>
+                  <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
+                  <Input value={editContributionType} onChange={e=>setEditContributionType(e.target.value)} className="h-9 text-sm mt-1" />
+                </div>
+              </div>
+              <div className="flex items-center gap-2 pt-2">
+                <input 
+                  type="checkbox" 
+                  id="editIsFounder" 
+                  checked={editIsFounder} 
+                  onChange={e=>setEditIsFounder(e.target.checked)} 
+                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                />
+                <Label htmlFor="editIsFounder" className="text-xs font-semibold text-slate-700 cursor-pointer">
+                  Es Socio Fundador de la Empresa
+                </Label>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold w-full" disabled={updateShareholderMutation.isPending}>
+                {updateShareholderMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                Guardar Cambios
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal para Registrar Pago / Aporte de Socio */}
       <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>

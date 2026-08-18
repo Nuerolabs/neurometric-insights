@@ -74,28 +74,28 @@ export default function Reports() {
   const utilidadNeta = totalIngresos - totalGastos;
   const margenUtilidad = totalIngresos > 0 ? (utilidadNeta / totalIngresos) * 100 : 0;
 
-  // 3. Patrimonio
-  const totalPatrimonio = (equityData?.summary?.totalPaid || 50000000);
+  // 3. Patrimonio (Capital realmente pagado en caja/bancos por los socios)
+  const totalPatrimonio = Number(equityData?.summary?.totalPaid || 0);
 
-  // 4. Pasivos (Cuentas por pagar pendientes)
+  // 4. Pasivos (Cuentas por pagar pendientes reales)
   const totalPasivos = bills
     ?.filter(b => b.status === 'PENDING')
     .reduce((sum, b) => sum + Number(b.total_amount || 0), 0) || 0;
 
-  // 5. Cuentas por Cobrar (Facturas Pendientes / En Cobro)
+  // 5. Cuentas por Cobrar (Facturas Pendientes reales)
   const cuentasPorCobrar = invoices
     ?.filter(i => i.status === 'DRAFT' || i.status === 'OVERDUE')
     .reduce((sum, i) => sum + Number(i.total_amount || 0), 0) || 0;
 
-  // Efectivo disponible en Caja Menor
+  // Efectivo disponible en Caja Menor (Fondos fondeados - gastos realizados)
   const ingresoFondoCaja = vouchers
     ?.filter(v => v.category === 'INGRESO DE FONDOS' && v.status === 'APPROVED')
-    .reduce((sum, v) => sum + Number(v.amount || 0), 0) || 1000000;
+    .reduce((sum, v) => sum + Number(v.amount || 0), 0) || 0;
   const saldoCajaMenor = Math.max(0, ingresoFondoCaja - gastosCajaMenor);
 
-  // Activos Totales (Bancos + Caja Menor + Cartera CxC + Activos Fijos)
+  // Activos Totales (Bancos + Caja Menor + Cartera CxC)
   const saldoBancos = Math.max(0, totalPatrimonio + totalIngresos - totalGastos - saldoCajaMenor);
-  const totalActivos = totalPasivos + totalPatrimonio + utilidadNeta;
+  const totalActivos = saldoBancos + saldoCajaMenor + cuentasPorCobrar;
 
   const handlePrint = () => {
     window.print();

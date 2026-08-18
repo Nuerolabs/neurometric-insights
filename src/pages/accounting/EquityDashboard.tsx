@@ -62,8 +62,9 @@ export default function EquityDashboard() {
   // New Shareholder Form State
   const [shName, setShName] = useState("");
   const [shDocument, setShDocument] = useState("");
-  const [shShares, setShShares] = useState("5000");
+  const [shShares, setShShares] = useState("");
   const [shSubscribed, setShSubscribed] = useState("");
+  const [shPaid, setShPaid] = useState("");
   const [shClass, setShClass] = useState("Ordinarias Clase A");
   const [shContributionType, setShContributionType] = useState("Capital & Tecnología");
   const [shIsFounder, setShIsFounder] = useState(true);
@@ -143,22 +144,42 @@ export default function EquityDashboard() {
       return;
     }
 
+    const subscribedNum = parseFloat(shSubscribed) || 0;
+    const paidNum = parseFloat(shPaid) || 0;
+
+    if (paidNum > subscribedNum) {
+      toast.error("El capital pagado no puede superar el capital suscrito.");
+      return;
+    }
+
     try {
-      await createShareholderMutation.mutateAsync({
+      const created = await createShareholderMutation.mutateAsync({
         name: shName,
         document_id: shDocument,
-        shares_owned: parseInt(shShares) || 0,
-        subscribed_value: parseFloat(shSubscribed) || 0,
+        shares_owned: parseInt(shShares) || Math.round(subscribedNum / 1000),
+        subscribed_value: subscribedNum,
         share_class: shClass,
         contribution_type: shContributionType,
         is_founder: shIsFounder
       });
 
-      toast.success(`Socio ${shName} registrado exitosamente.`);
+      // Si el socio pagó una parte o la totalidad al constituir, se registra su aporte inicial
+      if (paidNum > 0 && created?.id) {
+        await createContributionMutation.mutateAsync({
+          shareholder_id: created.id,
+          amount: paidNum,
+          payment_date: new Date().toISOString().split('T')[0],
+          reference: "APORTE-INICIAL-CONSTITUCION"
+        });
+      }
+
+      toast.success(`Socio ${shName} registrado. Suscrito: ${formatter.format(subscribedNum)}, Pagado: ${formatter.format(paidNum)}.`);
       setIsShareholderDialogOpen(false);
       setShName("");
       setShDocument("");
       setShSubscribed("");
+      setShPaid("");
+      setShShares("");
     } catch (err: any) {
       toast.error("Error al registrar socio: " + err.message);
     }
@@ -290,7 +311,7 @@ export default function EquityDashboard() {
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Patrimonio y Composición Accionaria</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Libro oficial de accionistas, capital suscrito, aportes pagados y saldos pendientes.
+            Control de capital suscrito, capital pagado y saldos pendientes de cada socio.
           </p>
         </div>
 
@@ -341,10 +362,10 @@ export default function EquityDashboard() {
                 Registrar Socio / Accionista
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[480px]">
+            <DialogContent className="sm:max-w-[500px]">
               <form onSubmit={handleCreateShareholder}>
                 <DialogHeader>
-                  <DialogTitle className="text-lg font-bold">Registrar Nuevo Accionista / Socio</DialogTitle>
+                  <DialogTitle className="text-lg font-bold">Registrar Accionista & Aportes</DialogTitle>
                 </DialogHeader>
                 <div className="grid gap-3.5 py-4">
                   <div>
@@ -353,18 +374,60 @@ export default function EquityDashboard() {
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <Label className="text-xs font-semibold text-slate-600">Cédula / Documento *</Label>
+                      <Label className="text-xs font-semibold text-slate-600">Cédula / NIT *</Label>
                       <Input value={shDocument} onChange={e=>setShDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="1.045.789.231" required />
                     </div>
                     <div>
                       <Label className="text-xs font-semibold text-slate-600">Acciones Poseídas</Label>
-                      <Input type="number" value={shShares} onChange={e=>setShShares(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="5000" />
+                      <Input type="number" value={shShares} onChange={e=>setShShares(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="Ej: 8000" />
                     </div>
                   </div>
-                  <div>
-                    <Label className="text-xs font-semibold text-slate-600">Capital Suscrito (COP) *</Label>
-                    <Input type="number" value={shSubscribed} onChange={e=>setShSubscribed(e.target.value)} className="h-9 text-sm font-mono mt-1" placeholder="30000000" required />
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Label className="text-xs font-semibold text-slate-700">Capital Suscrito Total (COP) *</Label>
+                      <Input 
+                        type="number" 
+                        value={shSubscribed} 
+                        onChange={e=>{
+                          setShSubscribed(e.target.value);
+                          if (!shShares) setShShares(Math.round((parseFloat(e.target.value) || 0) / 1000).toString());
+                        }} 
+                        className="h-9 text-sm font-mono mt-1 font-semibold" 
+                        placeholder="Ej: 8000000" 
+                        required 
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Capital Pagado Inicial (COP)</Label>
+                      <Input 
+                        type="number" 
+                        value={shPaid} 
+                        onChange={e=>setShPaid(e.target.value)} 
+                        className="h-9 text-sm font-mono mt-1 font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20" 
+                        placeholder="Ej: 7000000" 
+                      />
+                    </div>
                   </div>
+
+                  {/* Resumen dinámico en vivo */}
+                  {parseFloat(shSubscribed) > 0 && (
+                    <div className="p-3 bg-blue-50/60 dark:bg-slate-850 rounded-lg border border-blue-100 dark:border-slate-800 text-xs space-y-1.5">
+                      <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Total Suscrito (Compromiso):</span>
+                        <strong className="font-mono text-slate-900 dark:text-white">{formatter.format(parseFloat(shSubscribed) || 0)}</strong>
+                      </div>
+                      <div className="flex justify-between text-emerald-700 dark:text-emerald-400">
+                        <span>Abono Pagado en Caja:</span>
+                        <strong className="font-mono">{formatter.format(parseFloat(shPaid) || 0)}</strong>
+                      </div>
+                      <div className="flex justify-between text-rose-600 font-bold pt-1 border-t border-slate-200 dark:border-slate-700">
+                        <span>Saldo Pendiente por Pagar:</span>
+                        <span className="font-mono">{formatter.format(Math.max(0, (parseFloat(shSubscribed) || 0) - (parseFloat(shPaid) || 0)))}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <Label className="text-xs font-semibold text-slate-600">Clase de Acción / Rol</Label>
@@ -375,7 +438,7 @@ export default function EquityDashboard() {
                       <Input value={shContributionType} onChange={e=>setShContributionType(e.target.value)} className="h-9 text-sm mt-1" placeholder="Capital & Tecnología" />
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 pt-2">
+                  <div className="flex items-center gap-2 pt-1">
                     <input 
                       type="checkbox" 
                       id="isFounder" 
@@ -391,7 +454,7 @@ export default function EquityDashboard() {
                 <DialogFooter>
                   <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold w-full" disabled={createShareholderMutation.isPending}>
                     {createShareholderMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                    Guardar Socio en Libro Oficial
+                    Guardar Socio y Registrar Aportes
                   </Button>
                 </DialogFooter>
               </form>

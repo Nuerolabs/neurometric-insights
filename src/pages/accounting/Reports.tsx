@@ -87,14 +87,14 @@ export default function Reports() {
     ?.filter(i => i.status === 'DRAFT' || i.status === 'OVERDUE')
     .reduce((sum, i) => sum + Number(i.total_amount || 0), 0) || 0;
 
-  // Efectivo disponible en Caja Menor (Fondos fondeados - gastos realizados)
+  // Efectivo disponible en Caja Menor (Fondos fondeados reales - vales gastados)
   const ingresoFondoCaja = vouchers
-    ?.filter(v => v.category === 'INGRESO DE FONDOS' && v.status === 'APPROVED')
+    ?.filter(v => v.category === 'INGRESO DE FONDOS' && v.status !== 'REJECTED')
     .reduce((sum, v) => sum + Number(v.amount || 0), 0) || 0;
   const saldoCajaMenor = Math.max(0, ingresoFondoCaja - gastosCajaMenor);
 
-  // Activos Totales (Bancos + Caja Menor + Cartera CxC)
-  const saldoBancos = Math.max(0, totalPatrimonio + totalIngresos - totalGastos - saldoCajaMenor);
+  // Activos Totales (Disponible en Bancos + Caja Menor + Cartera CxC)
+  const saldoBancos = Math.max(0, totalPatrimonio + totalIngresos - totalGastos - ingresoFondoCaja);
   const totalActivos = saldoBancos + saldoCajaMenor + cuentasPorCobrar;
 
   const handlePrint = () => {

@@ -55,12 +55,13 @@ export function useCreatePettyCashVoucher() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newVoucher: Omit<PettyCashVoucher, 'id' | 'created_at' | 'status'>) => {
+    mutationFn: async (newVoucher: Omit<PettyCashVoucher, 'id' | 'created_at'> & { status?: PettyCashVoucher['status'] }) => {
+      const isFunding = newVoucher.category === 'INGRESO DE FONDOS';
       const vchObj: PettyCashVoucher = {
         ...newVoucher,
         id: `vch-${Date.now()}`,
-        status: 'PENDING',
-        created_at: new Date().toISOString().split('T')[0]
+        status: newVoucher.status || (isFunding ? 'APPROVED' : 'APPROVED'),
+        created_at: newVoucher.date || new Date().toISOString().split('T')[0]
       };
 
       try {
@@ -83,6 +84,8 @@ export function useCreatePettyCashVoucher() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['petty-cash'] });
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
     }
   });
 }

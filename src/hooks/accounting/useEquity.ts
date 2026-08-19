@@ -106,15 +106,25 @@ export function useEquityData() {
         console.error("Exception fetching equity data:", err);
       }
 
-      // Process and calculate paid/pending capital
+      // Process and calculate paid/pending capital with Cash vs Species separation
       const processedShareholders = shareholders.map(sh => {
         const shContributions = contributions.filter(c => c.shareholder_id === sh.id);
         const paidValue = shContributions.reduce((sum, c) => sum + Number(c.amount || 0), 0);
         const pendingValue = Math.max(0, Number(sh.subscribed_value) - paidValue);
         
+        // Detect if contribution is Species/Tech vs Real Cash
+        const isSpecies = (sh.contribution_type || '').toLowerCase().includes('especie') || 
+                          (sh.contribution_type || '').toLowerCase().includes('equipo') || 
+                          (sh.contribution_type || '').toLowerCase().includes('software');
+
+        const cashPaid = isSpecies ? 0 : paidValue;
+        const speciesPaid = isSpecies ? paidValue : 0;
+
         return {
             ...sh,
             paidValue,
+            cashPaid,
+            speciesPaid,
             pendingValue,
             contributions: shContributions
         };
@@ -122,6 +132,8 @@ export function useEquityData() {
 
       const totalSubscribed = shareholders.reduce((sum, sh) => sum + Number(sh.subscribed_value || 0), 0);
       const totalPaid = processedShareholders.reduce((sum, sh) => sum + sh.paidValue, 0);
+      const totalCashPaid = processedShareholders.reduce((sum, sh) => sum + sh.cashPaid, 0);
+      const totalSpeciesPaid = processedShareholders.reduce((sum, sh) => sum + sh.speciesPaid, 0);
       const totalPending = Math.max(0, totalSubscribed - totalPaid);
 
       return {
@@ -129,6 +141,8 @@ export function useEquityData() {
           summary: {
               totalSubscribed,
               totalPaid,
+              totalCashPaid: totalCashPaid > 0 ? totalCashPaid : totalPaid,
+              totalSpeciesPaid,
               totalPending,
               authorizedCapital
           }

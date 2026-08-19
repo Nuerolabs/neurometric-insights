@@ -539,8 +539,17 @@ export default function EquityDashboard() {
                   )}
 
                   <div>
-                    <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
-                    <Input value={shContributionType} onChange={e=>setShContributionType(e.target.value)} className="h-9 text-sm mt-1" placeholder="Capital & Tecnología" />
+                    <Label className="text-xs font-semibold text-slate-600">Naturaleza / Tipo de Aporte</Label>
+                    <select 
+                      value={shContributionType} 
+                      onChange={e=>setShContributionType(e.target.value)} 
+                      className="w-full h-9 text-xs mt-1 px-3 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-medium"
+                    >
+                      <option value="Dinero en Efectivo / Banco">💵 Dinero en Efectivo / Cuenta Bancaria (Liquidez Real)</option>
+                      <option value="Capital & Tecnología">🤝 Capital & Tecnología (Mixto)</option>
+                      <option value="En Especie (Equipos / Computadores)">💻 En Especie (Equipos de Cómputo / Hardware)</option>
+                      <option value="En Especie (Software / Propiedad Intelectual)">🧠 En Especie (Software / Propiedad Intelectual)</option>
+                    </select>
                   </div>
                 </div>
                 <DialogFooter>
@@ -864,8 +873,17 @@ export default function EquityDashboard() {
               )}
 
               <div>
-                <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
-                <Input value={editContributionType} onChange={e=>setEditContributionType(e.target.value)} className="h-9 text-sm mt-1" />
+                <Label className="text-xs font-semibold text-slate-600">Naturaleza / Tipo de Aporte</Label>
+                <select 
+                  value={editContributionType} 
+                  onChange={e=>setEditContributionType(e.target.value)} 
+                  className="w-full h-9 text-xs mt-1 px-3 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 font-medium"
+                >
+                  <option value="Dinero en Efectivo / Banco">💵 Dinero en Efectivo / Cuenta Bancaria (Liquidez Real)</option>
+                  <option value="Capital & Tecnología">🤝 Capital & Tecnología (Mixto)</option>
+                  <option value="En Especie (Equipos / Computadores)">💻 En Especie (Equipos de Cómputo / Hardware)</option>
+                  <option value="En Especie (Software / Propiedad Intelectual)">🧠 En Especie (Software / Propiedad Intelectual)</option>
+                </select>
               </div>
             </div>
             <DialogFooter>

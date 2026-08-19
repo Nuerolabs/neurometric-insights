@@ -74,8 +74,10 @@ export default function Reports() {
   const utilidadNeta = totalIngresos - totalGastos;
   const margenUtilidad = totalIngresos > 0 ? (utilidadNeta / totalIngresos) * 100 : 0;
 
-  // 3. Patrimonio (Capital realmente pagado en caja/bancos por los socios)
-  const totalPatrimonio = Number(equityData?.summary?.totalPaid || 0);
+  // 3. Patrimonio desglosado (Dinero Real vs Activos en Especie)
+  const capitalDineroReal = Number(equityData?.summary?.totalCashPaid || equityData?.summary?.totalPaid || 0);
+  const activosEnEspecie = Number(equityData?.summary?.totalSpeciesPaid || 0);
+  const totalPatrimonio = Number(equityData?.summary?.totalPaid || (capitalDineroReal + activosEnEspecie));
 
   // 4. Pasivos (Cuentas por pagar pendientes reales)
   const totalPasivos = bills
@@ -93,9 +95,13 @@ export default function Reports() {
     .reduce((sum, v) => sum + Number(v.amount || 0), 0) || 0;
   const saldoCajaMenor = Math.max(0, ingresoFondoCaja - gastosCajaMenor);
 
-  // Activos Totales (Disponible en Bancos + Caja Menor + Cartera CxC)
-  const saldoBancos = Math.max(0, totalPatrimonio + totalIngresos - totalGastos - ingresoFondoCaja);
-  const totalActivos = saldoBancos + saldoCajaMenor + cuentasPorCobrar;
+  // Dinero Real Disponible en Bancos (Aportes en Dinero + Cobro de Facturas - Gastos Pagados - Fondeo de Caja)
+  const saldoBancos = Math.max(0, capitalDineroReal + totalIngresos - totalGastos - ingresoFondoCaja);
+
+  // Activos Corrientes (Liquidez Operativa Real) y Activos No Corrientes (Especie / Tecnología)
+  const totalActivoCorriente = saldoBancos + saldoCajaMenor + cuentasPorCobrar;
+  const totalActivoNoCorriente = activosEnEspecie;
+  const totalActivos = totalActivoCorriente + totalActivoNoCorriente;
 
   const handlePrint = () => {
     window.print();
@@ -114,8 +120,13 @@ export default function Reports() {
       ["TOTAL GASTOS", totalGastos],
       ["UTILIDAD NETA DEL EJERCICIO", utilidadNeta],
       ["", ""],
-      ["ACTIVOS TOTALES", totalActivos],
-      ["PASIVOS TOTALES", totalPasivos],
+      ["DISPONIBLE REAL EN BANCOS", saldoBancos],
+      ["EFECTIVO EN CAJA MENOR", saldoCajaMenor],
+      ["CUENTAS POR COBRAR (CxC)", cuentasPorCobrar],
+      ["TOTAL ACTIVOS CORRIENTES (LIQUIDEZ)", totalActivoCorriente],
+      ["ACTIVOS NO CORRIENTES (ESPECIE/TECNOLOGÍA)", totalActivoNoCorriente],
+      ["TOTAL ACTIVOS", totalActivos],
+      ["PASIVOS TOTALES (CxP)", totalPasivos],
       ["PATRIMONIO TOTAL", totalPatrimonio + utilidadNeta]
     ];
 
@@ -152,7 +163,7 @@ export default function Reports() {
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reportes Gerenciales y Financieros</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Consolidación contable en tiempo real de ingresos por contratos, mensualidades, gastos y patrimonio.
+            Consolidación contable en tiempo real: liquidez bancaria real, gastos operacionales, activos en especie y patrimonio.
           </p>
         </div>
 
@@ -186,6 +197,23 @@ export default function Reports() {
           {/* Top Metric Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
+            {/* Liquidez Real en Bancos */}
+            <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
+                  <span>Disponible Real en Bancos</span>
+                  <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-blue-700 dark:text-blue-400 font-mono">{formatCOP(saldoBancos)}</div>
+                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+                  <span>Dinero real para pagos operativos</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Total Ingresos Cobrados */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
@@ -201,49 +229,36 @@ export default function Reports() {
               </CardContent>
             </Card>
 
+            {/* Total Gastos */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Costos y Gastos Totales</span>
+                  <span>Gastos Pagados (Egresos)</span>
                   <div className="p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md">
                     <ArrowDownRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{formatCOP(totalGastos)}</div>
-                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
-                  <span>Cloud, caja menor y proveedores</span>
+                <div className="text-2xl font-bold text-rose-600 font-mono">{formatCOP(totalGastos)}</div>
+                <div className="mt-2 text-xs text-slate-500">
+                  Cámara de Comercio, Cloud y Caja
                 </div>
               </CardContent>
             </Card>
 
+            {/* Utilidad Neta */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
               <CardContent className="p-5">
                 <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Utilidad Neta Operacional</span>
-                  <div className={`p-1.5 rounded-md ${utilidadNeta >= 0 ? 'bg-blue-50 dark:bg-blue-950/50 text-blue-600' : 'bg-rose-50 text-rose-600'}`}>
+                  <span>Utilidad Neta del Período</span>
+                  <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
                     <TrendingUp className="w-4 h-4" />
                   </div>
                 </div>
-                <div className={`text-2xl font-bold font-mono ${utilidadNeta >= 0 ? 'text-blue-700 dark:text-blue-400' : 'text-rose-600'}`}>
+                <div className={`text-2xl font-bold font-mono ${utilidadNeta >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600'}`}>
                   {formatCOP(utilidadNeta)}
                 </div>
-                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
-                  <span className="font-semibold text-slate-700 dark:text-slate-300">Margen neto: {margenUtilidad.toFixed(1)}%</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Cartera Activa por Cobrar (CxC)</span>
-                  <div className="p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md">
-                    <Calendar className="w-4 h-4" />
-                  </div>
-                </div>
-                <div className="text-2xl font-bold text-amber-700 dark:text-amber-400 font-mono">{formatCOP(cuentasPorCobrar)}</div>
-                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
-                  <span>Pendiente por recaudar</span>
+                <div className="mt-2 text-xs text-slate-500">
+                  Margen Neto: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margenUtilidad.toFixed(1)}%</strong>
                 </div>
               </CardContent>
             </Card>
@@ -258,7 +273,7 @@ export default function Reports() {
                   <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-4 px-6">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <TrendingUp className="w-4 h-4 text-blue-600" /> Estado de Resultados (PyG)
+                            <TrendingUp className="w-4 h-4 text-blue-600" /> Estado de Resultados (P&G)
                         </CardTitle>
                         <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200">
                           Operacional
@@ -276,7 +291,7 @@ export default function Reports() {
                               </TableRow>
                               <TableRow>
                                   <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                    Mensualidades y Suscripciones Recurrentes ($600.000 COP)
+                                    Ingresos por Suscripciones y Mensualidades IA
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-emerald-600 font-semibold">
                                     +{formatCOP(ingresosMensualidades)}
@@ -284,7 +299,7 @@ export default function Reports() {
                               </TableRow>
                               <TableRow>
                                   <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                    Servicios de Implementación y Setup de Plataforma
+                                    Ingresos por Implementación y Setup
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-emerald-600 font-semibold">
                                     +{formatCOP(ingresosImplementacion)}
@@ -293,19 +308,19 @@ export default function Reports() {
                               {otrosIngresos > 0 && (
                                 <TableRow>
                                     <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                      Otros Servicios y Consultoría Especializada
+                                      Otros Ingresos de Consultoría
                                     </TableCell>
                                     <TableCell className="text-right font-mono text-emerald-600 font-semibold">
                                       +{formatCOP(otrosIngresos)}
                                     </TableCell>
                                 </TableRow>
                               )}
-                              <TableRow className="border-t border-slate-200 dark:border-slate-700 bg-slate-50/30">
+                              <TableRow className="border-t border-slate-200 dark:border-slate-700 bg-emerald-50/40 dark:bg-emerald-950/20">
                                   <TableCell className="font-bold text-slate-900 dark:text-white text-sm">
-                                    Total Ingresos Brutos
+                                    Total Ingresos Operacionales
                                   </TableCell>
-                                  <TableCell className="text-right font-mono font-bold text-emerald-600">
-                                    {formatCOP(totalIngresos)}
+                                  <TableCell className="text-right font-mono font-bold text-emerald-700 dark:text-emerald-400">
+                                    +{formatCOP(totalIngresos)}
                                   </TableCell>
                               </TableRow>
 
@@ -334,7 +349,7 @@ export default function Reports() {
                               {otrosGastosCxP > 0 && (
                                 <TableRow>
                                     <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                      Otros Costos Administrativos y Proveedores
+                                      Gastos Administrativos, Cámara de Comercio & Proveedores
                                     </TableCell>
                                     <TableCell className="text-right font-mono text-rose-600 font-medium">
                                       -{formatCOP(otrosGastosCxP)}
@@ -364,30 +379,31 @@ export default function Reports() {
                   </CardContent>
               </Card>
 
-              {/* Balance General NIIF */}
+              {/* Balance General NIIF Clasificado */}
               <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
                   <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-4 px-6">
                       <div className="flex items-center justify-between">
                         <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <PieChartIcon className="w-4 h-4 text-blue-600" /> Balance General Clasificado
                         </CardTitle>
-                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
-                          Estructura Patrimonial
+                        <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200 font-mono">
+                          NIIF Colombia
                         </Badge>
                       </div>
                   </CardHeader>
                   <CardContent className="p-0">
                       <Table>
                           <TableBody>
-                              {/* 1. Activos */}
+                              {/* 1. Activos Corrientes (Liquidez Real) */}
                               <TableRow className="bg-slate-50/50 dark:bg-slate-900/30">
                                 <TableCell colSpan={2} className="text-xs font-bold uppercase tracking-wider text-slate-500 py-2.5">
-                                  1. Activos Corrientes y Disponibles
+                                  1. Activo Corriente (Liquidez Real en Dinero)
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                   <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
                                     Disponible en Bancos y Cuentas Operativas
+                                    <div className="text-[11px] text-slate-400">Dinero real disponible para pagos y compras</div>
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-blue-600 font-semibold">
                                     {formatCOP(saldoBancos)}
@@ -409,19 +425,49 @@ export default function Reports() {
                                     {formatCOP(cuentasPorCobrar)}
                                   </TableCell>
                               </TableRow>
-                              <TableRow className="border-t border-slate-200 dark:border-slate-700 bg-blue-50/40 dark:bg-blue-950/20">
+                              <TableRow className="border-t border-slate-200 dark:border-slate-700 bg-slate-50/40">
+                                  <TableCell className="font-semibold text-slate-800 dark:text-slate-200 text-xs pl-6">
+                                    Subtotal Activos Corrientes (Liquidez Total)
+                                  </TableCell>
+                                  <TableCell className="text-right font-mono font-bold text-blue-600">
+                                    {formatCOP(totalActivoCorriente)}
+                                  </TableCell>
+                              </TableRow>
+
+                              {/* 2. Activos No Corrientes (Especie / Tecnología) */}
+                              {activosEnEspecie > 0 && (
+                                <>
+                                  <TableRow className="bg-slate-50/50 dark:bg-slate-900/30 border-t-2 border-slate-200 dark:border-slate-800">
+                                    <TableCell colSpan={2} className="text-xs font-bold uppercase tracking-wider text-slate-500 py-2.5">
+                                      2. Activo No Corriente (Aportes en Especie / Equipos)
+                                    </TableCell>
+                                  </TableRow>
+                                  <TableRow>
+                                      <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
+                                        Equipos de Cómputo, Software & Tecnología Aportada
+                                        <div className="text-[11px] text-slate-400">Patrimonio en especie (no disponible en banco)</div>
+                                      </TableCell>
+                                      <TableCell className="text-right font-mono text-purple-600 font-semibold">
+                                        {formatCOP(activosEnEspecie)}
+                                      </TableCell>
+                                  </TableRow>
+                                </>
+                              )}
+
+                              {/* Total Activos */}
+                              <TableRow className="border-t-2 border-slate-300 dark:border-slate-700 bg-blue-50/40 dark:bg-blue-950/20">
                                   <TableCell className="font-bold text-slate-900 dark:text-white text-sm">
-                                    Total Activos
+                                    TOTAL ACTIVOS (Liquidez + Especie)
                                   </TableCell>
                                   <TableCell className="text-right font-mono font-bold text-blue-700 dark:text-blue-400">
                                     {formatCOP(totalActivos)}
                                   </TableCell>
                               </TableRow>
 
-                              {/* 2. Pasivos */}
+                              {/* 3. Pasivos */}
                               <TableRow className="bg-slate-50/50 dark:bg-slate-900/30 border-t-2 border-slate-200 dark:border-slate-800">
                                 <TableCell colSpan={2} className="text-xs font-bold uppercase tracking-wider text-slate-500 py-2.5">
-                                  2. Pasivos Corrientes
+                                  3. Pasivos Corrientes
                                 </TableCell>
                               </TableRow>
                               <TableRow>
@@ -433,15 +479,16 @@ export default function Reports() {
                                   </TableCell>
                               </TableRow>
 
-                              {/* 3. Patrimonio */}
+                              {/* 4. Patrimonio */}
                               <TableRow className="bg-slate-50/50 dark:bg-slate-900/30 border-t-2 border-slate-200 dark:border-slate-800">
                                 <TableCell colSpan={2} className="text-xs font-bold uppercase tracking-wider text-slate-500 py-2.5">
-                                  3. Patrimonio Neto
+                                  4. Patrimonio Neto
                                 </TableCell>
                               </TableRow>
                               <TableRow>
                                   <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                    Capital Social Suscrito y Pagado
+                                    Capital Social Pagado
+                                    <div className="text-[11px] text-slate-400">Dinero Real ({formatCOP(capitalDineroReal)}) + Especie ({formatCOP(activosEnEspecie)})</div>
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-emerald-600 font-semibold">
                                     {formatCOP(totalPatrimonio)}

@@ -57,12 +57,14 @@ export function useCreatePettyCashVoucher() {
   return useMutation({
     mutationFn: async (newVoucher: Omit<PettyCashVoucher, 'id' | 'created_at'> & { status?: PettyCashVoucher['status'] }) => {
       const isFunding = newVoucher.category === 'INGRESO DE FONDOS';
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `vch-${Date.now()}`;
       let createdRow: PettyCashVoucher | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_petty_cash')
           .insert([{
+            id: generatedId,
             voucher_number: newVoucher.voucher_number,
             beneficiary: newVoucher.beneficiary,
             description: newVoucher.description,
@@ -87,7 +89,7 @@ export function useCreatePettyCashVoucher() {
       if (!createdRow) {
         createdRow = {
           ...newVoucher,
-          id: `vch-${Date.now()}`,
+          id: generatedId,
           status: newVoucher.status || (isFunding ? 'APPROVED' : 'APPROVED'),
           created_at: newVoucher.date || new Date().toISOString().split('T')[0]
         };

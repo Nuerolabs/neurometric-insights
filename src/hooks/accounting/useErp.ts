@@ -111,10 +111,12 @@ export function useCreateClient() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (newClient: Omit<Client, 'id' | 'created_at'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `cli-${Date.now()}`;
       let createdRow: Client | null = null;
 
       try {
         const { data, error } = await supabase.from('accounting_clients').insert([{
+          id: generatedId,
           name: newClient.name,
           document_id: newClient.document_id,
           contact_person: newClient.contact_person,
@@ -139,7 +141,7 @@ export function useCreateClient() {
       if (!createdRow) {
         createdRow = {
           ...newClient,
-          id: `cli-${Date.now()}`,
+          id: generatedId,
           created_at: new Date().toISOString().split('T')[0]
         };
       }
@@ -189,10 +191,12 @@ export function useCreateInvoice() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (invoice: Omit<Invoice, 'id'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `inv-${Date.now()}`;
       let createdRow: Invoice | null = null;
 
       try {
         const { data, error } = await supabase.from('accounting_invoices').insert([{
+          id: generatedId,
           client_name: invoice.client_name,
           client_id: invoice.client_id,
           invoice_number: invoice.invoice_number,
@@ -218,7 +222,7 @@ export function useCreateInvoice() {
       if (!createdRow) {
         createdRow = {
           ...invoice,
-          id: `inv-${Date.now()}`
+          id: generatedId
         };
       }
 
@@ -282,10 +286,12 @@ export function useCreateBill() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (bill: Omit<Bill, 'id'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `bill-${Date.now()}`;
       let createdRow: Bill | null = null;
 
       try {
         const { data, error } = await supabase.from('accounting_bills').insert([{
+          id: generatedId,
           vendor_name: bill.vendor_name,
           vendor_id: bill.vendor_id,
           bill_number: bill.bill_number,
@@ -310,7 +316,7 @@ export function useCreateBill() {
       if (!createdRow) {
         createdRow = {
           ...bill,
-          id: `bill-${Date.now()}`
+          id: generatedId
         };
       }
 
@@ -368,10 +374,12 @@ export function useCreateEmployee() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (employee: Omit<Employee, 'id'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `emp-${Date.now()}`;
       let createdRow: Employee | null = null;
 
       try {
         const { data, error } = await supabase.from('accounting_employees').insert([{
+          id: generatedId,
           full_name: employee.full_name,
           document_id: employee.document_id,
           position: employee.position,
@@ -392,7 +400,7 @@ export function useCreateEmployee() {
       if (!createdRow) {
         createdRow = {
           ...employee,
-          id: `emp-${Date.now()}`
+          id: generatedId
         };
       }
 

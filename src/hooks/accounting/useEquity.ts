@@ -150,12 +150,14 @@ export function useCreateShareholder() {
 
   return useMutation({
     mutationFn: async (shareholder: Omit<Shareholder, 'id'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `sh-${Date.now()}`;
       let createdRow: Shareholder | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_shareholders')
           .insert([{
+            id: generatedId,
             name: shareholder.name,
             document_id: shareholder.document_id,
             shares_owned: shareholder.shares_owned,
@@ -179,7 +181,7 @@ export function useCreateShareholder() {
       if (!createdRow) {
         createdRow = {
           ...shareholder,
-          id: `sh-${Date.now()}`
+          id: generatedId
         };
       }
 
@@ -256,12 +258,14 @@ export function useCreateContribution() {
 
   return useMutation({
     mutationFn: async (contribution: Omit<CapitalContribution, 'id' | 'status'>) => {
+      const generatedId = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : `cnt-${Date.now()}`;
       let createdRow: CapitalContribution | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_capital_contributions')
           .insert([{
+            id: generatedId,
             shareholder_id: contribution.shareholder_id,
             amount: contribution.amount,
             payment_date: contribution.payment_date,
@@ -284,7 +288,7 @@ export function useCreateContribution() {
       if (!createdRow) {
         createdRow = {
           ...contribution,
-          id: `cnt-${Date.now()}`,
+          id: generatedId,
           status: 'APPROVED'
         };
       }

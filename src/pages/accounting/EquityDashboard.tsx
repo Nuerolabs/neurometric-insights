@@ -62,10 +62,10 @@ export default function EquityDashboard() {
   // New Shareholder Form State
   const [shName, setShName] = useState("");
   const [shDocument, setShDocument] = useState("");
-  const [shShares, setShShares] = useState("");
+  const [shSharesA, setShSharesA] = useState("");
+  const [shSharesB, setShSharesB] = useState("");
   const [shSubscribed, setShSubscribed] = useState("");
   const [shPaid, setShPaid] = useState("");
-  const [shClass, setShClass] = useState("Ordinarias Clase A");
   const [shContributionType, setShContributionType] = useState("Capital & Tecnología");
   const [shIsFounder, setShIsFounder] = useState(true);
 
@@ -73,9 +73,9 @@ export default function EquityDashboard() {
   const [editId, setEditId] = useState("");
   const [editName, setEditName] = useState("");
   const [editDocument, setEditDocument] = useState("");
-  const [editShares, setEditShares] = useState("");
+  const [editSharesA, setEditSharesA] = useState("");
+  const [editSharesB, setEditSharesB] = useState("");
   const [editSubscribed, setEditSubscribed] = useState("");
-  const [editClass, setEditClass] = useState("");
   const [editContributionType, setEditContributionType] = useState("");
   const [editIsFounder, setEditIsFounder] = useState(true);
 
@@ -105,11 +105,24 @@ export default function EquityDashboard() {
     setEditId(sh.id);
     setEditName(sh.name);
     setEditDocument(sh.document_id);
-    setEditShares(sh.shares_owned.toString());
     setEditSubscribed(sh.subscribed_value.toString());
-    setEditClass(sh.share_class);
     setEditContributionType(sh.contribution_type);
     setEditIsFounder(sh.is_founder);
+
+    // Parse Class A and B if formatted
+    const totalShares = sh.shares_owned || Math.round(Number(sh.subscribed_value) / 1000);
+    const rawClass = sh.share_class || "";
+    const matchA = rawClass.match(/Clase A\s*\(?(\d[\d\.\,]*)\)?/i);
+    const matchB = rawClass.match(/Clase B\s*\(?(\d[\d\.\,]*)\)?/i);
+
+    if (matchA || matchB) {
+      setEditSharesA(matchA ? matchA[1].replace(/\./g, '') : "0");
+      setEditSharesB(matchB ? matchB[1].replace(/\./g, '') : "0");
+    } else {
+      setEditSharesA(totalShares.toString());
+      setEditSharesB("0");
+    }
+
     setIsEditDialogOpen(true);
   };
 
@@ -146,19 +159,32 @@ export default function EquityDashboard() {
 
     const subscribedNum = parseFloat(shSubscribed) || 0;
     const paidNum = parseFloat(shPaid) || 0;
+    const sharesANum = parseInt(shSharesA) || 0;
+    const sharesBNum = parseInt(shSharesB) || 0;
+    const totalShares = (sharesANum + sharesBNum) > 0 ? (sharesANum + sharesBNum) : Math.round(subscribedNum / 1000);
 
     if (paidNum > subscribedNum) {
       toast.error("El capital pagado no puede superar el capital suscrito.");
       return;
     }
 
+    // Determine share class description
+    let computedClass = "Ordinarias Clase A";
+    if (sharesANum > 0 && sharesBNum > 0) {
+      computedClass = `Clase A (${sharesANum.toLocaleString()}) + Clase B (${sharesBNum.toLocaleString()})`;
+    } else if (sharesBNum > 0) {
+      computedClass = `Preferenciales Clase B (${sharesBNum.toLocaleString()})`;
+    } else if (sharesANum > 0) {
+      computedClass = `Ordinarias Clase A (${sharesANum.toLocaleString()})`;
+    }
+
     try {
       const created = await createShareholderMutation.mutateAsync({
         name: shName,
         document_id: shDocument,
-        shares_owned: parseInt(shShares) || Math.round(subscribedNum / 1000),
+        shares_owned: totalShares,
         subscribed_value: subscribedNum,
-        share_class: shClass,
+        share_class: computedClass,
         contribution_type: shContributionType,
         is_founder: shIsFounder
       });
@@ -173,13 +199,14 @@ export default function EquityDashboard() {
         });
       }
 
-      toast.success(`Socio ${shName} registrado. Suscrito: ${formatter.format(subscribedNum)}, Pagado: ${formatter.format(paidNum)}.`);
+      toast.success(`Socio ${shName} registrado. ${totalShares.toLocaleString()} Acciones (${formatter.format(subscribedNum)}).`);
       setIsShareholderDialogOpen(false);
       setShName("");
       setShDocument("");
       setShSubscribed("");
       setShPaid("");
-      setShShares("");
+      setShSharesA("");
+      setShSharesB("");
     } catch (err: any) {
       toast.error("Error al registrar socio: " + err.message);
     }
@@ -192,14 +219,28 @@ export default function EquityDashboard() {
       return;
     }
 
+    const subscribedNum = parseFloat(editSubscribed) || 0;
+    const sharesANum = parseInt(editSharesA) || 0;
+    const sharesBNum = parseInt(editSharesB) || 0;
+    const totalShares = (sharesANum + sharesBNum) > 0 ? (sharesANum + sharesBNum) : Math.round(subscribedNum / 1000);
+
+    let computedClass = "Ordinarias Clase A";
+    if (sharesANum > 0 && sharesBNum > 0) {
+      computedClass = `Clase A (${sharesANum.toLocaleString()}) + Clase B (${sharesBNum.toLocaleString()})`;
+    } else if (sharesBNum > 0) {
+      computedClass = `Preferenciales Clase B (${sharesBNum.toLocaleString()})`;
+    } else if (sharesANum > 0) {
+      computedClass = `Ordinarias Clase A (${sharesANum.toLocaleString()})`;
+    }
+
     try {
       await updateShareholderMutation.mutateAsync({
         id: editId,
         name: editName,
         document_id: editDocument,
-        shares_owned: parseInt(editShares) || 0,
-        subscribed_value: parseFloat(editSubscribed) || 0,
-        share_class: editClass,
+        shares_owned: totalShares,
+        subscribed_value: subscribedNum,
+        share_class: computedClass,
         contribution_type: editContributionType,
         is_founder: editIsFounder
       });
@@ -298,6 +339,19 @@ export default function EquityDashboard() {
   const percentSubscribed = summary.authorizedCapital > 0 ? (summary.totalSubscribed / summary.authorizedCapital) * 100 : 0;
   const percentPaid = summary.totalSubscribed > 0 ? (summary.totalPaid / summary.totalSubscribed) * 100 : 0;
 
+  // Real-time calculations for new shareholder form
+  const curSubscribed = parseFloat(shSubscribed) || 0;
+  const curPaid = parseFloat(shPaid) || 0;
+  const curSharesA = parseInt(shSharesA) || 0;
+  const curSharesB = parseInt(shSharesB) || 0;
+  const curTotalShares = (curSharesA + curSharesB) > 0 ? (curSharesA + curSharesB) : Math.round(curSubscribed / 1000);
+
+  // Real-time calculations for edit shareholder form
+  const curEditSubscribed = parseFloat(editSubscribed) || 0;
+  const curEditSharesA = parseInt(editSharesA) || 0;
+  const curEditSharesB = parseInt(editSharesB) || 0;
+  const curEditTotalShares = (curEditSharesA + curEditSharesB) > 0 ? (curEditSharesA + curEditSharesB) : Math.round(curEditSubscribed / 1000);
+
   return (
     <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
       
@@ -311,7 +365,7 @@ export default function EquityDashboard() {
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Patrimonio y Composición Accionaria</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Control de capital suscrito, capital pagado y saldos pendientes de cada socio.
+            Control de capital suscrito, acciones Clase A / B, capital pagado y saldos pendientes.
           </p>
         </div>
 
@@ -340,7 +394,7 @@ export default function EquityDashboard() {
                       value={newAuthorizedCapital} 
                       onChange={e=>setNewAuthorizedCapital(e.target.value)} 
                       className="h-9 text-sm font-mono mt-1" 
-                      placeholder="100000000" 
+                      placeholder="500000000" 
                       required 
                     />
                   </div>
@@ -362,7 +416,7 @@ export default function EquityDashboard() {
                 Registrar Socio / Accionista
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[540px]">
               <form onSubmit={handleCreateShareholder}>
                 <DialogHeader>
                   <DialogTitle className="text-lg font-bold">Registrar Accionista & Aportes</DialogTitle>
@@ -370,16 +424,61 @@ export default function EquityDashboard() {
                 <div className="grid gap-3.5 py-4">
                   <div>
                     <Label className="text-xs font-semibold text-slate-600">Nombre Completo y Rol *</Label>
-                    <Input value={shName} onChange={e=>setShName(e.target.value)} className="h-9 text-sm mt-1" placeholder="Ej: Jafet Navarro (Representante Legal)" required />
+                    <Input value={shName} onChange={e=>setShName(e.target.value)} className="h-9 text-sm mt-1" placeholder="Ej: Jesús Cantillo (Representante Legal)" required />
                   </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label className="text-xs font-semibold text-slate-600">Cédula / NIT *</Label>
-                      <Input value={shDocument} onChange={e=>setShDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="1.045.789.231" required />
+                  <div>
+                    <Label className="text-xs font-semibold text-slate-600">Cédula / NIT *</Label>
+                    <Input value={shDocument} onChange={e=>setShDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="1.080.822.532" required />
+                  </div>
+
+                  {/* Desglose de Acciones Clase A y B */}
+                  <div className="bg-slate-50 dark:bg-slate-850 p-3 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-xs font-bold text-slate-700 dark:text-slate-300">Composición de Acciones (Nominal $1.000 COP c/u)</Label>
+                      <Badge variant="outline" className="text-[11px] font-bold font-mono bg-blue-50 text-blue-700 border-blue-200">
+                        Total: {curTotalShares.toLocaleString()} Acciones
+                      </Badge>
                     </div>
-                    <div>
-                      <Label className="text-xs font-semibold text-slate-600">Acciones Poseídas</Label>
-                      <Input type="number" value={shShares} onChange={e=>setShShares(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="Ej: 8000" />
+
+                    <div className="grid grid-cols-2 gap-3 pt-1">
+                      <div>
+                        <Label className="text-[11px] font-semibold text-blue-700 dark:text-blue-400">Acciones Ordinarias Clase A</Label>
+                        <Input 
+                          type="number" 
+                          value={shSharesA} 
+                          onChange={e=>{
+                            const valA = e.target.value;
+                            setShSharesA(valA);
+                            const numA = parseInt(valA) || 0;
+                            const numB = parseInt(shSharesB) || 0;
+                            const tot = numA + numB;
+                            if (tot > 0) {
+                              setShSubscribed((tot * 1000).toString());
+                            }
+                          }} 
+                          className="h-9 text-sm font-mono mt-1 font-semibold" 
+                          placeholder="Ej: 7200" 
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-[11px] font-semibold text-purple-700 dark:text-purple-400">Acciones Clase B (Preferenciales)</Label>
+                        <Input 
+                          type="number" 
+                          value={shSharesB} 
+                          onChange={e=>{
+                            const valB = e.target.value;
+                            setShSharesB(valB);
+                            const numB = parseInt(valB) || 0;
+                            const numA = parseInt(shSharesA) || 0;
+                            const tot = numA + numB;
+                            if (tot > 0) {
+                              setShSubscribed((tot * 1000).toString());
+                            }
+                          }} 
+                          className="h-9 text-sm font-mono mt-1 font-semibold" 
+                          placeholder="Ej: 4800" 
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -390,11 +489,16 @@ export default function EquityDashboard() {
                         type="number" 
                         value={shSubscribed} 
                         onChange={e=>{
-                          setShSubscribed(e.target.value);
-                          if (!shShares) setShShares(Math.round((parseFloat(e.target.value) || 0) / 1000).toString());
+                          const val = e.target.value;
+                          setShSubscribed(val);
+                          const num = parseFloat(val) || 0;
+                          const calculatedShares = Math.round(num / 1000);
+                          if (!shSharesA && !shSharesB) {
+                            setShSharesA(calculatedShares.toString());
+                          }
                         }} 
                         className="h-9 text-sm font-mono mt-1 font-semibold" 
-                        placeholder="Ej: 8000000" 
+                        placeholder="Ej: 12000000" 
                         required 
                       />
                     </div>
@@ -405,50 +509,38 @@ export default function EquityDashboard() {
                         value={shPaid} 
                         onChange={e=>setShPaid(e.target.value)} 
                         className="h-9 text-sm font-mono mt-1 font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/20" 
-                        placeholder="Ej: 7000000" 
+                        placeholder="Ej: 12000000" 
                       />
                     </div>
                   </div>
 
                   {/* Resumen dinámico en vivo */}
-                  {parseFloat(shSubscribed) > 0 && (
+                  {curSubscribed > 0 && (
                     <div className="p-3 bg-blue-50/60 dark:bg-slate-850 rounded-lg border border-blue-100 dark:border-slate-800 text-xs space-y-1.5">
                       <div className="flex justify-between">
+                        <span className="text-slate-600 dark:text-slate-400">Acciones Calculadas:</span>
+                        <strong className="font-mono text-slate-900 dark:text-white">
+                          {curTotalShares.toLocaleString()} Acciones {curSharesA > 0 && curSharesB > 0 ? `(${curSharesA.toLocaleString()} Clase A + ${curSharesB.toLocaleString()} Clase B)` : ''}
+                        </strong>
+                      </div>
+                      <div className="flex justify-between">
                         <span className="text-slate-600 dark:text-slate-400">Total Suscrito (Compromiso):</span>
-                        <strong className="font-mono text-slate-900 dark:text-white">{formatter.format(parseFloat(shSubscribed) || 0)}</strong>
+                        <strong className="font-mono text-slate-900 dark:text-white">{formatter.format(curSubscribed)}</strong>
                       </div>
                       <div className="flex justify-between text-emerald-700 dark:text-emerald-400">
                         <span>Abono Pagado en Caja:</span>
-                        <strong className="font-mono">{formatter.format(parseFloat(shPaid) || 0)}</strong>
+                        <strong className="font-mono">{formatter.format(curPaid)}</strong>
                       </div>
                       <div className="flex justify-between text-rose-600 font-bold pt-1 border-t border-slate-200 dark:border-slate-700">
                         <span>Saldo Pendiente por Pagar:</span>
-                        <span className="font-mono">{formatter.format(Math.max(0, (parseFloat(shSubscribed) || 0) - (parseFloat(shPaid) || 0)))}</span>
+                        <span className="font-mono">{formatter.format(Math.max(0, curSubscribed - curPaid))}</span>
                       </div>
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <Label className="text-xs font-semibold text-slate-600">Clase de Acción / Rol</Label>
-                      <Input value={shClass} onChange={e=>setShClass(e.target.value)} className="h-9 text-sm mt-1" placeholder="Ordinarias Clase A" />
-                    </div>
-                    <div>
-                      <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
-                      <Input value={shContributionType} onChange={e=>setShContributionType(e.target.value)} className="h-9 text-sm mt-1" placeholder="Capital & Tecnología" />
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 pt-1">
-                    <input 
-                      type="checkbox" 
-                      id="isFounder" 
-                      checked={shIsFounder} 
-                      onChange={e=>setShIsFounder(e.target.checked)} 
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
-                    />
-                    <Label htmlFor="isFounder" className="text-xs font-semibold text-slate-700 cursor-pointer">
-                      Es Socio Fundador de la Empresa
-                    </Label>
+                  <div>
+                    <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
+                    <Input value={shContributionType} onChange={e=>setShContributionType(e.target.value)} className="h-9 text-sm mt-1" placeholder="Capital & Tecnología" />
                   </div>
                 </div>
                 <DialogFooter>
@@ -670,7 +762,7 @@ export default function EquityDashboard() {
 
       {/* Modal para Editar Socio */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[480px]">
+        <DialogContent className="sm:max-w-[540px]">
           <form onSubmit={handleUpdateShareholder}>
             <DialogHeader>
               <DialogTitle className="text-lg font-bold">Editar Accionista / Socio</DialogTitle>
@@ -680,41 +772,100 @@ export default function EquityDashboard() {
                 <Label className="text-xs font-semibold text-slate-600">Nombre Completo y Cargo *</Label>
                 <Input value={editName} onChange={e=>setEditName(e.target.value)} className="h-9 text-sm mt-1" required />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs font-semibold text-slate-600">Cédula / Documento *</Label>
-                  <Input value={editDocument} onChange={e=>setEditDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" required />
+              <div>
+                <Label className="text-xs font-semibold text-slate-600">Cédula / Documento *</Label>
+                <Input value={editDocument} onChange={e=>setEditDocument(e.target.value)} className="h-9 text-sm mt-1 font-mono" required />
+              </div>
+
+              {/* Desglose de Acciones Clase A y B al Editar */}
+              <div className="bg-slate-50 dark:bg-slate-850 p-3 rounded-lg border border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-xs font-bold text-slate-700 dark:text-slate-300">Composición de Acciones (Nominal $1.000 COP c/u)</Label>
+                  <Badge variant="outline" className="text-[11px] font-bold font-mono bg-blue-50 text-blue-700 border-blue-200">
+                    Total: {curEditTotalShares.toLocaleString()} Acciones
+                  </Badge>
                 </div>
-                <div>
-                  <Label className="text-xs font-semibold text-slate-600">Acciones Poseídas</Label>
-                  <Input type="number" value={editShares} onChange={e=>setEditShares(e.target.value)} className="h-9 text-sm mt-1 font-mono" />
+
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <Label className="text-[11px] font-semibold text-blue-700 dark:text-blue-400">Acciones Ordinarias Clase A</Label>
+                    <Input 
+                      type="number" 
+                      value={editSharesA} 
+                      onChange={e=>{
+                        const valA = e.target.value;
+                        setEditSharesA(valA);
+                        const numA = parseInt(valA) || 0;
+                        const numB = parseInt(editSharesB) || 0;
+                        const tot = numA + numB;
+                        if (tot > 0) {
+                          setEditSubscribed((tot * 1000).toString());
+                        }
+                      }} 
+                      className="h-9 text-sm font-mono mt-1 font-semibold" 
+                      placeholder="Ej: 7200" 
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-[11px] font-semibold text-purple-700 dark:text-purple-400">Acciones Clase B (Preferenciales)</Label>
+                    <Input 
+                      type="number" 
+                      value={editSharesB} 
+                      onChange={e=>{
+                        const valB = e.target.value;
+                        setEditSharesB(valB);
+                        const numB = parseInt(valB) || 0;
+                        const numA = parseInt(editSharesA) || 0;
+                        const tot = numA + numB;
+                        if (tot > 0) {
+                          setEditSubscribed((tot * 1000).toString());
+                        }
+                      }} 
+                      className="h-9 text-sm font-mono mt-1 font-semibold" 
+                      placeholder="Ej: 4800" 
+                    />
+                  </div>
                 </div>
               </div>
+
               <div>
                 <Label className="text-xs font-semibold text-slate-600">Capital Suscrito (COP) *</Label>
-                <Input type="number" value={editSubscribed} onChange={e=>setEditSubscribed(e.target.value)} className="h-9 text-sm font-mono mt-1" required />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label className="text-xs font-semibold text-slate-600">Clase de Acción / Rol</Label>
-                  <Input value={editClass} onChange={e=>setEditClass(e.target.value)} className="h-9 text-sm mt-1" />
-                </div>
-                <div>
-                  <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
-                  <Input value={editContributionType} onChange={e=>setEditContributionType(e.target.value)} className="h-9 text-sm mt-1" />
-                </div>
-              </div>
-              <div className="flex items-center gap-2 pt-2">
-                <input 
-                  type="checkbox" 
-                  id="editIsFounder" 
-                  checked={editIsFounder} 
-                  onChange={e=>setEditIsFounder(e.target.checked)} 
-                  className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4"
+                <Input 
+                  type="number" 
+                  value={editSubscribed} 
+                  onChange={e=>{
+                    const val = e.target.value;
+                    setEditSubscribed(val);
+                    const num = parseFloat(val) || 0;
+                    const calculatedShares = Math.round(num / 1000);
+                    if (!editSharesA && !editSharesB) {
+                      setEditSharesA(calculatedShares.toString());
+                    }
+                  }} 
+                  className="h-9 text-sm font-mono mt-1 font-semibold" 
+                  required 
                 />
-                <Label htmlFor="editIsFounder" className="text-xs font-semibold text-slate-700 cursor-pointer">
-                  Es Socio Fundador de la Empresa
-                </Label>
+              </div>
+
+              {/* Resumen dinámico al editar */}
+              {curEditSubscribed > 0 && (
+                <div className="p-3 bg-blue-50/60 dark:bg-slate-850 rounded-lg border border-blue-100 dark:border-slate-800 text-xs space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-400">Acciones Totales Calculadas:</span>
+                    <strong className="font-mono text-slate-900 dark:text-white">
+                      {curEditTotalShares.toLocaleString()} Acciones {curEditSharesA > 0 && curEditSharesB > 0 ? `(${curEditSharesA.toLocaleString()} Clase A + ${curEditSharesB.toLocaleString()} Clase B)` : ''}
+                    </strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-600 dark:text-slate-400">Total Capital Suscrito:</span>
+                    <strong className="font-mono text-slate-900 dark:text-white">{formatter.format(curEditSubscribed)}</strong>
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <Label className="text-xs font-semibold text-slate-600">Tipo de Aporte</Label>
+                <Input value={editContributionType} onChange={e=>setEditContributionType(e.target.value)} className="h-9 text-sm mt-1" />
               </div>
             </div>
             <DialogFooter>

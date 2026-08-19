@@ -572,9 +572,14 @@ export default function EquityDashboard() {
                     <FileSignature className="h-5 w-5 text-blue-600" />
                     Estructura del Capital Social
                 </h2>
-                <Button variant="ghost" size="sm" className="h-7 text-xs text-blue-600 font-semibold" onClick={() => { setNewAuthorizedCapital(summary.authorizedCapital.toString()); setIsCapitalDialogOpen(true); }}>
-                  <Pencil className="w-3.5 h-3.5 mr-1" /> Modificar Capital
-                </Button>
+                <div className="flex items-center gap-2 print:hidden">
+                  <Button variant="outline" size="sm" className="h-8 text-xs font-semibold" onClick={() => window.print()}>
+                    <Printer className="w-3.5 h-3.5 mr-1" /> Imprimir Libro de Socios / PDF
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 text-xs text-blue-600 font-semibold" onClick={() => { setNewAuthorizedCapital(summary.authorizedCapital.toString()); setIsCapitalDialogOpen(true); }}>
+                    <Pencil className="w-3.5 h-3.5 mr-1" /> Modificar Capital
+                  </Button>
+                </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -957,6 +962,63 @@ export default function EquityDashboard() {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* ══════════════════════════════════════════════════════════════
+          SECCIÓN OFICIAL DE IMPRESIÓN DEL LIBRO DE ACCIONISTAS
+      ══════════════════════════════════════════════════════════════ */}
+      <div className="mt-8 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6 print:border-none print:p-0 print:m-0">
+        
+        {/* Membrete Oficial visible en impresión */}
+        <div className="hidden print:block border-b-2 border-slate-900 pb-4 mb-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-xl font-bold uppercase tracking-tight text-slate-900">NEUROLABS TECH SOLUTIONS S.A.S.</h1>
+              <p className="text-xs font-semibold text-slate-700">NIT: 901.882.253-1 • Barranquilla, Colombia</p>
+              <p className="text-[11px] text-slate-600">Libro Oficial de Accionistas • Normas de Código de Comercio y NIIF</p>
+            </div>
+            <div className="text-right text-xs">
+              <p className="font-bold text-slate-900">CERTIFICADO ACCIONARIO OFICIAL</p>
+              <p className="text-slate-600">Fecha de Expedición: {new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+              <p className="text-slate-600">Moneda: Pesos Colombianos (COP)</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Certificación */}
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+          <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-200 text-xs uppercase tracking-wider">
+            <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
+            Certificación de Composición de Capital y Derechos Societarios
+          </div>
+          <p className="leading-relaxed">
+            El suscrito <strong>Representante Legal</strong> de <strong>NEUROLABS TECH SOLUTIONS S.A.S.</strong> certifica que a la fecha de expedición, el capital de la sociedad se encuentra compuesto por un Capital Autorizado de <strong>{formatter.format(summary.authorizedCapital)}</strong>, un Capital Suscrito de <strong>{formatter.format(summary.totalSubscribed)}</strong> y un Capital Social Pagado de <strong>{formatter.format(summary.totalPaid)}</strong> (desglosado en Dinero Real Líquido: <strong>{formatter.format(summary.totalCashPaid)}</strong> y Bienes/Activos en Especie: <strong>{formatter.format(summary.totalSpeciesPaid)}</strong>), debidamente asentado en los libros estatutarios de la compañía.
+          </p>
+        </div>
+
+        {/* Bloque de Firmas Oficiales */}
+        <div className="pt-6 grid grid-cols-2 gap-12 text-xs">
+          <div className="space-y-2">
+            <div className="border-b-2 border-slate-400 dark:border-slate-600 w-full h-12"></div>
+            <div>
+              <p className="font-bold text-slate-900 dark:text-white">JESÚS DAVID CANTILLO PAREJO</p>
+              <p className="text-slate-500">Representante Legal Principal</p>
+              <p className="text-slate-500 text-[11px]">C.C. 1.080.822.532 de Barranquilla</p>
+              <p className="text-slate-400 text-[10px]">NEUROLABS TECH SOLUTIONS S.A.S.</p>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="border-b-2 border-slate-400 dark:border-slate-600 w-full h-12"></div>
+            <div>
+              <p className="font-bold text-slate-900 dark:text-white">SECRETARÍA GENERAL / REVISORÍA</p>
+              <p className="text-slate-500">Certificación y Asentamiento en Libro</p>
+              <p className="text-slate-500 text-[11px]">Cámara de Comercio de Barranquilla</p>
+              <p className="text-slate-400 text-[10px]">Libro de Registro de Accionistas</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

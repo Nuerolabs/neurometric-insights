@@ -517,6 +517,63 @@ export default function Reports() {
                   </CardContent>
               </Card>
           </div>
+
+          {/* ══════════════════════════════════════════════════════════════
+              SECCIÓN OFICIAL DE IMPRESIÓN Y CERTIFICACIÓN CONTABLE NIIF
+          ══════════════════════════════════════════════════════════════ */}
+          <div className="mt-8 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 space-y-6 print:border-none print:p-0 print:m-0">
+            
+            {/* Membrete Oficial visible en impresión */}
+            <div className="hidden print:block border-b-2 border-slate-900 pb-4 mb-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-xl font-bold uppercase tracking-tight text-slate-900">NEUROLABS TECH SOLUTIONS S.A.S.</h1>
+                  <p className="text-xs font-semibold text-slate-700">NIT: 901.882.253-1 • Barranquilla, Colombia</p>
+                  <p className="text-[11px] text-slate-600">Módulo Contable ERP • Normas Internacionales de Información Financiera (NIIF)</p>
+                </div>
+                <div className="text-right text-xs">
+                  <p className="font-bold text-slate-900">INFORME FINANCIERO OFICIAL</p>
+                  <p className="text-slate-600">Fecha de Expedición: {new Date().toLocaleDateString('es-CO', { day: '2-digit', month: 'long', year: 'numeric' })}</p>
+                  <p className="text-slate-600">Moneda: COP ($)</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Certificación Contable */}
+            <div className="p-4 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 space-y-2">
+              <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-slate-200 text-xs uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                Certificación de Estados Financieros (Art. 37 Ley 222 de 1995)
+              </div>
+              <p className="leading-relaxed">
+                Los suscritos <strong>Representante Legal</strong> y <strong>Contador Público</strong> certificamos que los Estados de Situación Financiera y Estados de Resultados aquí descritos han sido verificados fielmente a partir de los libros y registros contables de la sociedad <strong>NEUROLABS TECH SOLUTIONS S.A.S.</strong>, reflejando de forma fidedigna y razonable la liquidez disponible en bancos, activos en especie, obligaciones con terceros y el patrimonio social bajo estándares NIIF.
+              </p>
+            </div>
+
+            {/* Bloque de Firmas Oficiales */}
+            <div className="pt-6 grid grid-cols-2 gap-12 text-xs">
+              <div className="space-y-2">
+                <div className="border-b-2 border-slate-400 dark:border-slate-600 w-full h-12"></div>
+                <div>
+                  <p className="font-bold text-slate-900 dark:text-white">JESÚS DAVID CANTILLO PAREJO</p>
+                  <p className="text-slate-500">Representante Legal Principal</p>
+                  <p className="text-slate-500 text-[11px]">C.C. 1.080.822.532 de Barranquilla</p>
+                  <p className="text-slate-400 text-[10px]">NEUROLABS TECH SOLUTIONS S.A.S.</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="border-b-2 border-slate-400 dark:border-slate-600 w-full h-12"></div>
+                <div>
+                  <p className="font-bold text-slate-900 dark:text-white">CONTADOR PÚBLICO TITULADO</p>
+                  <p className="text-slate-500">Revisoría Contable y Financiera</p>
+                  <p className="text-slate-500 text-[11px]">T.P. N° ___________________</p>
+                  <p className="text-slate-400 text-[10px]">Dictamen sin salvedades NIIF</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </>
       )}
     </div>

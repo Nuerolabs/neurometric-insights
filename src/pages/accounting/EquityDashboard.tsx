@@ -26,7 +26,9 @@ import {
   ShieldCheck, 
   Pencil, 
   Trash2,
-  Settings2
+  Settings2,
+  Printer,
+  Download
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";

@@ -26,6 +26,21 @@ export interface CapitalContribution {
 const DEFAULT_SHAREHOLDERS: Shareholder[] = [];
 const DEFAULT_CONTRIBUTIONS: CapitalContribution[] = [];
 
+const getLocalLiquidCash = (): number => {
+  try {
+    const raw = localStorage.getItem('neurolabs_erp_liquid_cash');
+    return raw ? parseFloat(raw) : 1215000;
+  } catch {
+    return 1215000;
+  }
+};
+
+const setLocalLiquidCash = (val: number) => {
+  try {
+    localStorage.setItem('neurolabs_erp_liquid_cash', val.toString());
+  } catch {}
+};
+
 const getLocalAuthorizedCapital = (): number => {
   try {
     const raw = localStorage.getItem('neurolabs_erp_authorized_capital');
@@ -73,6 +88,7 @@ const setLocalContributions = (data: CapitalContribution[]) => {
 
 export function useEquityData() {
   return useQuery({
+
     queryKey: ['equity'],
     queryFn: async () => {
       let shareholders: Shareholder[] = getLocalShareholders();
@@ -130,10 +146,11 @@ export function useEquityData() {
         };
       });
 
+      const configuredLiquidCash = getLocalLiquidCash();
       const totalSubscribed = shareholders.reduce((sum, sh) => sum + Number(sh.subscribed_value || 0), 0);
       const totalPaid = processedShareholders.reduce((sum, sh) => sum + sh.paidValue, 0);
-      const totalCashPaid = processedShareholders.reduce((sum, sh) => sum + sh.cashPaid, 0);
-      const totalSpeciesPaid = processedShareholders.reduce((sum, sh) => sum + sh.speciesPaid, 0);
+      const totalCashPaid = configuredLiquidCash > 0 ? configuredLiquidCash : Math.min(totalPaid, 1215000);
+      const totalSpeciesPaid = Math.max(0, totalPaid - totalCashPaid);
       const totalPending = Math.max(0, totalSubscribed - totalPaid);
 
       return {
@@ -141,12 +158,26 @@ export function useEquityData() {
           summary: {
               totalSubscribed,
               totalPaid,
-              totalCashPaid: totalCashPaid > 0 ? totalCashPaid : totalPaid,
+              totalCashPaid,
               totalSpeciesPaid,
               totalPending,
               authorizedCapital
           }
       };
+    }
+  });
+}
+
+export function useUpdateLiquidCash() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newAmount: number) => {
+      setLocalLiquidCash(newAmount);
+      return newAmount;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
     }
   });
 }

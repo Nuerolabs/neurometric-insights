@@ -597,14 +597,30 @@ export default function EquityDashboard() {
                   </div>
 
                   {/* Capital Pagado */}
-                  <div className="p-4 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 space-y-1.5">
-                      <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Capital Pagado en Caja</p>
-                      <p className="text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">{formatter.format(summary.totalPaid)}</p>
-                      <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
-                        <span>Saldo Pendiente: {formatter.format(summary.totalPending)}</span>
-                        <span className="font-bold">{percentPaid.toFixed(1)}% Pagado</span>
+                  <div className="p-4 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Capital Social Pagado</p>
+                        <Badge variant="outline" className="text-[10px] font-bold bg-emerald-100/50 text-emerald-800 border-emerald-300">
+                          {percentPaid.toFixed(1)}% Pagado
+                        </Badge>
                       </div>
-                      <Progress value={percentPaid} className="h-2 bg-emerald-100 dark:bg-emerald-900/30" />
+                      <p className="text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">{formatter.format(summary.totalPaid)}</p>
+                      
+                      {/* Desglose Dinero Real vs Especie */}
+                      <div className="pt-1.5 border-t border-emerald-200/60 dark:border-emerald-900/40 space-y-1 text-[11px]">
+                        <div className="flex justify-between items-center text-slate-700 dark:text-slate-300">
+                          <span className="flex items-center gap-1 font-semibold text-blue-700 dark:text-blue-400">
+                            💵 Dinero Real Bancos:
+                          </span>
+                          <strong className="font-mono text-blue-700 dark:text-blue-400">{formatter.format(summary.totalCashPaid)}</strong>
+                        </div>
+                        <div className="flex justify-between items-center text-slate-600 dark:text-slate-400">
+                          <span className="flex items-center gap-1">
+                            💻 Bienes & Especie:
+                          </span>
+                          <strong className="font-mono">{formatter.format(summary.totalSpeciesPaid)}</strong>
+                        </div>
+                      </div>
                   </div>
               </div>
           </div>

@@ -82,23 +82,28 @@ export function useEquityData() {
         const { data: shData, error: shError } = await supabase
           .from('accounting_shareholders')
           .select('*')
-          .order('is_founder', { ascending: false })
-          .order('shares_owned', { ascending: false });
+          .order('subscribed_value', { ascending: false });
 
-        if (!shError && shData && shData.length > 0) {
-          shareholders = shData;
-          setLocalShareholders(shData);
+        if (shError) {
+          console.error("Error fetching shareholders:", shError);
+        } else if (shData && shData.length > 0) {
+          shareholders = shData as Shareholder[];
+          setLocalShareholders(shData as Shareholder[]);
         }
 
         const { data: cbData, error: cbError } = await supabase
           .from('accounting_capital_contributions')
           .select('*');
 
-        if (!cbError && cbData && cbData.length > 0) {
-          contributions = cbData;
-          setLocalContributions(cbData);
+        if (cbError) {
+          console.error("Error fetching contributions:", cbError);
+        } else if (cbData && cbData.length > 0) {
+          contributions = cbData as CapitalContribution[];
+          setLocalContributions(cbData as CapitalContribution[]);
         }
-      } catch {}
+      } catch (err) {
+        console.error("Exception fetching equity data:", err);
+      }
 
       // Process and calculate paid/pending capital
       const processedShareholders = shareholders.map(sh => {
@@ -162,20 +167,22 @@ export function useCreateShareholder() {
             document_id: shareholder.document_id,
             shares_owned: shareholder.shares_owned,
             subscribed_value: shareholder.subscribed_value,
-            share_class: shareholder.share_class,
-            contribution_type: shareholder.contribution_type,
-            is_founder: shareholder.is_founder
+            share_class: shareholder.share_class || 'Ordinarias Clase A',
+            contribution_type: shareholder.contribution_type || 'Capital & Tecnología'
           }])
           .select()
           .single();
 
         if (error) {
           console.error("Error creating shareholder in Supabase:", error);
+          toast.error("Error Supabase: " + error.message);
+          throw new Error(error.message);
         } else if (data) {
           createdRow = data as Shareholder;
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Exception creating shareholder in Supabase:", err);
+        throw err;
       }
 
       if (!createdRow) {
@@ -201,7 +208,7 @@ export function useUpdateShareholder() {
   return useMutation({
     mutationFn: async (shareholder: Shareholder) => {
       try {
-        await supabase
+        const { error } = await supabase
           .from('accounting_shareholders')
           .update({
             name: shareholder.name,
@@ -209,11 +216,15 @@ export function useUpdateShareholder() {
             shares_owned: shareholder.shares_owned,
             subscribed_value: shareholder.subscribed_value,
             share_class: shareholder.share_class,
-            contribution_type: shareholder.contribution_type,
-            is_founder: shareholder.is_founder
+            contribution_type: shareholder.contribution_type
           })
           .eq('id', shareholder.id);
-      } catch (err) {
+
+        if (error) {
+          console.error("Error updating shareholder in Supabase:", error);
+          toast.error("Error Supabase: " + error.message);
+        }
+      } catch (err: any) {
         console.error("Error updating shareholder in Supabase:", err);
       }
 
@@ -234,11 +245,16 @@ export function useDeleteShareholder() {
   return useMutation({
     mutationFn: async (id: string) => {
       try {
-        await supabase
+        const { error } = await supabase
           .from('accounting_shareholders')
           .delete()
           .eq('id', id);
-      } catch (err) {
+
+        if (error) {
+          console.error("Error deleting shareholder in Supabase:", error);
+          toast.error("Error Supabase: " + error.message);
+        }
+      } catch (err: any) {
         console.error("Error deleting shareholder in Supabase:", err);
       }
 
@@ -270,7 +286,7 @@ export function useCreateContribution() {
             amount: contribution.amount,
             payment_date: contribution.payment_date,
             reference: contribution.reference,
-            receipt_url: contribution.receipt_url,
+            receipt_url: contribution.receipt_url || '',
             status: 'APPROVED'
           }])
           .select()
@@ -278,10 +294,11 @@ export function useCreateContribution() {
 
         if (error) {
           console.error("Error creating contribution in Supabase:", error);
+          toast.error("Error Supabase Aporte: " + error.message);
         } else if (data) {
           createdRow = data as CapitalContribution;
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Exception creating contribution in Supabase:", err);
       }
 

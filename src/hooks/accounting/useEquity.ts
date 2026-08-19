@@ -150,29 +150,42 @@ export function useCreateShareholder() {
 
   return useMutation({
     mutationFn: async (shareholder: Omit<Shareholder, 'id'>) => {
-      const obj: Shareholder = {
-        ...shareholder,
-        id: `sh-${Date.now()}`
-      };
+      let createdRow: Shareholder | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_shareholders')
-          .insert([obj])
+          .insert([{
+            name: shareholder.name,
+            document_id: shareholder.document_id,
+            shares_owned: shareholder.shares_owned,
+            subscribed_value: shareholder.subscribed_value,
+            share_class: shareholder.share_class,
+            contribution_type: shareholder.contribution_type,
+            is_founder: shareholder.is_founder
+          }])
           .select()
           .single();
 
-        if (!error && data) {
-          const cur = getLocalShareholders();
-          setLocalShareholders([data, ...cur]);
-          return data;
+        if (error) {
+          console.error("Error creating shareholder in Supabase:", error);
+        } else if (data) {
+          createdRow = data as Shareholder;
         }
-      } catch {}
+      } catch (err) {
+        console.error("Exception creating shareholder in Supabase:", err);
+      }
+
+      if (!createdRow) {
+        createdRow = {
+          ...shareholder,
+          id: `sh-${Date.now()}`
+        };
+      }
 
       const cur = getLocalShareholders();
-      const updated = [obj, ...cur];
-      setLocalShareholders(updated);
-      return obj;
+      setLocalShareholders([createdRow, ...cur.filter(s => s.id !== createdRow!.id)]);
+      return createdRow;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['equity'] });
@@ -188,9 +201,19 @@ export function useUpdateShareholder() {
       try {
         await supabase
           .from('accounting_shareholders')
-          .update(shareholder)
+          .update({
+            name: shareholder.name,
+            document_id: shareholder.document_id,
+            shares_owned: shareholder.shares_owned,
+            subscribed_value: shareholder.subscribed_value,
+            share_class: shareholder.share_class,
+            contribution_type: shareholder.contribution_type,
+            is_founder: shareholder.is_founder
+          })
           .eq('id', shareholder.id);
-      } catch {}
+      } catch (err) {
+        console.error("Error updating shareholder in Supabase:", err);
+      }
 
       const cur = getLocalShareholders();
       const updated = cur.map(s => s.id === shareholder.id ? shareholder : s);
@@ -213,7 +236,9 @@ export function useDeleteShareholder() {
           .from('accounting_shareholders')
           .delete()
           .eq('id', id);
-      } catch {}
+      } catch (err) {
+        console.error("Error deleting shareholder in Supabase:", err);
+      }
 
       const cur = getLocalShareholders();
       const updated = cur.filter(s => s.id !== id);
@@ -231,30 +256,42 @@ export function useCreateContribution() {
 
   return useMutation({
     mutationFn: async (contribution: Omit<CapitalContribution, 'id' | 'status'>) => {
-      const obj: CapitalContribution = { 
-        ...contribution, 
-        id: `cnt-${Date.now()}`, 
-        status: 'APPROVED' 
-      };
+      let createdRow: CapitalContribution | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_capital_contributions')
-          .insert([obj])
+          .insert([{
+            shareholder_id: contribution.shareholder_id,
+            amount: contribution.amount,
+            payment_date: contribution.payment_date,
+            reference: contribution.reference,
+            receipt_url: contribution.receipt_url,
+            status: 'APPROVED'
+          }])
           .select()
           .single();
 
-        if (!error && data) {
-          const cur = getLocalContributions();
-          setLocalContributions([data, ...cur]);
-          return data;
+        if (error) {
+          console.error("Error creating contribution in Supabase:", error);
+        } else if (data) {
+          createdRow = data as CapitalContribution;
         }
-      } catch {}
+      } catch (err) {
+        console.error("Exception creating contribution in Supabase:", err);
+      }
+
+      if (!createdRow) {
+        createdRow = {
+          ...contribution,
+          id: `cnt-${Date.now()}`,
+          status: 'APPROVED'
+        };
+      }
 
       const cur = getLocalContributions();
-      const updated = [obj, ...cur];
-      setLocalContributions(updated);
-      return obj;
+      setLocalContributions([createdRow, ...cur.filter(c => c.id !== createdRow!.id)]);
+      return createdRow;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['equity'] });

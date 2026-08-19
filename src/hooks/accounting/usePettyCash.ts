@@ -57,30 +57,45 @@ export function useCreatePettyCashVoucher() {
   return useMutation({
     mutationFn: async (newVoucher: Omit<PettyCashVoucher, 'id' | 'created_at'> & { status?: PettyCashVoucher['status'] }) => {
       const isFunding = newVoucher.category === 'INGRESO DE FONDOS';
-      const vchObj: PettyCashVoucher = {
-        ...newVoucher,
-        id: `vch-${Date.now()}`,
-        status: newVoucher.status || (isFunding ? 'APPROVED' : 'APPROVED'),
-        created_at: newVoucher.date || new Date().toISOString().split('T')[0]
-      };
+      let createdRow: PettyCashVoucher | null = null;
 
       try {
         const { data, error } = await supabase
           .from('accounting_petty_cash')
-          .insert([vchObj])
+          .insert([{
+            voucher_number: newVoucher.voucher_number,
+            beneficiary: newVoucher.beneficiary,
+            description: newVoucher.description,
+            amount: newVoucher.amount,
+            category: newVoucher.category,
+            status: newVoucher.status || (isFunding ? 'APPROVED' : 'APPROVED'),
+            date: newVoucher.date || new Date().toISOString().split('T')[0],
+            receipt_url: newVoucher.receipt_url
+          }])
           .select()
           .single();
 
-        if (!error && data) {
-          const cur = getLocalVouchers();
-          setLocalVouchers([data, ...cur]);
-          return data;
+        if (error) {
+          console.error("Error creating petty cash in Supabase:", error);
+        } else if (data) {
+          createdRow = data as PettyCashVoucher;
         }
-      } catch {}
+      } catch (err) {
+        console.error("Exception creating petty cash in Supabase:", err);
+      }
+
+      if (!createdRow) {
+        createdRow = {
+          ...newVoucher,
+          id: `vch-${Date.now()}`,
+          status: newVoucher.status || (isFunding ? 'APPROVED' : 'APPROVED'),
+          created_at: newVoucher.date || new Date().toISOString().split('T')[0]
+        };
+      }
 
       const cur = getLocalVouchers();
-      setLocalVouchers([vchObj, ...cur]);
-      return vchObj;
+      setLocalVouchers([createdRow, ...cur.filter(v => v.id !== createdRow!.id)]);
+      return createdRow;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['petty-cash'] });

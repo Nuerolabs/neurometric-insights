@@ -3,6 +3,7 @@ import { Bot, X, Send, Minimize2, Sparkles, ExternalLink } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { sendGroqMessage } from "@/lib/groq";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -329,14 +330,9 @@ export const AgentDemoWidget = () => {
     }
   }, [isOpen, isMinimized]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmed = input.trim();
     if (!trimmed || isThinking) return;
-
-    // Build updated quote context based on current state
-    let updatedCtx = { ...quoteCtx };
-    if (convState === "quote_q1") updatedCtx.volume = trimmed;
-    if (convState === "quote_q2") updatedCtx.crm = trimmed;
 
     const userMsg: Message = {
       id: `u-${Date.now()}`,
@@ -345,13 +341,31 @@ export const AgentDemoWidget = () => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const currentHistory = [...messages, userMsg];
+    setMessages(currentHistory);
     setInput("");
     setIsThinking(true);
 
-    // Simulate AI reasoning delay (800-1600ms)
-    const delay = 800 + Math.random() * 800;
-    setTimeout(() => {
+    try {
+      // Llamada real a la IA de Groq (Llama 3.3 70B)
+      const aiReply = await sendGroqMessage(messages, trimmed);
+
+      const assistantMsg: Message = {
+        id: `a-${Date.now()}`,
+        role: "assistant",
+        content: aiReply,
+        timestamp: new Date(),
+      };
+
+      setMessages((prev) => [...prev, assistantMsg]);
+    } catch (error) {
+      console.warn("Groq API falló o tuvo un problema de conexión, usando motor de contingencia:", error);
+      
+      // Fallback a motor estructurado si falla la red
+      let updatedCtx = { ...quoteCtx };
+      if (convState === "quote_q1") updatedCtx.volume = trimmed;
+      if (convState === "quote_q2") updatedCtx.crm = trimmed;
+
       const { reply, nextState, card } = buildResponse(trimmed, convState, updatedCtx);
 
       const assistantMsg: Message = {
@@ -365,10 +379,10 @@ export const AgentDemoWidget = () => {
       setMessages((prev) => [...prev, assistantMsg]);
       setConvState(nextState);
       setQuoteCtx(updatedCtx);
+    } finally {
       setIsThinking(false);
-
       if (!isOpen) setUnread((n) => n + 1);
-    }, delay);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {

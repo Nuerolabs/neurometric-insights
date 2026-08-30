@@ -154,6 +154,34 @@ export function useCreateClient() {
   });
 }
 
+export function useUpdateClient() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (client: Partial<Client> & { id: string }) => {
+      try {
+        await supabase.from('accounting_clients').update({
+          name: client.name,
+          document_id: client.document_id,
+          contact_person: client.contact_person,
+          email: client.email,
+          phone: client.phone,
+          service_description: client.service_description,
+          implementation_fee: client.implementation_fee,
+          monthly_fee: client.monthly_fee,
+          billing_day: client.billing_day,
+          status: client.status
+        }).eq('id', client.id);
+      } catch (e) {}
+
+      const current = getLocal<Client[]>('clients', INITIAL_CLIENTS);
+      const updated = current.map(c => c.id === client.id ? { ...c, ...client } : c);
+      setLocal('clients', updated);
+      return client;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['clients'] })
+  });
+}
+
 export function useDeleteClient() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -240,23 +268,57 @@ export function useCreateInvoice() {
 export function useUpdateInvoiceStatus() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: 'DRAFT' | 'PAID' | 'OVERDUE' | 'CANCELLED' }) => {
-      const now = new Date().toISOString().split('T')[0];
+    mutationFn: async ({ 
+      id, 
+      status, 
+      payment_date, 
+      notes 
+    }: { 
+      id: string; 
+      status: 'DRAFT' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+      payment_date?: string;
+      notes?: string;
+    }) => {
+      const now = payment_date || new Date().toISOString().split('T')[0];
       try {
-        await supabase.from('accounting_invoices').update({ 
+        const updatePayload: any = { 
           status, 
-          payment_date: status === 'PAID' ? now : undefined 
-        }).eq('id', id);
+          payment_date: status === 'PAID' ? now : null 
+        };
+        if (notes !== undefined) {
+          updatePayload.notes = notes;
+        }
+        await supabase.from('accounting_invoices').update(updatePayload).eq('id', id);
       } catch {}
 
       const current = getLocal<Invoice[]>('invoices', INITIAL_INVOICES);
       const updated = current.map(inv => inv.id === id ? { 
         ...inv, 
         status, 
-        payment_date: status === 'PAID' ? (inv.payment_date || now) : undefined 
+        payment_date: status === 'PAID' ? now : undefined,
+        notes: notes !== undefined ? notes : inv.notes
       } : inv);
       setLocal('invoices', updated);
       return { id, status };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
+      queryClient.invalidateQueries({ queryKey: ['equity'] });
+    }
+  });
+}
+
+export function useDeleteInvoice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      try {
+        await supabase.from('accounting_invoices').delete().eq('id', id);
+      } catch {}
+      const current = getLocal<Invoice[]>('invoices', INITIAL_INVOICES);
+      const updated = current.filter(i => i.id !== id);
+      setLocal('invoices', updated);
+      return id;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });

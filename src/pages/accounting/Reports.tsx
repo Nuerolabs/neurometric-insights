@@ -274,42 +274,38 @@ export default function Reports() {
         </div>
       ) : (
         <>
-          {/* Resumen Financiero Minimalista */}
-          <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
-              
-              <div className="space-y-0.5">
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Disponible Bancos</span>
-                <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoBancos)}</div>
-                <span className="text-[11px] text-slate-400 block truncate">Dinero disponible</span>
-              </div>
+          {/* Resumen Financiero Directo sin Contenedor */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 py-2 px-1">
+            <div className="space-y-0.5">
+              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Disponible Bancos</span>
+              <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoBancos)}</div>
+              <span className="text-[11px] text-slate-400 block truncate">Dinero disponible</span>
+            </div>
 
-              <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Ingresos Cobrados</span>
-                <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
-                <span className="text-[11px] text-slate-400 block truncate">{paidInvoices.length} facturas pagadas</span>
-              </div>
+            <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Ingresos Cobrados</span>
+              <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
+              <span className="text-[11px] text-slate-400 block truncate">{paidInvoices.length} facturas pagadas</span>
+            </div>
 
-              <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Gastos Pagados</span>
-                <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">{formatCOP(totalGastos)}</div>
-                <span className="text-[11px] text-slate-400 block truncate">Cloud, Caja & Ops</span>
-              </div>
+            <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Gastos Pagados</span>
+              <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">{formatCOP(totalGastos)}</div>
+              <span className="text-[11px] text-slate-400 block truncate">Cloud, Caja & Ops</span>
+            </div>
 
-              <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Provisión ({taxRate}%)</span>
-                <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(provisionImpuestos)}</div>
-                <span className="text-[11px] text-slate-400 block truncate">Reserva fiscal</span>
-              </div>
+            <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Provisión ({taxRate}%)</span>
+              <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(provisionImpuestos)}</div>
+              <span className="text-[11px] text-slate-400 block truncate">Reserva fiscal</span>
+            </div>
 
-              <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-                <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Utilidad Neta Real</span>
-                <div className={`text-base sm:text-2xl font-bold font-mono truncate ${utilidadNeta >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
-                  {formatCOP(utilidadNeta)}
-                </div>
-                <span className="text-[11px] text-slate-400 block truncate">Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margenUtilidad.toFixed(1)}%</strong></span>
+            <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+              <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Utilidad Neta Real</span>
+              <div className={`text-base sm:text-2xl font-bold font-mono truncate ${utilidadNeta >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
+                {formatCOP(utilidadNeta)}
               </div>
-
+              <span className="text-[11px] text-slate-400 block truncate">Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margenUtilidad.toFixed(1)}%</strong></span>
             </div>
           </div>
 

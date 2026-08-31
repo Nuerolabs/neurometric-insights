@@ -156,32 +156,30 @@ export default function BankReconciliation() {
         </div>
       </div>
 
-      {/* Resumen de Conciliación Bancaria Minimalista */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          <div className="space-y-0.5">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Extracto</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Bancolombia</span>
-          </div>
+      {/* Resumen de Conciliación Bancaria Directo sin Contenedor */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Extracto</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Bancolombia</span>
+        </div>
 
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Libros ERP</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(saldoLibrosERP)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Libro Mayor</span>
-          </div>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Libros ERP</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(saldoLibrosERP)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Libro Mayor</span>
+        </div>
 
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Abonos</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">+{formatCOP(totalDepositos)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Recaudos cliente</span>
-          </div>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Abonos</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">+{formatCOP(totalDepositos)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Recaudos cliente</span>
+        </div>
 
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Diferencia Conciliación</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 truncate">$ 0</div>
-            <span className="text-[11px] text-emerald-600 font-semibold block truncate">100% Cuadrado</span>
-          </div>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Diferencia Conciliación</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 truncate">$ 0</div>
+          <span className="text-[11px] text-emerald-600 font-semibold block truncate">100% Cuadrado</span>
         </div>
       </div>
 

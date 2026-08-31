@@ -751,26 +751,24 @@ export default function AccountsReceivable() {
         </div>
       </div>
 
-      {/* Resumen Financiero Minimalista */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
-          <div className="space-y-0.5">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">MRR Recurrente</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Mensualidades fijas</span>
-          </div>
+      {/* Resumen Financiero Directo sin Contenedor */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 py-2 px-1">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">MRR Recurrente</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Mensualidades fijas</span>
+        </div>
 
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Recaudado</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalRecaudado)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Confirmado en banco</span>
-          </div>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Recaudado</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalRecaudado)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Confirmado en banco</span>
+        </div>
 
-          <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Cartera Pendiente</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(totalCobrar)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Cuotas e hitos por cobrar</span>
-          </div>
+        <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Cartera Pendiente</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(totalCobrar)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Cuotas e hitos por cobrar</span>
         </div>
       </div>
 

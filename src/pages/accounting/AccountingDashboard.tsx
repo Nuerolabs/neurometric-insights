@@ -128,54 +128,39 @@ export default function AccountingDashboard() {
         </div>
       </div>
 
-      {/* Resumen Ejecutivo Minimalista */}
-      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
-          <div className="space-y-0.5">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">MRR Recurrente</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">{clientesActivos} clientes ($600k/m)</span>
-          </div>
-
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Recaudado</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Caja & Bancos</span>
-          </div>
-
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Costos & Gastos</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">{formatCOP(totalEgresos)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Cloud, APIs & Ops</span>
-          </div>
-
-          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Provisión (40%)</span>
-            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(provisionImpuestos)}</div>
-            <span className="text-[11px] text-slate-400 block truncate">Reserva DIAN & ICA</span>
-          </div>
-
-          <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Utilidad Neta</span>
-            <div className={`text-base sm:text-2xl font-bold font-mono truncate ${utilidadNetaReal >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
-              {formatCOP(utilidadNetaReal)}
-            </div>
-            <span className="text-[11px] text-slate-400 block truncate">Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margen.toFixed(1)}%</strong></span>
-          </div>
+      {/* Resumen Ejecutivo Directo sin Contenedor */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 py-2 px-1">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">MRR Recurrente</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">{clientesActivos} clientes ($600k/m)</span>
         </div>
 
-        {/* Banner Sutil de Cartera */}
-        {carteraPendiente > 0 && (
-          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between flex-wrap gap-2 text-xs">
-            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
-              <Receipt className="w-4 h-4 shrink-0" />
-              <span><strong>Cartera por Cobrar:</strong> Facturas emitidas pendientes de recaudo</span>
-            </div>
-            <span className="font-mono font-bold text-amber-700 dark:text-amber-400 text-sm">
-              {formatCOP(carteraPendiente)}
-            </span>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Recaudado</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Caja & Bancos</span>
+        </div>
+
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Costos & Gastos</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">{formatCOP(totalEgresos)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Cloud, APIs & Ops</span>
+        </div>
+
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Provisión (40%)</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(provisionImpuestos)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Reserva DIAN & ICA</span>
+        </div>
+
+        <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Utilidad Neta</span>
+          <div className={`text-base sm:text-2xl font-bold font-mono truncate ${utilidadNetaReal >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
+            {formatCOP(utilidadNetaReal)}
           </div>
-        )}
+          <span className="text-[11px] text-slate-400 block truncate">Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margen.toFixed(1)}%</strong></span>
+        </div>
       </div>
 
       {/* Gráfico y Transacciones */}

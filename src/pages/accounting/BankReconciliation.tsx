@@ -35,48 +35,7 @@ interface BankMovement {
   matchedConcept?: string;
 }
 
-const initialBankMovements: BankMovement[] = [
-  {
-    id: "BNK-001",
-    date: "2025-08-25",
-    description: "TRANSFERENCIA TRINOVA S.A.S. - CUOTA 1 IMPLEMENTACION",
-    reference: "TR-BANCOLOMBIA #35019",
-    type: "DEPOSIT",
-    amount: 350000,
-    isMatched: true,
-    matchedConcept: "FAC-2025-001 (Cliente TRINOVA S.A.S.)"
-  },
-  {
-    id: "BNK-002",
-    date: "2025-08-15",
-    description: "FONDEO DE CAJA MENOR NEUROLABS",
-    reference: "RET-CAJ-001",
-    type: "WITHDRAWAL",
-    amount: 50000,
-    isMatched: true,
-    matchedConcept: "Apertura Fondo Fijo de Caja Menor"
-  },
-  {
-    id: "BNK-003",
-    date: "2025-08-10",
-    description: "APORTE CAPITAL SOCIAL EN DINERO - JESUS DAVID CANTILLO",
-    reference: "DEP-CAP-001",
-    type: "DEPOSIT",
-    amount: 1215000,
-    isMatched: true,
-    matchedConcept: "Aporte Capital Social Inicial Bancolombia"
-  },
-  {
-    id: "BNK-004",
-    date: "2025-08-20",
-    description: "PAGO INFRAESTRUCTURA CLOUD & SERVIDORES",
-    reference: "DB-AWS-8921",
-    type: "WITHDRAWAL",
-    amount: 350000,
-    isMatched: true,
-    matchedConcept: "CXP-001 Servicios Cloud AWS"
-  }
-];
+const initialBankMovements: BankMovement[] = [];
 
 export default function BankReconciliation() {
   const [selectedMonth, setSelectedMonth] = useState("2025-08");

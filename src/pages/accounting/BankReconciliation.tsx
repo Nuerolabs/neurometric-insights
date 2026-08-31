@@ -235,47 +235,49 @@ export default function BankReconciliation() {
           </Badge>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-slate-50 dark:bg-slate-900">
-              <TableRow>
-                <TableHead className="text-xs font-bold text-slate-600">FECHA</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600">DESCRIPCIÓN EN EXTRACTO</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600">REFERENCIA BANCARIA</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600">CONCEPTO CONCILIADO EN ERP</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-right">VALOR</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-center">ESTADO</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {bankMovements.map((mov) => {
-                const isDeposit = mov.type === "DEPOSIT";
-                return (
-                  <TableRow key={mov.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
-                    <TableCell className="font-mono text-xs text-slate-700 dark:text-slate-300">
-                      {mov.date}
-                    </TableCell>
-                    <TableCell className="font-semibold text-xs text-slate-900 dark:text-white">
-                      {mov.description}
-                    </TableCell>
-                    <TableCell className="font-mono text-xs text-slate-500">
-                      {mov.reference}
-                    </TableCell>
-                    <TableCell className="text-xs text-blue-700 dark:text-blue-400 font-medium">
-                      {mov.matchedConcept || 'Cruze Contable Verificado'}
-                    </TableCell>
-                    <TableCell className={`text-right font-mono font-bold text-xs ${isDeposit ? 'text-emerald-600' : 'text-rose-600'}`}>
-                      {isDeposit ? '+' : '-'}{formatCOP(mov.amount)}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px]">
-                        <Check className="w-3 h-3 mr-1" /> Conciliado
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[700px]">
+              <TableHeader className="bg-slate-50 dark:bg-slate-900">
+                <TableRow>
+                  <TableHead className="text-xs font-bold text-slate-600">FECHA</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600">DESCRIPCIÓN EN EXTRACTO</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600">REFERENCIA BANCARIA</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600">CONCEPTO CONCILIADO EN ERP</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-right">VALOR</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-center">ESTADO</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {bankMovements.map((mov) => {
+                  const isDeposit = mov.type === "DEPOSIT";
+                  return (
+                    <TableRow key={mov.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
+                      <TableCell className="font-mono text-xs text-slate-700 dark:text-slate-300">
+                        {mov.date}
+                      </TableCell>
+                      <TableCell className="font-semibold text-xs text-slate-900 dark:text-white">
+                        {mov.description}
+                      </TableCell>
+                      <TableCell className="font-mono text-xs text-slate-500">
+                        {mov.reference}
+                      </TableCell>
+                      <TableCell className="text-xs text-blue-700 dark:text-blue-400 font-medium">
+                        {mov.matchedConcept || 'Cruze Contable Verificado'}
+                      </TableCell>
+                      <TableCell className={`text-right font-mono font-bold text-xs ${isDeposit ? 'text-emerald-600' : 'text-rose-600'}`}>
+                        {isDeposit ? '+' : '-'}{formatCOP(mov.amount)}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px]">
+                          <Check className="w-3 h-3 mr-1" /> Conciliado
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

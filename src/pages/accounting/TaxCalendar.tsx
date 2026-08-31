@@ -304,8 +304,9 @@ export default function TaxCalendar() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-slate-50 dark:bg-slate-900">
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[700px]">
+              <TableHeader className="bg-slate-50 dark:bg-slate-900">
               <TableRow>
                 <TableHead className="text-xs font-bold text-slate-600">OBLIGACIÓN / FORMULARIO</TableHead>
                 <TableHead className="text-xs font-bold text-slate-600">ENTIDAD</TableHead>
@@ -397,6 +398,7 @@ export default function TaxCalendar() {
               })}
             </TableBody>
           </Table>
+          </div>
         </CardContent>
       </Card>
 

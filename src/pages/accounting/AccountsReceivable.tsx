@@ -805,7 +805,8 @@ export default function AccountsReceivable() {
         <TabsContent value="invoices" className="m-0">
           <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
             <CardContent className="p-0">
-              <Table>
+              <div className="overflow-x-auto w-full">
+              <Table className="min-w-[750px]">
                 <TableHeader className="bg-slate-50 dark:bg-slate-850 border-b border-slate-200 dark:border-slate-800">
                   <TableRow>
                     <TableHead className="font-bold text-xs uppercase text-slate-600">No. Factura</TableHead>
@@ -911,6 +912,7 @@ export default function AccountsReceivable() {
                   })}
                 </TableBody>
               </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -919,7 +921,8 @@ export default function AccountsReceivable() {
         <TabsContent value="clients" className="m-0">
           <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
             <CardContent className="p-0">
-              <Table>
+              <div className="overflow-x-auto w-full">
+                <Table className="min-w-[750px]">
                 <TableHeader className="bg-slate-50 dark:bg-slate-850 border-b border-slate-200 dark:border-slate-800">
                   <TableRow>
                     <TableHead className="font-bold text-xs uppercase text-slate-600">Empresa / Razón Social & NIT</TableHead>
@@ -1013,6 +1016,7 @@ export default function AccountsReceivable() {
                   })}
                 </TableBody>
               </Table>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

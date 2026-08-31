@@ -273,61 +273,63 @@ export default function FixedAssetsDepreciation() {
           </CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader className="bg-slate-50 dark:bg-slate-900">
-              <TableRow>
-                <TableHead className="text-xs font-bold text-slate-600">CÓDIGO / DESCRIPCIÓN DEL ACTIVO</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600">CATEGORÍA</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600">FECHA INGRESO</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-right">COSTO INICIAL</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-center">VIDA ÚTIL</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-right">DEPREC. MENSUAL</TableHead>
-                <TableHead className="text-xs font-bold text-slate-600 text-right">VALOR EN LIBROS</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {assets.map((ast) => (
-                <TableRow key={ast.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
-                  <TableCell>
-                    <div className="font-bold text-xs text-slate-900 dark:text-white">{ast.name}</div>
-                    <div className="font-mono text-[10px] text-purple-600">{ast.code}</div>
-                  </TableCell>
-                  <TableCell>
-                    {ast.category === "SERVIDORES_IA" && (
-                      <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-300 border-blue-300 text-[10px]">
-                        Servidores & GPUs
-                      </Badge>
-                    )}
-                    {ast.category === "EQUIPO_COMPUTO" && (
-                      <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 border-purple-300 text-[10px]">
-                        Equipos Cómputo
-                      </Badge>
-                    )}
-                    {ast.category === "SOFTWARE_INTANGIBLE" && (
-                      <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px]">
-                        Software ABIA
-                      </Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="font-mono text-xs text-slate-600 dark:text-slate-400">
-                    {ast.acquisitionDate}
-                  </TableCell>
-                  <TableCell className="text-right font-mono font-bold text-xs text-slate-900 dark:text-white">
-                    {formatCOP(ast.originalCost)}
-                  </TableCell>
-                  <TableCell className="text-center font-mono text-xs text-slate-600">
-                    {ast.usefulLifeMonths} meses ({ast.usefulLifeMonths / 12} años)
-                  </TableCell>
-                  <TableCell className="text-right font-mono text-xs text-amber-600 font-semibold">
-                    {formatCOP(ast.monthlyDepreciation)}
-                  </TableCell>
-                  <TableCell className="text-right font-mono font-bold text-xs text-blue-700 dark:text-blue-400">
-                    {formatCOP(ast.bookValue)}
-                  </TableCell>
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[700px]">
+              <TableHeader className="bg-slate-50 dark:bg-slate-900">
+                <TableRow>
+                  <TableHead className="text-xs font-bold text-slate-600">CÓDIGO / DESCRIPCIÓN DEL ACTIVO</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600">CATEGORÍA</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600">FECHA INGRESO</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-right">COSTO INICIAL</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-center">VIDA ÚTIL</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-right">DEPREC. MENSUAL</TableHead>
+                  <TableHead className="text-xs font-bold text-slate-600 text-right">VALOR EN LIBROS</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {assets.map((ast) => (
+                  <TableRow key={ast.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
+                    <TableCell>
+                      <div className="font-bold text-xs text-slate-900 dark:text-white">{ast.name}</div>
+                      <div className="font-mono text-[10px] text-purple-600">{ast.code}</div>
+                    </TableCell>
+                    <TableCell>
+                      {ast.category === "SERVIDORES_IA" && (
+                        <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-300 border-blue-300 text-[10px]">
+                          Servidores & GPUs
+                        </Badge>
+                      )}
+                      {ast.category === "EQUIPO_COMPUTO" && (
+                        <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-300 border-purple-300 text-[10px]">
+                          Equipos Cómputo
+                        </Badge>
+                      )}
+                      {ast.category === "SOFTWARE_INTANGIBLE" && (
+                        <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 text-[10px]">
+                          Software ABIA
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-slate-600 dark:text-slate-400">
+                      {ast.acquisitionDate}
+                    </TableCell>
+                    <TableCell className="text-right font-mono font-bold text-xs text-slate-900 dark:text-white">
+                      {formatCOP(ast.originalCost)}
+                    </TableCell>
+                    <TableCell className="text-center font-mono text-xs text-slate-600">
+                      {ast.usefulLifeMonths} meses ({ast.usefulLifeMonths / 12} años)
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-xs text-amber-600 font-semibold">
+                      {formatCOP(ast.monthlyDepreciation)}
+                    </TableCell>
+                    <TableCell className="text-right font-mono font-bold text-xs text-blue-700 dark:text-blue-400">
+                      {formatCOP(ast.bookValue)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 

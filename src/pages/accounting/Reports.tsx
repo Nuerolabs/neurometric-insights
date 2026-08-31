@@ -455,17 +455,22 @@ export default function Reports() {
                                   </TableCell>
                               </TableRow>
 
-                              {/* Sección 3: Utilidad Antes de Impuestos */}
-                              <TableRow className="border-t-2 border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-850">
-                                  <TableCell className="font-bold text-slate-800 dark:text-slate-200 text-sm">
-                                    Utilidad Antes de Impuestos (EBT)
+                              {/* Utilidad Operativa Antes de Impuestos */}
+                              <TableRow className="bg-slate-100/70 dark:bg-slate-800/50 font-bold border-t border-slate-200 dark:border-slate-700">
+                                  <TableCell className="text-xs uppercase tracking-wide text-slate-900 dark:text-white py-3">
+                                    Utilidad Antes de Impuestos (EBITDA Operacional)
                                   </TableCell>
-                                  <TableCell className={`text-right font-mono font-bold text-base ${utilidadAntesImpuestos >= 0 ? 'text-slate-900 dark:text-white' : 'text-rose-600'}`}>
+                                  <TableCell className="text-right font-mono text-sm text-slate-900 dark:text-white py-3 font-black">
                                     {formatCOP(utilidadAntesImpuestos)}
                                   </TableCell>
                               </TableRow>
 
-                              {/* Sección 4: Provisión de Impuestos (40% modificable) */}
+                              {/* Sección 3: Provisión de Impuestos y Retenciones (40%) */}
+                              <TableRow className="bg-amber-50/60 dark:bg-amber-950/30">
+                                <TableCell colSpan={2} className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 py-2.5">
+                                  3. Provisión Estimada Impuestos & Retenciones ({taxRate}%)
+                                </TableCell>
+                              </TableRow>
                               <TableRow className="bg-amber-50/40 dark:bg-amber-950/20">
                                   <TableCell className="pl-6 text-sm text-amber-900 dark:text-amber-300 font-medium flex items-center justify-between">
                                     <span>(-) Provisión Impuestos ({taxRate}% sobre {taxBase === 'PROFIT' ? 'Utilidad Antes de Impuestos' : 'Total Ventas'})</span>
@@ -485,7 +490,8 @@ export default function Reports() {
                                   </TableCell>
                               </TableRow>
                           </TableBody>
-                      </Table>
+                        </Table>
+                      </div>
                   </CardContent>
               </Card>
 
@@ -502,7 +508,8 @@ export default function Reports() {
                       </div>
                   </CardHeader>
                   <CardContent className="p-0">
-                      <Table>
+                      <div className="overflow-x-auto w-full">
+                        <Table className="min-w-[500px]">
                           <TableBody>
                               {/* 1. Activos Corrientes (Liquidez Real) */}
                               <TableRow className="bg-slate-50/50 dark:bg-slate-900/30">
@@ -640,7 +647,8 @@ export default function Reports() {
                                   </TableCell>
                               </TableRow>
                           </TableBody>
-                      </Table>
+                        </Table>
+                      </div>
                   </CardContent>
               </Card>
           </div>

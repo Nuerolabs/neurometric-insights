@@ -371,7 +371,8 @@ export default function Reports() {
                       </div>
                   </CardHeader>
                   <CardContent className="p-0">
-                      <Table>
+                      <div className="overflow-x-auto w-full">
+                        <Table className="min-w-[500px]">
                           <TableBody>
                               {/* Sección 1: Ingresos */}
                               <TableRow className="bg-slate-50/50 dark:bg-slate-900/30">

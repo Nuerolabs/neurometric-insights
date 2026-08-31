@@ -173,29 +173,29 @@ export default function TaxCalendar() {
     .reduce((sum, o) => sum + o.estimatedAmount, 0);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-amber-50 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
               Calendario Tributario 2025 - 2026
             </span>
             <span className="text-xs text-slate-500 font-mono">NIT: 901.882.253-1 • Sitionuevo, Magdalena</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Obligaciones Tributarias y Fiscales</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Obligaciones Tributarias y Fiscales</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de vencimientos DIAN, ICA Municipal de Sitionuevo (Magdalena) y Cámara de Comercio.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => window.print()}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 text-xs"
           >
             <Printer className="w-4 h-4 mr-1.5 text-slate-500" /> Imprimir Calendario
           </Button>
@@ -203,7 +203,7 @@ export default function TaxCalendar() {
       </div>
 
       {/* Resumen Tributario Directo sin Contenedor */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
         <div className="space-y-0.5">
           <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Jurisdicción Sede</span>
           <div className="text-base sm:text-2xl font-bold text-slate-900 dark:text-white truncate">Sitionuevo, Magd.</div>
@@ -230,7 +230,7 @@ export default function TaxCalendar() {
       </div>
 
       {/* Filtros por Entidad */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 flex-wrap">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-3 flex-wrap w-full min-w-0">
         <Button 
           variant={selectedEntity === "ALL" ? "default" : "outline"} 
           size="sm" 
@@ -266,8 +266,8 @@ export default function TaxCalendar() {
       </div>
 
       {/* Tabla Principal de Calendario */}
-      <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850">
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="py-3.5 px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850">
           <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white">
             <Calendar className="w-4 h-4 text-blue-600" /> Cronograma de Vencimientos y Declaraciones
           </CardTitle>

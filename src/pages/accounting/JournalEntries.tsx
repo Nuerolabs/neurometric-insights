@@ -109,23 +109,23 @@ export default function JournalEntries() {
   const isBalanced = Math.abs(totalDebits - totalCredits) < 0.01 && totalDebits > 0;
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       {/* Enterprise Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Libro Diario (Asientos)</h1>
-          <p className="text-sm text-slate-500 mt-1">Registro central de transacciones financieras por partida doble.</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Libro Diario (Asientos)</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">Registro central de transacciones financieras por partida doble.</p>
         </div>
-        <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="h-8 text-xs font-medium">
-                <Download className="h-3.5 w-3.5 mr-2" />
+        <div className="flex items-center gap-2 flex-wrap">
+            <Button variant="outline" size="sm" className="h-9 text-xs font-medium">
+                <Download className="h-3.5 w-3.5 mr-1.5" />
                 Exportar CSV
             </Button>
             
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="default" size="sm" className="h-8 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                    <Plus className="h-3.5 w-3.5 mr-2" />
+                <Button variant="default" size="sm" className="h-9 text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+                    <Plus className="h-3.5 w-3.5 mr-1.5" />
                     Nuevo Asiento
                 </Button>
               </DialogTrigger>
@@ -230,16 +230,16 @@ export default function JournalEntries() {
       </div>
 
       {/* Main Data Table */}
-      <Card className="rounded-lg shadow-sm border-slate-200 dark:border-slate-800">
-        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3 pt-4 px-6 flex flex-row items-center justify-between">
-          <CardTitle className="text-sm font-semibold text-slate-800 dark:text-slate-200">Historial de Comprobantes</CardTitle>
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3.5 px-4 sm:px-6 flex flex-row items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-200">Historial de Comprobantes</CardTitle>
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-400" />
               <Input
                   type="search"
                   placeholder="Buscar referencia o concepto..."
-                  className="h-8 w-64 pl-8 text-xs bg-slate-50 border-slate-200 focus-visible:ring-1 focus-visible:ring-blue-500"
+                  className="h-8 w-48 sm:w-64 pl-8 text-xs bg-slate-50 border-slate-200 focus-visible:ring-1 focus-visible:ring-blue-500"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -268,7 +268,8 @@ export default function JournalEntries() {
                  <p className="text-xs text-slate-500">Haz clic en "Nuevo Asiento" para empezar a registrar movimientos.</p>
              </div>
           ) : (
-            <Table>
+            <div className="overflow-x-auto w-full">
+            <Table className="min-w-[650px]">
               <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
                 <TableRow className="border-slate-100 dark:border-slate-800">
                   <TableHead className="w-[100px] text-xs font-semibold text-slate-500 h-9">Fecha</TableHead>
@@ -298,6 +299,7 @@ export default function JournalEntries() {
                 ))}
               </TableBody>
             </Table>
+            </div>
           )}
         </CardContent>
       </Card>

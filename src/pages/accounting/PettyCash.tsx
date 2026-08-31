@@ -137,26 +137,21 @@ export default function PettyCash() {
     v.category.toLowerCase().includes(searchTerm.toLowerCase())
   ) || [];
 
-  // Cálculos dinámicos reales basados en la base de datos
   const fondoFijo = vouchers?.filter(v => v.category === 'INGRESO DE FONDOS').reduce((sum, v) => sum + Number(v.amount), 0) || 0;
   const ejecutado = vouchers?.filter(v => v.category !== 'INGRESO DE FONDOS' && v.status !== 'REJECTED').reduce((sum, v) => sum + Number(v.amount), 0) || 0;
   const saldoDisponible = fondoFijo - ejecutado;
 
-  return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
-      {/* Enterprise Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+  return <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Caja Menor e Inversiones</h1>
-          <p className="text-sm text-slate-500 mt-1">Gestión de inyecciones de capital y legalización de gastos operativos.</p>
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Caja Menor e Inversiones</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">Gestión de inyecciones de capital y legalización de gastos operativos.</p>
         </div>
-        <div className="flex items-center gap-2">
-            
-            {/* Modal para Ingresar Fondos */}
+        <div className="flex items-center gap-2 flex-wrap">
             <Dialog open={isFundingDialogOpen} onOpenChange={setIsFundingDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8 text-xs font-medium border-emerald-200 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-400">
-                    <ArrowDownToLine className="h-3.5 w-3.5 mr-2" />
+                <Button variant="outline" size="sm" className="h-9 text-xs font-medium border-emerald-200 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 hover:text-emerald-800 dark:bg-emerald-900/20 dark:border-emerald-800 dark:text-emerald-400">
+                    <ArrowDownToLine className="h-3.5 w-3.5 mr-1.5" />
                     Ingresar Fondos (Inversión)
                 </Button>
               </DialogTrigger>
@@ -166,134 +161,122 @@ export default function PettyCash() {
                     <DialogTitle>Aporte de Capital / Fondeo</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
-                    <p className="text-xs text-slate-500 mb-2">Registra aquí las transferencias de los socios para alimentar el fondo, adjuntando la captura como evidencia.</p>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="fundingDate" className="text-right text-xs">Fecha</Label>
-                      <Input id="fundingDate" type="date" value={fundingDate} onChange={e=>setFundingDate(e.target.value)} className="col-span-3 h-8 text-sm" />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="f_bene" className="text-right text-xs">Socio / Origen</Label>
-                      <Input id="f_bene" value={fundingBeneficiary} onChange={e=>setFundingBeneficiary(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Nombre de quien transfiere" />
-                    </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="f_ref" className="text-right text-xs font-semibold leading-tight">Ref. / Concepto<br/><span className="text-[10px] text-slate-400 font-normal">(Especie/Efectivo)</span></Label>
                       <Input id="f_ref" value={fundingReference} onChange={e=>setFundingReference(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Ej: TR-Bancolombia o '2 Computadores Asus'" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="f_amount" className="text-right text-xs">Monto ($)</Label>
-                      <Input id="f_amount" type="number" step="0.01" value={fundingAmount} onChange={e=>setFundingAmount(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="0.00" />
+                      <Label htmlFor="f_amount" className="text-right text-xs">Monto Total</Label>
+                      <Input id="f_amount" type="number" step="any" value={fundingAmount} onChange={e=>setFundingAmount(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="0.00" />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4 mt-2">
-                      <Label htmlFor="f_file" className="text-right text-xs">Evidencia</Label>
-                      <Input id="f_file" type="file" accept="image/*,.pdf" onChange={e=>setEvidenceFile(e.target.files?.[0] || null)} className="col-span-3 h-9 text-xs py-1.5 cursor-pointer file:bg-blue-50 file:text-blue-700 file:border-0 file:rounded file:px-2 file:mr-2 hover:file:bg-blue-100" />
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="f_voucher" className="text-right text-xs">Comprobante</Label>
+                      <Input 
+                        id="f_voucher" 
+                        type="file" 
+                        accept="image/*,application/pdf"
+                        onChange={e => setFundingFile(e.target.files ? e.target.files[0] : null)}
+                        className="col-span-3 h-8 text-xs file:py-0 file:px-2 file:h-6 file:text-xs"
+                      />
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="button" variant="outline" size="sm" onClick={() => setIsFundingDialogOpen(false)}>Cancelar</Button>
-                    <Button type="submit" size="sm" className="bg-emerald-600 text-white hover:bg-emerald-700" disabled={createMutation.isPending}>
-                        {createMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                        Registrar Inversión
-                    </Button>
+                    <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700 text-white">Guardar Ingreso</Button>
                   </DialogFooter>
                 </form>
               </DialogContent>
             </Dialog>
 
-            {/* Modal para Registrar Vale */}
             <Dialog open={isExpenseDialogOpen} onOpenChange={setIsExpenseDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="default" size="sm" className="h-8 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                    <Plus className="h-3.5 w-3.5 mr-2" />
-                    Registrar Gasto (Vale)
+                <Button size="sm" className="h-9 text-xs font-medium bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600">
+                    <Plus className="h-3.5 w-3.5 mr-1.5" />
+                    Legalizar Gasto (Vale)
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[450px]">
-                <form onSubmit={handleCreateVoucher}>
+                <form onSubmit={handleCreateExpense}>
                   <DialogHeader>
-                    <DialogTitle>Registrar Nuevo Vale de Salida</DialogTitle>
+                    <DialogTitle>Comprobante de Egreso (Caja Menor)</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="voucher" className="text-right text-xs">No. Vale</Label>
-                      <Input id="voucher" value={voucher} onChange={e=>setVoucher(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="CM-005" />
+                      <Label htmlFor="expenseDate" className="text-right text-xs">Fecha</Label>
+                      <Input id="expenseDate" type="date" value={expenseDate} onChange={e=>setExpenseDate(e.target.value)} className="col-span-3 h-8 text-sm" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="beneficiary" className="text-right text-xs">Beneficiario</Label>
-                      <Input id="beneficiary" value={beneficiary} onChange={e=>setBeneficiary(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Nombre de quien recibe" />
+                      <Label htmlFor="bene" className="text-right text-xs">Beneficiario</Label>
+                      <Input id="bene" value={expenseBeneficiary} onChange={e=>setExpenseBeneficiary(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="A quién se le paga" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="amount" className="text-right text-xs">Importe ($)</Label>
-                      <Input id="amount" type="number" step="0.01" value={amount} onChange={e=>setAmount(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="0.00" />
+                      <Label htmlFor="concept" className="text-right text-xs">Concepto</Label>
+                      <Input id="concept" value={expenseConcept} onChange={e=>setExpenseConcept(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Motivo del gasto" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="category" className="text-right text-xs">Categoría</Label>
-                      <select id="category" value={category} onChange={e=>setCategory(e.target.value)} className="col-span-3 h-8 text-sm rounded-md border border-slate-200 bg-transparent px-3 py-1 shadow-sm focus:outline-none focus:ring-1 focus:ring-slate-950 dark:border-slate-800 dark:focus:ring-slate-300">
-                          <option value="Transporte">Transporte</option>
-                          <option value="Papelería">Papelería</option>
-                          <option value="Alimentación">Alimentación</option>
-                          <option value="Notariales">Gastos Notariales</option>
-                          <option value="Mensajería">Mensajería</option>
-                          <option value="Otros">Otros</option>
-                      </select>
+                      <Label htmlFor="cat" className="text-right text-xs">Categoría</Label>
+                      <Select value={expenseCategory} onValueChange={setExpenseCategory}>
+                        <SelectTrigger className="col-span-3 h-8 text-sm">
+                          <SelectValue placeholder="Selecciona" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="TRANSPORTE Y LOGISTICA">Transporte & Logística</SelectItem>
+                          <SelectItem value="PAPELERIA Y FOTOCOPIAS">Papelería</SelectItem>
+                          <SelectItem value="SERVICIOS Y MANTENIMIENTO">Mantenimiento</SelectItem>
+                          <SelectItem value="ALIMENTACION Y REFRIGERIOS">Alimentación</SelectItem>
+                          <SelectItem value="SERVICIOS PUBLICOS">Servicios Públicos</SelectItem>
+                          <SelectItem value="EQUIPOS Y HARDWARE (ESPECIE)">Equipos & Hardware (Especie)</SelectItem>
+                          <SelectItem value="SOFTWARE Y LICENCIAS (ESPECIE)">Software & Licencias (Especie)</SelectItem>
+                          <SelectItem value="OTROS GASTOS MENORES">Otros</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="desc" className="text-right text-xs">Concepto</Label>
-                      <Input id="desc" value={description} onChange={e=>setDescription(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="Motivo del gasto" />
+                      <Label htmlFor="amount" className="text-right text-xs">Monto</Label>
+                      <Input id="amount" type="number" step="any" value={expenseAmount} onChange={e=>setExpenseAmount(e.target.value)} className="col-span-3 h-8 text-sm" placeholder="0.00" />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4 mt-2">
-                      <Label htmlFor="v_file" className="text-right text-xs">Soporte</Label>
-                      <Input id="v_file" type="file" accept="image/*,.pdf" onChange={e=>setEvidenceFile(e.target.files?.[0] || null)} className="col-span-3 h-9 text-xs py-1.5 cursor-pointer file:bg-blue-50 file:text-blue-700 file:border-0 file:rounded file:px-2 file:mr-2 hover:file:bg-blue-100" />
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="voucher" className="text-right text-xs">Soporte/Factura</Label>
+                      <Input 
+                        id="voucher" 
+                        type="file" 
+                        accept="image/*,application/pdf"
+                        onChange={e => setExpenseFile(e.target.files ? e.target.files[0] : null)}
+                        className="col-span-3 h-8 text-xs file:py-0 file:px-2 file:h-6 file:text-xs"
+                      />
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="button" variant="outline" size="sm" onClick={() => setIsExpenseDialogOpen(false)}>Cancelar</Button>
-                    <Button type="submit" size="sm" className="bg-rose-600 text-white hover:bg-rose-700" disabled={createMutation.isPending || saldoDisponible < Number(amount)}>
-                        {createMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                        Registrar Gasto
-                    </Button>
+                    <Button type="submit" className="bg-slate-900 hover:bg-slate-800 text-white">Guardar Gasto</Button>
                   </DialogFooter>
-                  {saldoDisponible < Number(amount) && amount && (
-                      <p className="text-xs text-rose-500 font-semibold text-center mt-2">Fondos insuficientes para registrar este vale.</p>
-                  )}
                 </form>
               </DialogContent>
             </Dialog>
         </div>
       </div>
 
-      {/* KPI Cards Reales */}
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
-        <Card className="rounded-lg shadow-sm border-slate-200 dark:border-slate-800">
-          <CardHeader className="pb-2 pt-4 px-5">
-            <CardTitle className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Ingresos de Capital</CardTitle>
-          </CardHeader>
-          <CardContent className="px-5 pb-4">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">${fondoFijo.toLocaleString('en-US', {minimumFractionDigits:2})}</div>
-          </CardContent>
-        </Card>
-        <Card className="rounded-lg shadow-sm border-slate-200 dark:border-slate-800">
-          <CardHeader className="pb-2 pt-4 px-5">
-            <CardTitle className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Gastos (Vales)</CardTitle>
-          </CardHeader>
-          <CardContent className="px-5 pb-4">
-            <div className="text-2xl font-bold text-rose-600">${ejecutado.toLocaleString('en-US', {minimumFractionDigits:2})}</div>
-          </CardContent>
-        </Card>
-        <Card className="rounded-lg shadow-sm border-slate-200 dark:border-slate-800">
-          <CardHeader className="pb-2 pt-4 px-5 flex flex-row items-center justify-between">
-            <CardTitle className="text-[11px] font-bold uppercase tracking-wider text-slate-500">Saldo Disponible</CardTitle>
-            <div className={`h-2 w-2 rounded-full ${saldoDisponible > 0 ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-          </CardHeader>
-          <CardContent className="px-5 pb-4">
-            <div className={`text-2xl font-bold ${saldoDisponible > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>${saldoDisponible.toLocaleString('en-US', {minimumFractionDigits:2})}</div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Fondo Asignado</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">${fondoFijo.toLocaleString('en-US', {minimumFractionDigits:2})}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Inyecciones socios</span>
+        </div>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Gastos (Vales)</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">${ejecutado.toLocaleString('en-US', {minimumFractionDigits:2})}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Legalizado</span>
+        </div>
+        <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Disponible</span>
+          <div className={`text-base sm:text-2xl font-bold font-mono truncate ${saldoDisponible > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+            ${saldoDisponible.toLocaleString('en-US', {minimumFractionDigits:2})}
+          </div>
+          <span className="text-[11px] text-slate-400 block truncate">En caja</span>
+        </div>
       </div>
 
-      {/* Main Data Table */}
-      <Card className="rounded-lg shadow-sm border-slate-200 dark:border-slate-800">
-        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3 pt-4 px-6 flex flex-row items-center justify-between">
-          <CardTitle className="text-sm font-semibold text-slate-800 dark:text-slate-200">Historial de Inversiones y Gastos</CardTitle>
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3.5 px-4 sm:px-6 flex flex-row items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-200">Historial de Inversiones y Gastos</CardTitle>
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 text-slate-400" />
@@ -329,8 +312,8 @@ export default function PettyCash() {
                  <p className="text-xs text-slate-500">Haz clic en "Ingresar Fondos" para registrar el capital de los socios.</p>
              </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto w-full">
+              <Table className="min-w-[650px]">
                 <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
                   <TableRow className="border-slate-100 dark:border-slate-800">
                     <TableHead className="w-[90px] text-xs font-semibold text-slate-500 h-9 whitespace-nowrap">Fecha</TableHead>

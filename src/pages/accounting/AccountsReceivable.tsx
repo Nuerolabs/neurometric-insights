@@ -436,18 +436,18 @@ export default function AccountsReceivable() {
   const totalMRR = clients?.filter(c => c.status === 'ACTIVE').reduce((sum, c) => sum + Number(c.monthly_fee || 0), 0) || 0;
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Encabezado Principal */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               Módulo de Facturación & Hitos de Cobro
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Facturación y Gestión de Contratos</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Facturación y Gestión de Contratos</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de fases de implementación por cuotas, volantes de transferencia bancaria y mensualidades recurrentes.
           </p>
         </div>
@@ -787,8 +787,8 @@ export default function AccountsReceivable() {
         </div>
 
         {/* TABLA DE FACTURAS */}
-        <TabsContent value="invoices" className="m-0">
-          <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+        <TabsContent value="invoices" className="m-0 w-full min-w-0 max-w-full">
+          <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
             <CardContent className="p-0">
               <div className="overflow-x-auto w-full">
               <Table className="min-w-[750px]">
@@ -903,8 +903,8 @@ export default function AccountsReceivable() {
         </TabsContent>
 
         {/* TABLA DE CLIENTES Y CONTRATOS */}
-        <TabsContent value="clients" className="m-0">
-          <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
+        <TabsContent value="clients" className="m-0 w-full min-w-0 max-w-full">
+          <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
             <CardContent className="p-0">
               <div className="overflow-x-auto w-full">
                 <Table className="min-w-[750px]">

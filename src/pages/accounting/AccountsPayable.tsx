@@ -76,22 +76,22 @@ export default function AccountsPayable() {
   const totalPagado = bills?.filter(b => b.status === 'PAID').reduce((sum, b) => sum + Number(b.total_amount || 0), 0) || 0;
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-rose-50 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
               Tesorería & Proveedores
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Cuentas por Pagar (CxP)</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Cuentas por Pagar (CxP)</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de obligaciones con proveedores de servidores, licencias y servicios.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button variant="default" size="sm" className="h-9 text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-sm">
@@ -111,11 +111,11 @@ export default function AccountsPayable() {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <Label className="text-xs font-semibold text-slate-600">No. Factura / Ref *</Label>
-                        <Input value={billNumber} onChange={e=>setBillNumber(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="INV-2025-01" required />
+                        <Label className="text-xs font-semibold text-slate-600">No. Factura Proveedor *</Label>
+                        <Input value={billNumber} onChange={e=>setBillNumber(e.target.value)} className="h-9 text-sm mt-1 font-mono" placeholder="INV-AWS-892" required />
                       </div>
                       <div>
-                        <Label className="text-xs font-semibold text-slate-600">Categoría</Label>
+                        <Label className="text-xs font-semibold text-slate-600">Categoría Gasto</Label>
                         <select 
                           value={category} 
                           onChange={e=>setCategory(e.target.value as any)}
@@ -154,42 +154,28 @@ export default function AccountsPayable() {
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-        <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <span>Total Pendiente de Pago (CxP)</span>
-              <div className="p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md">
-                <Clock className="w-4 h-4" />
-              </div>
-            </div>
-            <div className="text-2xl font-bold font-mono text-rose-600">{formatCOP(totalPagar)}</div>
-            <div className="mt-1 text-xs text-slate-500">Deudas activas por cancelar</div>
-          </CardContent>
-        </Card>
+      {/* Metrics Direct Strip */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
+        <div className="space-y-0.5">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Pendiente (CxP)</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">{formatCOP(totalPagar)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Deudas activas</span>
+        </div>
 
-        <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <span>Total Pagado a Proveedores</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                <CheckCircle2 className="w-4 h-4" />
-              </div>
-            </div>
-            <div className="text-2xl font-bold font-mono text-emerald-600">{formatCOP(totalPagado)}</div>
-            <div className="mt-1 text-xs text-slate-500">Obligaciones canceladas oportunamente</div>
-          </CardContent>
-        </Card>
+        <div className="space-y-0.5 sm:border-l sm:border-slate-200 sm:dark:border-slate-800 sm:pl-6">
+          <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Pagado</span>
+          <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 truncate">{formatCOP(totalPagado)}</div>
+          <span className="text-[11px] text-slate-400 block truncate">Cancelado</span>
+        </div>
       </div>
 
       {/* Table */}
-      <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-4 px-6 flex flex-row items-center justify-between">
-          <CardTitle className="text-base font-bold text-slate-900 dark:text-white">Facturas de Proveedores</CardTitle>
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3.5 px-4 sm:px-6 flex flex-row items-center justify-between flex-wrap gap-2">
+          <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Facturas de Proveedores</CardTitle>
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-3.5 w-3.5 text-slate-400" />
-            <Input type="search" placeholder="Buscar proveedor..." className="h-9 w-64 pl-8 text-xs bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+            <Input type="search" placeholder="Buscar proveedor..." className="h-9 w-48 sm:w-64 pl-8 text-xs bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </div>
         </CardHeader>
         <CardContent className="p-0">
@@ -201,7 +187,8 @@ export default function AccountsPayable() {
                  <p className="text-sm font-semibold">No hay cuentas por pagar registradas</p>
              </div>
           ) : (
-            <Table>
+            <div className="overflow-x-auto w-full">
+            <Table className="min-w-[700px]">
               <TableHeader className="bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
                 <TableRow>
                   <TableHead className="font-bold text-xs uppercase text-slate-600">Fecha Emisión</TableHead>
@@ -235,6 +222,7 @@ export default function AccountsPayable() {
                 ))}
               </TableBody>
             </Table>
+            </div>
           )}
         </CardContent>
       </Card>

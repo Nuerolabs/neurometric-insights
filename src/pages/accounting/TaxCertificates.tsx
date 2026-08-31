@@ -186,29 +186,29 @@ export default function TaxCertificates() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm print:border-none print:shadow-none">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs print:border-none print:shadow-none w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               Art. 381 Estatuto Tributario • NIIF
             </span>
             <span className="text-xs text-slate-400 font-mono">Sitionuevo, Magdalena</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Certificados de Retención Tributaria</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Certificados de Retención Tributaria</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Generados automáticamente desde facturas con retención o emitidos manualmente para clientes y proveedores.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 print:hidden">
+        <div className="flex items-center gap-2.5 print:hidden flex-wrap">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => setIsManualModalOpen(true)}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Emitir Certificado Manual
           </Button>
@@ -217,7 +217,7 @@ export default function TaxCertificates() {
             variant="default" 
             size="sm" 
             onClick={() => window.print()}
-            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm"
+            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm text-xs"
           >
             <Printer className="w-4 h-4 mr-1.5" /> Imprimir Listado
           </Button>
@@ -277,8 +277,8 @@ export default function TaxCertificates() {
       </div>
 
       {/* Tabla de Certificados */}
-      <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 flex flex-row items-center justify-between">
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="py-3.5 px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 flex flex-row items-center justify-between flex-wrap gap-2">
           <div>
             <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white">
               <FileCheck className="w-4 h-4 text-blue-600" /> Certificados Expedidos • Año Gravable {selectedYear}

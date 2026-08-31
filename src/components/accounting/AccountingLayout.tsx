@@ -142,7 +142,7 @@ export default function AccountingLayout() {
         </button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden relative">
+      <div className="flex flex-1 overflow-hidden relative min-w-0 w-full">
         {/* Mobile Overlay */}
         {isMobileMenuOpen && (
           <div 
@@ -151,31 +151,35 @@ export default function AccountingLayout() {
           />
         )}
 
-        {/* Enterprise Sidebar */}
-        <aside className={cn(
-            "absolute md:relative inset-y-0 left-0 w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0b1329] flex-shrink-0 flex flex-col shadow-2xl md:shadow-none z-40 transform transition-transform duration-200 ease-in-out",
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        )}>
-          <div className="h-16 hidden md:flex items-center px-5 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0b1329]">
-            <div className="flex items-center gap-3">
-               <div className="h-8 w-8 rounded-lg bg-slate-900 dark:bg-blue-600 flex items-center justify-center text-white shadow-sm shrink-0">
-                  <img src="/logo.png" alt="NeuroLabs Logo" className="w-5 h-5 object-contain filter invert brightness-0 dark:invert-0" />
-               </div>
-               <div className="flex flex-col">
-                  <h2 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white leading-none">
-                    NeuroLabs ERP
-                  </h2>
-                  <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mt-1">
-                    Sistema Contable
-                  </span>
-               </div>
+        {/* Sidebar Navigation */}
+        <aside 
+          className={cn(
+            "fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out md:static md:translate-x-0",
+            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          )}
+        >
+          {/* Logo & Company */}
+          <div className="h-16 flex items-center justify-between px-5 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
+            <div className="flex items-center gap-2.5">
+                <img src="/logo.png" alt="NeuroLabs" className="h-7 w-7 object-contain" />
+                <div>
+                  <h1 className="font-bold text-sm leading-none text-slate-900 dark:text-white">NeuroLabs</h1>
+                  <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold tracking-wider uppercase">ERP & Contabilidad</span>
+                </div>
             </div>
+            <button 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="md:hidden p-1 text-slate-500 hover:bg-slate-100 rounded-md dark:hover:bg-slate-800"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
-        
-          <div className="flex-1 overflow-y-auto py-5 px-3 space-y-6 custom-scrollbar">
+
+          {/* Navigation Items grouped */}
+          <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
             {groups.map((group) => (
-              <div key={group} className="space-y-1">
-                <h3 className="px-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              <div key={group}>
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-1">
                   {group}
                 </h3>
                 <nav className="space-y-0.5 pt-1">
@@ -203,7 +207,7 @@ export default function AccountingLayout() {
             ))}
           </div>
 
-          <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0b1329] space-y-1.5">
+          <div className="p-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-[#0b1329] space-y-1.5 flex-shrink-0">
              <button 
                 onClick={handleLogout}
                 className="flex items-center justify-center gap-2 w-full px-3 py-2 text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-md shadow-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 hover:border-rose-200 transition-colors"
@@ -222,8 +226,8 @@ export default function AccountingLayout() {
         </aside>
 
       {/* Main Content Area - Enterprise Data Dense */}
-      <main className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-[#020817]">
-        <div className="h-full p-4 md:p-8">
+      <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden bg-slate-50/50 dark:bg-[#020817] w-full">
+        <div className="h-full p-2.5 sm:p-4 md:p-8 min-w-0 w-full max-w-full">
             <Outlet />
         </div>
       </main>

@@ -171,10 +171,10 @@ export default function Reports() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300 print:p-0">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300 print:p-0">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm print:border-none print:shadow-none">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs print:border-none print:shadow-none w-full min-w-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
@@ -182,18 +182,18 @@ export default function Reports() {
             </span>
             <span className="text-xs text-slate-400 font-mono">Período Fiscal 2025</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reportes Gerenciales y Financieros</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Consolidación contable en tiempo real: liquidez bancaria, provisión fiscal de impuestos ({taxRate}%), activos y patrimonio.
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reportes Gerenciales y Financieros</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Estados de Resultados (P&G) y Balance General clasificado bajo estándar NIIF Colombia con provisión de impuestos.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 print:hidden">
+        <div className="flex items-center gap-2.5 print:hidden flex-wrap">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={handleExportCSV}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium text-xs"
           >
             <Download className="w-4 h-4 mr-1.5 text-slate-500" /> Exportar CSV
           </Button>
@@ -201,7 +201,7 @@ export default function Reports() {
             variant="default" 
             size="sm" 
             onClick={handlePrint}
-            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-700 font-medium shadow-sm"
+            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 dark:hover:bg-blue-700 font-medium shadow-sm text-xs"
           >
             <Printer className="w-4 h-4 mr-1.5" /> Imprimir / PDF
           </Button>
@@ -209,7 +209,7 @@ export default function Reports() {
       </div>
 
       {/* Barra de Control de Provisión de Impuestos & Retenciones (Por defecto 40% - Sujeto a Modificación) */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-purple-500/10 dark:from-amber-950/30 dark:via-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 print:hidden">
+      <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-purple-500/10 dark:from-amber-950/30 dark:via-blue-950/30 dark:to-purple-950/30 p-3.5 sm:p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 print:hidden w-full min-w-0">
         <div className="space-y-1">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-xs uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
@@ -218,64 +218,59 @@ export default function Reports() {
             <Badge className="bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border-amber-300 text-[10px]">
               Sujeto a Modificación
             </Badge>
-            <span className="text-[11px] text-slate-500 dark:text-slate-400">
-              Base: <strong className="text-amber-700 dark:text-amber-400">{taxBase === 'PROFIT' ? 'Utilidad Antes de Impuestos (EBT)' : 'Total Ventas Facturadas'}</strong>
-            </span>
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-400">
-            {taxBase === 'PROFIT' 
-              ? 'Renta Fiscal NIIF: Se calculan impuestos sobre ganancias reales (Ingresos menos Gastos Deducibles).' 
-              : 'Retención Directa: Se calcula la provisión sobre cada peso facturado independientemente de los gastos.'}
+            Ajusta la tasa de retención/renta estimada según el régimen de tu empresa (tasa vigente por defecto: <strong>{taxRate}%</strong>).
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          {/* Selector de Base Imponible */}
-          <div className="flex items-center bg-white dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
-            <button 
-              type="button"
-              onClick={() => setTaxBase('PROFIT')} 
-              className={`px-2.5 py-1 rounded font-medium transition-colors ${taxBase === 'PROFIT' ? 'bg-amber-500 text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+        <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
+          <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            <span className="text-xs text-slate-500 font-medium pl-1">Base:</span>
+            <Button
+              size="sm"
+              variant={taxBase === 'PROFIT' ? 'default' : 'ghost'}
+              className="h-7 text-xs px-2.5 font-semibold"
+              onClick={() => setTaxBase('PROFIT')}
             >
-              Sobre Utilidad (DIAN)
-            </button>
-            <button 
-              type="button"
-              onClick={() => setTaxBase('REVENUE')} 
-              className={`px-2.5 py-1 rounded font-medium transition-colors ${taxBase === 'REVENUE' ? 'bg-amber-500 text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+              Sobre Utilidad
+            </Button>
+            <Button
+              size="sm"
+              variant={taxBase === 'REVENUE' ? 'default' : 'ghost'}
+              className="h-7 text-xs px-2.5 font-semibold"
+              onClick={() => setTaxBase('REVENUE')}
             >
-              Sobre Ventas (Bruto)
-            </button>
+              Sobre Ventas
+            </Button>
           </div>
 
-          {/* Slider de Porcentaje */}
-          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Tasa:</span>
-            <input 
-              type="range" 
-              min="0" 
-              max="60" 
-              step="1"
-              value={taxRate} 
-              onChange={(e) => setTaxRate(Number(e.target.value))}
-              className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-600"
-            />
-            <div className="flex items-center gap-1 font-mono font-bold text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
-              <span>{taxRate}%</span>
-            </div>
+          <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+            <span className="text-xs text-slate-500 font-medium pl-1">Tasa:</span>
+            {[35, 40, 45].map((rate) => (
+              <Button
+                key={rate}
+                size="sm"
+                variant={taxRate === rate ? 'default' : 'ghost'}
+                className="h-7 text-xs px-2 font-mono font-bold"
+                onClick={() => setTaxRate(rate)}
+              >
+                {rate}%
+              </Button>
+            ))}
           </div>
         </div>
       </div>
 
       {isLoading ? (
-        <div className="flex flex-col items-center justify-center p-24 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col items-center justify-center p-24 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 w-full min-w-0">
           <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-3" />
           <p className="text-sm font-medium text-slate-500">Calculando libro contable y estados consolidados...</p>
         </div>
       ) : (
         <>
           {/* Resumen Financiero Directo sin Contenedor */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 py-2 px-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
             <div className="space-y-0.5">
               <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Disponible Bancos</span>
               <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoBancos)}</div>
@@ -310,13 +305,13 @@ export default function Reports() {
           </div>
 
           {/* Tablas Principales: PyG y Balance General */}
-          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2 w-full min-w-0">
               
               {/* Estado de Resultados Integral (PyG) */}
-              <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-                  <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-4 px-6">
+              <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+                  <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-3.5 px-4 sm:px-6">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <TrendingUp className="w-4 h-4 text-blue-600" /> Estado de Resultados (P&G)
                         </CardTitle>
                         <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200">
@@ -451,10 +446,10 @@ export default function Reports() {
               </Card>
 
               {/* Balance General NIIF Clasificado */}
-              <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-                  <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-4 px-6">
+              <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+                  <CardHeader className="bg-slate-50/80 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800 py-3.5 px-4 sm:px-6">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
                             <PieChartIcon className="w-4 h-4 text-blue-600" /> Balance General Clasificado
                         </CardTitle>
                         <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200 font-mono">

@@ -146,29 +146,29 @@ export default function FixedAssetsDepreciation() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm print:border-none print:shadow-none">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs print:border-none print:shadow-none w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-purple-50 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
               NIIF NIC 16 (Propiedad, Planta y Equipo)
             </span>
             <span className="text-xs text-slate-400 font-mono">Sitionuevo, Magdalena</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Activos en Especie y Depreciación</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Activos en Especie y Depreciación</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de activos tecnológicos aportados (\$18.882.000 COP), vida útil y deducción fiscal de renta.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 print:hidden">
+        <div className="flex items-center gap-2.5 print:hidden flex-wrap">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => setIsAddOpen(true)}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Agregar Activo
           </Button>
@@ -177,7 +177,7 @@ export default function FixedAssetsDepreciation() {
             variant="default" 
             size="sm" 
             onClick={() => window.print()}
-            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm"
+            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm text-xs"
           >
             <Printer className="w-4 h-4 mr-1.5" /> Imprimir Libro de Activos
           </Button>
@@ -185,9 +185,9 @@ export default function FixedAssetsDepreciation() {
       </div>
 
       {/* Alerta de Beneficio Fiscal */}
-      <div className="p-4 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 dark:from-emerald-950/30 dark:via-blue-950/30 rounded-xl border border-emerald-200/80 dark:border-emerald-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
+      <div className="p-3.5 sm:p-4 bg-gradient-to-r from-emerald-500/10 via-blue-500/10 to-purple-500/10 dark:from-emerald-950/30 dark:via-blue-950/30 rounded-xl border border-emerald-200/80 dark:border-emerald-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden w-full min-w-0">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 rounded-lg">
+          <div className="p-2 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 rounded-lg shrink-0">
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
@@ -202,7 +202,7 @@ export default function FixedAssetsDepreciation() {
       </div>
 
       {/* Resumen de Activos y Depreciación Directo sin Contenedor */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
         <div className="space-y-0.5">
           <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Costo en Especie</span>
           <div className="text-base sm:text-2xl font-bold font-mono text-purple-700 dark:text-purple-400 truncate">{formatCOP(totalCostoOriginal)}</div>
@@ -229,8 +229,8 @@ export default function FixedAssetsDepreciation() {
       </div>
 
       {/* Tabla de Activos Fijos */}
-      <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850">
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="py-3.5 px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850">
           <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white">
             <Cpu className="w-4 h-4 text-purple-600" /> Libro Auxiliar de Activos Fijos y Depreciación
           </CardTitle>

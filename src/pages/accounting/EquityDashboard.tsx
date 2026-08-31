@@ -355,23 +355,23 @@ export default function EquityDashboard() {
   const curEditTotalShares = (curEditSharesA + curEditSharesB) > 0 ? (curEditSharesA + curEditSharesB) : Math.round(curEditSubscribed / 1000);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               Estructura Corporativa & Societaria
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Patrimonio y Composición Accionaria</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Patrimonio y Composición Accionaria</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de capital suscrito, acciones Clase A / B, capital pagado y saldos pendientes.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 flex-wrap">
           {/* Modal Modificar Capital Autorizado */}
           <Dialog open={isCapitalDialogOpen} onOpenChange={setIsCapitalDialogOpen}>
             <DialogTrigger asChild>

@@ -95,12 +95,12 @@ export default function AccountingDashboard() {
   }).format(val);
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               ERP NeuroLabs • Moneda: COP
             </span>
@@ -108,20 +108,20 @@ export default function AccountingDashboard() {
               Provisión Fiscal: 40%
             </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Dashboard Financiero y Operativo</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Dashboard Financiero y Operativo</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Control de ingresos recurrentes (MRR), provisión tributaria ({formatCOP(provisionImpuestos)}) y utilidad real.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 flex-wrap">
           <Link to="/contabilidad/facturacion">
-            <Button variant="outline" size="sm" className="h-9 font-medium text-slate-700 dark:text-slate-200">
+            <Button variant="outline" size="sm" className="h-9 font-medium text-slate-700 dark:text-slate-200 text-xs">
               <Building2 className="h-4 w-4 mr-1.5 text-blue-600" /> Gestionar Clientes
             </Button>
           </Link>
           <Link to="/contabilidad/reportes">
-            <Button variant="default" size="sm" className="h-9 font-medium bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 shadow-sm">
+            <Button variant="default" size="sm" className="h-9 font-medium bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 shadow-sm text-xs">
               <TrendingUp className="h-4 w-4 mr-1.5" /> Ver Reportes (PyG & NIIF)
             </Button>
           </Link>
@@ -164,29 +164,29 @@ export default function AccountingDashboard() {
       </div>
 
       {/* Gráfico y Transacciones */}
-      <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 lg:grid-cols-3 w-full min-w-0">
         
         {/* Main Chart */}
-        <Card className="lg:col-span-2 rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
-          <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-4 px-6">
-            <div className="flex items-center justify-between">
+        <Card className="lg:col-span-2 rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 w-full min-w-0 max-w-full overflow-hidden">
+          <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3.5 px-4 sm:px-6">
+            <div className="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <CardTitle className="text-base font-bold text-slate-900 dark:text-white">Flujo de Ingresos vs Egresos</CardTitle>
+                <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Flujo de Ingresos vs Egresos</CardTitle>
                 <p className="text-xs text-slate-500 mt-0.5">Histórico comparativo semestral en Pesos Colombianos (COP)</p>
               </div>
-              <div className="flex items-center gap-4 text-xs font-semibold">
+              <div className="flex items-center gap-3 text-xs font-semibold">
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />
                   <span>Ingresos</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-rose-500" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-rose-500" />
                   <span>Egresos</span>
                 </div>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="h-[320px] w-full pt-6">
+          <CardContent className="h-[280px] sm:h-[320px] w-full pt-4 px-2 sm:px-6">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
@@ -215,10 +215,10 @@ export default function AccountingDashboard() {
         </Card>
 
         {/* Transacciones Recientes */}
-        <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between">
+        <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col justify-between w-full min-w-0 max-w-full overflow-hidden">
           <div>
-            <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-4 px-6">
-              <CardTitle className="text-base font-bold text-slate-900 dark:text-white">Últimos Movimientos</CardTitle>
+            <CardHeader className="border-b border-slate-100 dark:border-slate-800/60 pb-3.5 px-4 sm:px-6">
+              <CardTitle className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Últimos Movimientos</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <div className="flex flex-col divide-y divide-slate-100 dark:divide-slate-800">

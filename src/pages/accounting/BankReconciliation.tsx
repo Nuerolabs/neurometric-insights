@@ -107,31 +107,31 @@ export default function BankReconciliation() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-[1400px] mx-auto animate-in fade-in duration-300">
+    <div className="flex flex-col gap-6 w-full max-w-full min-w-0 mx-auto animate-in fade-in duration-300">
       
       {/* Header Corporativo */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm print:border-none print:shadow-none">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs print:border-none print:shadow-none w-full min-w-0">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1 flex-wrap">
             <span className="px-2.5 py-0.5 text-xs font-semibold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               Bancolombia S.A. • Cuenta Corporativa
             </span>
             <span className="text-xs text-slate-400 font-mono">Sitionuevo, Magdalena</span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Conciliación Bancaria Oficial</h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Conciliación Bancaria Oficial</h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Cruce y auditoría mensual: extracto bancario de Bancolombia vs. libro diario contable ERP.
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 print:hidden">
+        <div className="flex items-center gap-2.5 print:hidden flex-wrap">
           <Button 
             variant="outline" 
             size="sm" 
             onClick={() => {
               toast.info("Importador de extractos: Selecciona un archivo CSV o Excel de Bancolombia");
             }}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs"
           >
             <Upload className="w-4 h-4 mr-1.5 text-slate-500" /> Cargar Extracto
           </Button>
@@ -140,7 +140,7 @@ export default function BankReconciliation() {
             variant="outline" 
             size="sm" 
             onClick={() => setIsAddMovementOpen(true)}
-            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium"
+            className="h-9 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs"
           >
             <Plus className="w-4 h-4 mr-1.5" /> Registrar Movimiento
           </Button>
@@ -149,7 +149,7 @@ export default function BankReconciliation() {
             variant="default" 
             size="sm" 
             onClick={() => window.print()}
-            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm"
+            className="h-9 bg-slate-900 hover:bg-slate-800 text-white dark:bg-blue-600 font-medium shadow-sm text-xs"
           >
             <Printer className="w-4 h-4 mr-1.5" /> Imprimir Acta NIIF
           </Button>
@@ -157,7 +157,7 @@ export default function BankReconciliation() {
       </div>
 
       {/* Resumen de Conciliación Bancaria Directo sin Contenedor */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 py-2 px-1 w-full min-w-0">
         <div className="space-y-0.5">
           <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Extracto</span>
           <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
@@ -184,8 +184,8 @@ export default function BankReconciliation() {
       </div>
 
       {/* Tabla de Movimientos Bancarios y Cruces Contables */}
-      <Card className="rounded-xl shadow-sm border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-        <CardHeader className="py-4 px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 flex flex-row items-center justify-between">
+      <Card className="rounded-xl shadow-xs border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden w-full min-w-0 max-w-full">
+        <CardHeader className="py-3.5 px-4 sm:px-6 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850 flex flex-row items-center justify-between flex-wrap gap-2">
           <div>
             <CardTitle className="text-base font-bold flex items-center gap-2 text-slate-900 dark:text-white">
               <Building2 className="w-4 h-4 text-blue-600" /> Movimientos Bancarios vs. Documentos Contables

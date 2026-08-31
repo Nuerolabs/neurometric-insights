@@ -28,6 +28,8 @@ export default function Reports() {
   const [period, setPeriod] = useState<"ALL" | "MONTH" | "YEAR">("ALL");
   // Tasa de provisión de impuestos y retenciones (por defecto 40%, sujeta a modificaciones)
   const [taxRate, setTaxRate] = useState<number>(40);
+  // Base de cálculo tributario: 'PROFIT' (Sobre Utilidad EBT - Estándar DIAN/NIIF) o 'REVENUE' (Sobre Ingresos Brutos Facturados)
+  const [taxBase, setTaxBase] = useState<"PROFIT" | "REVENUE">("PROFIT");
   
   const { data: equityData, isLoading: loadingEquity } = useEquityData();
   const { data: invoices, isLoading: loadingInvoices } = useInvoices();
@@ -76,8 +78,11 @@ export default function Reports() {
   // Utilidad Antes de Impuestos (EBT)
   const utilidadAntesImpuestos = totalIngresos - totalGastos;
   
-  // Provisión de Impuestos y Retenciones (40% por defecto, ajustable)
-  const provisionImpuestos = utilidadAntesImpuestos > 0 ? Math.round(utilidadAntesImpuestos * (taxRate / 100)) : 0;
+  // Provisión de Impuestos y Retenciones
+  // Si es 'PROFIT': Se calcula sobre la Utilidad Antes de Impuestos (Estatuto Tributario Art. 240)
+  // Si es 'REVENUE': Se calcula sobre el Total de Ingresos Brutos de Venta
+  const baseImponible = taxBase === 'PROFIT' ? Math.max(0, utilidadAntesImpuestos) : totalIngresos;
+  const provisionImpuestos = baseImponible > 0 ? Math.round(baseImponible * (taxRate / 100)) : 0;
   
   // Utilidad Neta Real NIIF (Post-Impuestos)
   const utilidadNeta = utilidadAntesImpuestos - provisionImpuestos;
@@ -204,34 +209,60 @@ export default function Reports() {
       </div>
 
       {/* Barra de Control de Provisión de Impuestos & Retenciones (Por defecto 40% - Sujeto a Modificación) */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-purple-500/10 dark:from-amber-950/30 dark:via-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
-        <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
+      <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-purple-500/10 dark:from-amber-950/30 dark:via-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 print:hidden">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="font-bold text-xs uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
-              ⚖️ Provisión Tributaria & Retenciones en la Fuente
+              ⚖️ Provisión Tributaria & Impuestos
             </span>
             <Badge className="bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border-amber-300 text-[10px]">
               Sujeto a Modificación
             </Badge>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">
+              Base: <strong className="text-amber-700 dark:text-amber-400">{taxBase === 'PROFIT' ? 'Utilidad Antes de Impuestos (EBT)' : 'Total Ventas Facturadas'}</strong>
+            </span>
           </div>
           <p className="text-xs text-slate-600 dark:text-slate-400">
-            Ajusta la tasa estimada de impuestos (Renta 35% + ReteICA + Retenciones/GMF). Por defecto: <strong>40%</strong>.
+            {taxBase === 'PROFIT' 
+              ? 'Renta Fiscal NIIF: Se calculan impuestos sobre ganancias reales (Ingresos menos Gastos Deducibles).' 
+              : 'Retención Directa: Se calcula la provisión sobre cada peso facturado independientemente de los gastos.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-3 w-full sm:w-auto bg-white dark:bg-slate-900 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
-          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Tasa de Impuestos:</span>
-          <input 
-            type="range" 
-            min="0" 
-            max="60" 
-            step="1"
-            value={taxRate} 
-            onChange={(e) => setTaxRate(Number(e.target.value))}
-            className="w-28 sm:w-36 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-600"
-          />
-          <div className="flex items-center gap-1 font-mono font-bold text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
-            <span>{taxRate}%</span>
+        <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+          {/* Selector de Base Imponible */}
+          <div className="flex items-center bg-white dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm text-xs">
+            <button 
+              type="button"
+              onClick={() => setTaxBase('PROFIT')} 
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${taxBase === 'PROFIT' ? 'bg-amber-500 text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+            >
+              Sobre Utilidad (DIAN)
+            </button>
+            <button 
+              type="button"
+              onClick={() => setTaxBase('REVENUE')} 
+              className={`px-2.5 py-1 rounded font-medium transition-colors ${taxBase === 'REVENUE' ? 'bg-amber-500 text-white font-bold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+            >
+              Sobre Ventas (Bruto)
+            </button>
+          </div>
+
+          {/* Slider de Porcentaje */}
+          <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Tasa:</span>
+            <input 
+              type="range" 
+              min="0" 
+              max="60" 
+              step="1"
+              value={taxRate} 
+              onChange={(e) => setTaxRate(Number(e.target.value))}
+              className="w-24 sm:w-28 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-600"
+            />
+            <div className="flex items-center gap-1 font-mono font-bold text-xs text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
+              <span>{taxRate}%</span>
+            </div>
           </div>
         </div>
       </div>
@@ -437,7 +468,7 @@ export default function Reports() {
                               {/* Sección 4: Provisión de Impuestos (40% modificable) */}
                               <TableRow className="bg-amber-50/40 dark:bg-amber-950/20">
                                   <TableCell className="pl-6 text-sm text-amber-900 dark:text-amber-300 font-medium flex items-center justify-between">
-                                    <span>(-) Provisión Impuestos de Renta & Retenciones ({taxRate}%)</span>
+                                    <span>(-) Provisión Impuestos ({taxRate}% sobre {taxBase === 'PROFIT' ? 'Utilidad Antes de Impuestos' : 'Total Ventas'})</span>
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-amber-700 dark:text-amber-400 font-semibold">
                                     -{formatCOP(provisionImpuestos)}

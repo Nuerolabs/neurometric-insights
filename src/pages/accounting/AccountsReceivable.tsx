@@ -751,38 +751,38 @@ export default function AccountsReceivable() {
         </div>
       </div>
 
-      {/* Tarjetas de Resumen Financiero */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <span>MRR (Mensualidades Recurrentes)</span>
-              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md"><DollarSign className="w-4 h-4" /></div>
+      {/* Tarjetas de Resumen Financiero Compactas */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4">
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">MRR Recurrente</span>
+              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0"><DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></div>
             </div>
-            <div className="text-2xl font-bold text-blue-700 dark:text-blue-400 font-mono">{formatCOP(totalMRR)}</div>
-            <div className="mt-1 text-xs text-slate-500">Ingresos mensuales fijos por contratos</div>
+            <div className="text-base sm:text-2xl font-bold text-blue-700 dark:text-blue-400 font-mono truncate">{formatCOP(totalMRR)}</div>
+            <div className="mt-0.5 text-[10px] sm:text-xs text-slate-500 truncate">Mensualidades fijas</div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <span>Recaudado Total (Caja & Bancos)</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md"><CheckCircle2 className="w-4 h-4" /></div>
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Total Recaudado</span>
+              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0"><CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></div>
             </div>
-            <div className="text-2xl font-bold text-emerald-700 dark:emerald-400 font-mono">{formatCOP(totalRecaudado)}</div>
-            <div className="mt-1 text-xs text-slate-500">Abonos y mensualidades confirmadas</div>
+            <div className="text-base sm:text-2xl font-bold text-emerald-700 dark:emerald-400 font-mono truncate">{formatCOP(totalRecaudado)}</div>
+            <div className="mt-0.5 text-[10px] sm:text-xs text-slate-500 truncate">Confirmado en banco</div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">
-              <span>Cartera Pendiente por Cobrar</span>
-              <div className="p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md"><Clock className="w-4 h-4" /></div>
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900 col-span-2 sm:col-span-1">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Cartera Pendiente</span>
+              <div className="p-1 sm:p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md shrink-0"><Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" /></div>
             </div>
-            <div className="text-2xl font-bold text-amber-700 dark:text-amber-400 font-mono">{formatCOP(totalCobrar)}</div>
-            <div className="mt-1 text-xs text-slate-500">Cuotas de implementación y cobros pendientes</div>
+            <div className="text-base sm:text-2xl font-bold text-amber-700 dark:text-amber-400 font-mono truncate">{formatCOP(totalCobrar)}</div>
+            <div className="mt-0.5 text-[10px] sm:text-xs text-slate-500 truncate">Cuotas e hitos por cobrar</div>
           </CardContent>
         </Card>
       </div>

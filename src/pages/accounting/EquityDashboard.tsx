@@ -584,46 +584,46 @@ export default function EquityDashboard() {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
                   {/* Capital Autorizado */}
-                  <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 space-y-1.5">
-                      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Capital Autorizado</p>
-                      <p className="text-2xl font-bold font-mono text-slate-900 dark:text-white">{formatter.format(summary.authorizedCapital)}</p>
-                      <p className="text-xs text-slate-500">Límite estatutario societario</p>
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 space-y-1">
+                      <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500">Capital Autorizado</p>
+                      <p className="text-xl sm:text-2xl font-bold font-mono text-slate-900 dark:text-white">{formatter.format(summary.authorizedCapital)}</p>
+                      <p className="text-[10px] sm:text-xs text-slate-500">Límite estatutario societario</p>
                   </div>
                   
                   {/* Capital Suscrito */}
-                  <div className="p-4 rounded-lg bg-blue-50/50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 space-y-1.5">
-                      <p className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">Capital Suscrito</p>
-                      <p className="text-2xl font-bold font-mono text-blue-700 dark:text-blue-400">{formatter.format(summary.totalSubscribed)}</p>
-                      <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-blue-50/50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 space-y-1">
+                      <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400">Capital Suscrito</p>
+                      <p className="text-xl sm:text-2xl font-bold font-mono text-blue-700 dark:text-blue-400">{formatter.format(summary.totalSubscribed)}</p>
+                      <div className="flex items-center justify-between text-[10px] sm:text-xs text-slate-600 dark:text-slate-400">
                         <span>{shareholders.reduce((sum, s) => sum + (s.shares_owned || 0), 0).toLocaleString()} Acciones</span>
                         <span className="font-bold">{percentSubscribed.toFixed(1)}% del Autorizado</span>
                       </div>
-                      <Progress value={percentSubscribed} className="h-2 bg-blue-100 dark:bg-blue-900/30" />
+                      <Progress value={percentSubscribed} className="h-1.5 sm:h-2 bg-blue-100 dark:bg-blue-900/30" />
                   </div>
 
                   {/* Capital Pagado */}
-                  <div className="p-4 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 space-y-2">
+                  <div className="p-3.5 sm:p-4 rounded-lg bg-emerald-50/50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Capital Social Pagado</p>
-                        <Badge variant="outline" className="text-[10px] font-bold bg-emerald-100/50 text-emerald-800 border-emerald-300">
+                        <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Capital Social Pagado</p>
+                        <Badge variant="outline" className="text-[9px] sm:text-[10px] font-bold bg-emerald-100/50 text-emerald-800 border-emerald-300">
                           {percentPaid.toFixed(1)}% Pagado
                         </Badge>
                       </div>
-                      <p className="text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">{formatter.format(summary.totalPaid)}</p>
+                      <p className="text-xl sm:text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">{formatter.format(summary.totalPaid)}</p>
                       
                       {/* Desglose Dinero Real vs Especie */}
-                      <div className="pt-1.5 border-t border-emerald-200/60 dark:border-emerald-900/40 space-y-1 text-[11px]">
+                      <div className="pt-1 border-t border-emerald-200/60 dark:border-emerald-900/40 space-y-0.5 text-[10px] sm:text-[11px]">
                         <div className="flex justify-between items-center text-slate-700 dark:text-slate-300">
                           <span className="flex items-center gap-1 font-semibold text-blue-700 dark:text-blue-400">
-                            💵 Dinero Real Bancos:
+                            💵 Dinero Bancos:
                           </span>
                           <strong className="font-mono text-blue-700 dark:text-blue-400">{formatter.format(summary.totalCashPaid)}</strong>
                         </div>
                         <div className="flex justify-between items-center text-slate-600 dark:text-slate-400">
                           <span className="flex items-center gap-1">
-                            💻 Bienes & Especie:
+                            💻 Bienes Especie:
                           </span>
                           <strong className="font-mono">{formatter.format(summary.totalSpeciesPaid)}</strong>
                         </div>

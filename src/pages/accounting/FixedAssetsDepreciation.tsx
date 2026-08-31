@@ -201,62 +201,62 @@ export default function FixedAssetsDepreciation() {
         </div>
       </div>
 
-      {/* Tarjetas Métricas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Tarjetas Métricas Compactas */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         
         {/* Costo Histórico Total */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Costo Histórico en Especie</span>
-              <div className="p-1.5 bg-purple-50 dark:bg-purple-950/50 text-purple-600 rounded-md">
-                <Layers className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Costo en Especie</span>
+              <div className="p-1 sm:p-1.5 bg-purple-50 dark:bg-purple-950/50 text-purple-600 rounded-md shrink-0">
+                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-purple-700 dark:text-purple-400">{formatCOP(totalCostoOriginal)}</div>
-            <p className="text-xs text-slate-500 mt-1">Capital en especie aportado</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-purple-700 dark:text-purple-400 truncate">{formatCOP(totalCostoOriginal)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Capital aportado</p>
           </CardContent>
         </Card>
 
         {/* Depreciación Mensual */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Gasto Depreciación Mensual</span>
-              <div className="p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md">
-                <TrendingDown className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Deprec. Mensual</span>
+              <div className="p-1 sm:p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md shrink-0">
+                <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-amber-600">{formatCOP(totalDepreciacionMensual)}</div>
-            <p className="text-xs text-slate-500 mt-1">Gasto contable línea recta</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 truncate">{formatCOP(totalDepreciacionMensual)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Gasto deducible</p>
           </CardContent>
         </Card>
 
         {/* Depreciación Acumulada */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Depreciación Acumulada</span>
-              <div className="p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md">
-                <TrendingDown className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Deprec. Acumulada</span>
+              <div className="p-1 sm:p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md shrink-0">
+                <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-rose-600">-{formatCOP(totalDepreciacionAcumulada)}</div>
-            <p className="text-xs text-slate-500 mt-1">Cuenta PUC 1592</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">-{formatCOP(totalDepreciacionAcumulada)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Cuenta PUC 1592</p>
           </CardContent>
         </Card>
 
         {/* Valor Neto en Libros */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Valor Neto en Libros NIIF</span>
-              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
-                <ShieldCheck className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Valor Neto Libros</span>
+              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-blue-700 dark:text-blue-400">{formatCOP(totalValorNetoLibros)}</div>
-            <p className="text-xs text-slate-500 mt-1">Patrimonio real en balance</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-blue-700 dark:text-blue-400 truncate">{formatCOP(totalValorNetoLibros)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Balance NIIF</p>
           </CardContent>
         </Card>
 

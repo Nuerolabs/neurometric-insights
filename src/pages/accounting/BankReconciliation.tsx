@@ -156,63 +156,63 @@ export default function BankReconciliation() {
         </div>
       </div>
 
-      {/* Tarjetas de Conciliación Bancaria */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Tarjetas de Conciliación Bancaria Compactas */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
         
         {/* Saldo Extracto */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Saldo según Extracto Bancario</span>
-              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
-                <Building2 className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Saldo Extracto</span>
+              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0">
+                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-blue-700 dark:text-blue-400">{formatCOP(saldoExtractoBancario)}</div>
-            <p className="text-xs text-slate-500 mt-1">Bancolombia al corte mensual</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-blue-700 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Bancolombia</p>
           </CardContent>
         </Card>
 
         {/* Saldo Libros ERP */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Saldo según Libros ERP</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                <FileSpreadsheet className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Saldo Libros ERP</span>
+              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
+                <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">{formatCOP(saldoLibrosERP)}</div>
-            <p className="text-xs text-slate-500 mt-1">Libro Mayor y Tesorería</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400 truncate">{formatCOP(saldoLibrosERP)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Libro Mayor</p>
           </CardContent>
         </Card>
 
         {/* Total Abonos / Ingresos */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Total Abonos / Depósitos</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                <ArrowUpRight className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Total Abonos</span>
+              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
+                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-slate-900 dark:text-white">+{formatCOP(totalDepositos)}</div>
-            <p className="text-xs text-slate-500 mt-1">Recaudos y aportes acreditados</p>
+            <div className="text-base sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">+{formatCOP(totalDepositos)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Recaudos cliente</p>
           </CardContent>
         </Card>
 
         {/* Estado de Cuadre */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Diferencia de Conciliación</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                <CheckCircle2 className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Diferencia</span>
+              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold font-mono text-emerald-600">$ 0</div>
-            <div className="mt-1 flex items-center gap-1 text-xs text-emerald-600 font-semibold">
-              <Check className="w-3.5 h-3.5" /> 100% Conciliado y Cuadrado
+            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 truncate">$ 0</div>
+            <div className="mt-0.5 flex items-center gap-1 text-[10px] sm:text-xs text-emerald-600 font-semibold truncate">
+              <Check className="w-3 h-3 shrink-0" /> Cuadrado 100%
             </div>
           </CardContent>
         </Card>

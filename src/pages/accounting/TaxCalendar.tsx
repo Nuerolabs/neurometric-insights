@@ -202,57 +202,57 @@ export default function TaxCalendar() {
         </div>
       </div>
 
-      {/* Tarjetas de Resumen */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Jurisdicción Principal</span>
-              <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
-                <Landmark className="w-4 h-4" />
+      {/* Tarjetas de Resumen Compactas */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Jurisdicción</span>
+              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0">
+                <Landmark className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-lg font-bold text-slate-900 dark:text-white">Sitionuevo, Magdalena</div>
-            <p className="text-xs text-slate-500 mt-1">Alcaldía Municipal & DIAN</p>
+            <div className="text-sm sm:text-lg font-bold text-slate-900 dark:text-white truncate">Sitionuevo, Magd.</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Alcaldía & DIAN</p>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Provisión Tributaria Estimada</span>
-              <div className="p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md">
-                <BadgePercent className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Provisión Fiscal</span>
+              <div className="p-1 sm:p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md shrink-0">
+                <BadgePercent className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold text-amber-600 font-mono">{formatCOP(totalPendiente)}</div>
-            <p className="text-xs text-slate-500 mt-1">Obligaciones por liquidar</p>
+            <div className="text-base sm:text-2xl font-bold text-amber-600 font-mono truncate">{formatCOP(totalPendiente)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Por liquidar</p>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Impuestos Pagados</span>
-              <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                <CheckCircle2 className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Impuestos Pagados</span>
+              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-2xl font-bold text-emerald-600 font-mono">{formatCOP(totalPagado)}</div>
-            <p className="text-xs text-slate-500 mt-1">Con soporte y recibo oficial</p>
+            <div className="text-base sm:text-2xl font-bold text-emerald-600 font-mono truncate">{formatCOP(totalPagado)}</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Con soporte oficial</p>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-          <CardContent className="p-5">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-              <span>Cámara de Comercio</span>
-              <div className="p-1.5 bg-purple-50 dark:bg-purple-950/50 text-purple-600 rounded-md">
-                <Building className="w-4 h-4" />
+        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
+          <CardContent className="p-3 sm:p-4.5">
+            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
+              <span className="truncate">Cámara Comercio</span>
+              <div className="p-1 sm:p-1.5 bg-purple-50 dark:bg-purple-950/50 text-purple-600 rounded-md shrink-0">
+                <Building className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
             </div>
-            <div className="text-sm font-bold text-slate-900 dark:text-white">Santa Marta / Magdalena</div>
-            <p className="text-xs text-slate-500 mt-1">Renovación anual RUES</p>
+            <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">Santa Marta / Magd.</div>
+            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">RUES 2026</p>
           </CardContent>
         </Card>
       </div>

@@ -156,67 +156,33 @@ export default function BankReconciliation() {
         </div>
       </div>
 
-      {/* Tarjetas de Conciliación Bancaria Compactas */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-        
-        {/* Saldo Extracto */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Saldo Extracto</span>
-              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0">
-                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
-            <div className="text-base sm:text-2xl font-bold font-mono text-blue-700 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Bancolombia</p>
-          </CardContent>
-        </Card>
+      {/* Resumen de Conciliación Bancaria Minimalista */}
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="space-y-0.5">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Extracto</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(saldoExtractoBancario)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Bancolombia</span>
+          </div>
 
-        {/* Saldo Libros ERP */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Saldo Libros ERP</span>
-              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
-                <FileSpreadsheet className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
-            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400 truncate">{formatCOP(saldoLibrosERP)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Libro Mayor</p>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Saldo Libros ERP</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(saldoLibrosERP)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Libro Mayor</span>
+          </div>
 
-        {/* Total Abonos / Ingresos */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Total Abonos</span>
-              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
-                <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
-            <div className="text-base sm:text-2xl font-bold font-mono text-slate-900 dark:text-white truncate">+{formatCOP(totalDepositos)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Recaudos cliente</p>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Abonos</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">+{formatCOP(totalDepositos)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Recaudos cliente</span>
+          </div>
 
-        {/* Estado de Cuadre */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Diferencia</span>
-              <div className="p-1 sm:p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md shrink-0">
-                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Diferencia Conciliación</span>
             <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 truncate">$ 0</div>
-            <div className="mt-0.5 flex items-center gap-1 text-[10px] sm:text-xs text-emerald-600 font-semibold truncate">
-              <Check className="w-3 h-3 shrink-0" /> Cuadrado 100%
-            </div>
-          </CardContent>
-        </Card>
-
+            <span className="text-[11px] text-emerald-600 font-semibold block truncate">100% Cuadrado</span>
+          </div>
+        </div>
       </div>
 
       {/* Tabla de Movimientos Bancarios y Cruces Contables */}

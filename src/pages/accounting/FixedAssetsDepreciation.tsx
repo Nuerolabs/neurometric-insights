@@ -201,65 +201,33 @@ export default function FixedAssetsDepreciation() {
         </div>
       </div>
 
-      {/* Tarjetas Métricas Compactas */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-        
-        {/* Costo Histórico Total */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Costo en Especie</span>
-              <div className="p-1 sm:p-1.5 bg-purple-50 dark:bg-purple-950/50 text-purple-600 rounded-md shrink-0">
-                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
+      {/* Resumen de Activos y Depreciación Minimalista */}
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="space-y-0.5">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Costo en Especie</span>
             <div className="text-base sm:text-2xl font-bold font-mono text-purple-700 dark:text-purple-400 truncate">{formatCOP(totalCostoOriginal)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Capital aportado</p>
-          </CardContent>
-        </Card>
+            <span className="text-[11px] text-slate-400 block truncate">Capital aportado</span>
+          </div>
 
-        {/* Depreciación Mensual */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Deprec. Mensual</span>
-              <div className="p-1 sm:p-1.5 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-md shrink-0">
-                <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
-            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 truncate">{formatCOP(totalDepreciacionMensual)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Gasto deducible</p>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Gasto Deprec. Mensual</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(totalDepreciacionMensual)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Gasto deducible</span>
+          </div>
 
-        {/* Depreciación Acumulada */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Deprec. Acumulada</span>
-              <div className="p-1 sm:p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md shrink-0">
-                <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Deprec. Acumulada</span>
             <div className="text-base sm:text-2xl font-bold font-mono text-rose-600 truncate">-{formatCOP(totalDepreciacionAcumulada)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Cuenta PUC 1592</p>
-          </CardContent>
-        </Card>
+            <span className="text-[11px] text-slate-400 block truncate">Cuenta PUC 1592</span>
+          </div>
 
-        {/* Valor Neto en Libros */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4.5">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Valor Neto Libros</span>
-              <div className="p-1 sm:p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </div>
-            </div>
-            <div className="text-base sm:text-2xl font-bold font-mono text-blue-700 dark:text-blue-400 truncate">{formatCOP(totalValorNetoLibros)}</div>
-            <p className="text-[10px] sm:text-xs text-slate-500 mt-0.5 truncate">Balance NIIF</p>
-          </CardContent>
-        </Card>
-
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Valor Neto en Libros</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalValorNetoLibros)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Balance NIIF</span>
+          </div>
+        </div>
       </div>
 
       {/* Tabla de Activos Fijos */}

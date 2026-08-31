@@ -128,111 +128,54 @@ export default function AccountingDashboard() {
         </div>
       </div>
 
-      {/* KPIs Principales */}
-      {/* KPIs Principales Compactos */}
-      <div className="grid gap-2.5 sm:gap-3.5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-        
-        {/* MRR */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">MRR Recurrente</span>
-              <div className="p-1 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded shrink-0">
-                <DollarSign className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div className="text-sm sm:text-xl font-bold font-mono text-blue-700 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
-            <div className="mt-0.5 text-[10px] sm:text-[11px] text-slate-500 flex items-center justify-between truncate">
-              <span>{clientesActivos} clientes</span>
-              <span className="font-semibold text-blue-600">$600k/mes</span>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Resumen Ejecutivo Minimalista */}
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
+          <div className="space-y-0.5">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">MRR Recurrente</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-blue-600 dark:text-blue-400 truncate">{formatCOP(totalMRR)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">{clientesActivos} clientes ($600k/m)</span>
+          </div>
 
-        {/* Ingresos Recaudados */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Total Recaudado</span>
-              <div className="p-1 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded shrink-0">
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div className="text-sm sm:text-xl font-bold font-mono text-emerald-700 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
-            <div className="mt-0.5 text-[10px] sm:text-[11px] text-slate-500 truncate">
-              Caja & Bancos
-            </div>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Total Recaudado</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">{formatCOP(totalIngresos)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Caja & Bancos</span>
+          </div>
 
-        {/* Egresos */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Costos y Gastos</span>
-              <div className="p-1 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded shrink-0">
-                <ArrowDownRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div className="text-sm sm:text-xl font-bold font-mono text-slate-900 dark:text-white truncate">{formatCOP(totalEgresos)}</div>
-            <div className="mt-0.5 text-[10px] sm:text-[11px] text-slate-500 truncate">
-              Cloud, APIs & Caja
-            </div>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Costos & Gastos</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-slate-800 dark:text-slate-200 truncate">{formatCOP(totalEgresos)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Cloud, APIs & Ops</span>
+          </div>
 
-        {/* Provisión Impuestos (40%) */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Provisión (40%)</span>
-              <div className="p-1 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded shrink-0">
-                <CreditCard className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div className="text-sm sm:text-xl font-bold font-mono text-amber-600 truncate">{formatCOP(provisionImpuestos)}</div>
-            <div className="mt-0.5 text-[10px] sm:text-[11px] text-slate-500 truncate">
-              Reserva DIAN & ICA
-            </div>
-          </CardContent>
-        </Card>
+          <div className="space-y-0.5 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Provisión (40%)</span>
+            <div className="text-base sm:text-2xl font-bold font-mono text-amber-600 dark:text-amber-400 truncate">{formatCOP(provisionImpuestos)}</div>
+            <span className="text-[11px] text-slate-400 block truncate">Reserva DIAN & ICA</span>
+          </div>
 
-        {/* Utilidad Neta Real */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-xs bg-white dark:bg-slate-900 col-span-2 sm:col-span-1">
-          <CardContent className="p-3 sm:p-4">
-            <div className="flex items-center justify-between text-slate-500 text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider mb-1">
-              <span className="truncate">Utilidad Neta Real</span>
-              <div className="p-1 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded shrink-0">
-                <TrendingUp className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <div className={`text-sm sm:text-xl font-bold font-mono truncate ${utilidadNetaReal >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600'}`}>
+          <div className="space-y-0.5 col-span-2 sm:col-span-1 sm:border-l sm:border-slate-100 sm:dark:border-slate-800 sm:pl-6">
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block truncate">Utilidad Neta</span>
+            <div className={`text-base sm:text-2xl font-bold font-mono truncate ${utilidadNetaReal >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600'}`}>
               {formatCOP(utilidadNetaReal)}
             </div>
-            <div className="mt-0.5 text-[10px] sm:text-[11px] text-slate-500 truncate">
-              Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margen.toFixed(1)}%</strong>
-            </div>
-          </CardContent>
-        </Card>
+            <span className="text-[11px] text-slate-400 block truncate">Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margen.toFixed(1)}%</strong></span>
+          </div>
+        </div>
 
-        {/* Cartera por Cobrar */}
-        <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900 sm:col-span-2 lg:col-span-5">
-          <CardContent className="p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded-lg">
-                <Receipt className="h-5 w-5" />
-              </div>
-              <div>
-                <span className="text-xs font-semibold text-slate-500 uppercase">Cartera Total por Cobrar (Facturas Pendientes)</span>
-                <p className="text-xs text-slate-400">Cobros emitidos en espera de confirmación y recaudo</p>
-              </div>
+        {/* Banner Sutil de Cartera */}
+        {carteraPendiente > 0 && (
+          <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
+              <Receipt className="w-4 h-4 shrink-0" />
+              <span><strong>Cartera por Cobrar:</strong> Facturas emitidas pendientes de recaudo</span>
             </div>
-            <div className="text-xl font-bold font-mono text-amber-700 dark:text-amber-400">
+            <span className="font-mono font-bold text-amber-700 dark:text-amber-400 text-sm">
               {formatCOP(carteraPendiente)}
-            </div>
-          </CardContent>
-        </Card>
-
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Gráfico y Transacciones */}

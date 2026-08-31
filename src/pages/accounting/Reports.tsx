@@ -26,6 +26,9 @@ import { toast } from "sonner";
 
 export default function Reports() {
   const [period, setPeriod] = useState<"ALL" | "MONTH" | "YEAR">("ALL");
+  // Tasa de provisión de impuestos y retenciones (por defecto 40%, sujeta a modificaciones)
+  const [taxRate, setTaxRate] = useState<number>(40);
+  
   const { data: equityData, isLoading: loadingEquity } = useEquityData();
   const { data: invoices, isLoading: loadingInvoices } = useInvoices();
   const { data: vouchers, isLoading: loadingVouchers } = usePettyCashVouchers();
@@ -70,8 +73,14 @@ export default function Reports() {
 
   const totalGastos = gastosCajaMenor + gastosCloud + otrosGastosCxP;
 
-  // Utilidad Operativa y Neta
-  const utilidadNeta = totalIngresos - totalGastos;
+  // Utilidad Antes de Impuestos (EBT)
+  const utilidadAntesImpuestos = totalIngresos - totalGastos;
+  
+  // Provisión de Impuestos y Retenciones (40% por defecto, ajustable)
+  const provisionImpuestos = utilidadAntesImpuestos > 0 ? Math.round(utilidadAntesImpuestos * (taxRate / 100)) : 0;
+  
+  // Utilidad Neta Real NIIF (Post-Impuestos)
+  const utilidadNeta = utilidadAntesImpuestos - provisionImpuestos;
   const margenUtilidad = totalIngresos > 0 ? (utilidadNeta / totalIngresos) * 100 : 0;
 
   // 3. Patrimonio desglosado (Dinero Real vs Activos en Especie)
@@ -79,10 +88,13 @@ export default function Reports() {
   const activosEnEspecie = Number(equityData?.summary?.totalSpeciesPaid || 0);
   const totalPatrimonio = Number(equityData?.summary?.totalPaid || (capitalDineroReal + activosEnEspecie));
 
-  // 4. Pasivos (Cuentas por pagar pendientes reales)
-  const totalPasivos = bills
+  // 4. Pasivos (Cuentas por pagar pendientes + Provisión de Impuestos por Pagar)
+  const cuentasPorPagarProveedores = bills
     ?.filter(b => b.status === 'PENDING')
     .reduce((sum, b) => sum + Number(b.total_amount || 0), 0) || 0;
+  
+  // Total pasivos incluyendo provisión de impuestos corriente (Cuenta 2404 / 2615)
+  const totalPasivos = cuentasPorPagarProveedores + provisionImpuestos;
 
   // 5. Cuentas por Cobrar (Facturas Pendientes reales)
   const cuentasPorCobrar = invoices
@@ -117,8 +129,10 @@ export default function Reports() {
       ["Gastos de Cloud & Servidores", gastosCloud],
       ["Gastos de Caja Menor", gastosCajaMenor],
       ["Otros Costos y Gastos", otrosGastosCxP],
-      ["TOTAL GASTOS", totalGastos],
-      ["UTILIDAD NETA DEL EJERCICIO", utilidadNeta],
+      ["TOTAL GASTOS OPERACIONALES", totalGastos],
+      ["UTILIDAD ANTES DE IMPUESTOS (EBT)", utilidadAntesImpuestos],
+      [`PROVISIÓN DE IMPUESTOS Y RETENCIONES (${taxRate}%)`, provisionImpuestos],
+      ["UTILIDAD NETA REAL DEL EJERCICIO", utilidadNeta],
       ["", ""],
       ["DISPONIBLE REAL EN BANCOS", saldoBancos],
       ["EFECTIVO EN CAJA MENOR", saldoCajaMenor],
@@ -126,8 +140,10 @@ export default function Reports() {
       ["TOTAL ACTIVOS CORRIENTES (LIQUIDEZ)", totalActivoCorriente],
       ["ACTIVOS NO CORRIENTES (ESPECIE/TECNOLOGÍA)", totalActivoNoCorriente],
       ["TOTAL ACTIVOS", totalActivos],
-      ["PASIVOS TOTALES (CxP)", totalPasivos],
-      ["PATRIMONIO TOTAL", totalPatrimonio + utilidadNeta]
+      ["PASIVOS A PROVEEDORES (CxP)", cuentasPorPagarProveedores],
+      [`PASIVO PROVISIÓN IMPUESTOS POR PAGAR (${taxRate}%)`, provisionImpuestos],
+      ["TOTAL PASIVOS", totalPasivos],
+      ["PATRIMONIO TOTAL (Capital + Utilidad Neta)", totalPatrimonio + utilidadNeta]
     ];
 
     const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
@@ -163,7 +179,7 @@ export default function Reports() {
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Reportes Gerenciales y Financieros</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Consolidación contable en tiempo real: liquidez bancaria real, gastos operacionales, activos en especie y patrimonio.
+            Consolidación contable en tiempo real: liquidez bancaria, provisión fiscal de impuestos ({taxRate}%), activos y patrimonio.
           </p>
         </div>
 
@@ -187,6 +203,39 @@ export default function Reports() {
         </div>
       </div>
 
+      {/* Barra de Control de Provisión de Impuestos & Retenciones (Por defecto 40% - Sujeto a Modificación) */}
+      <div className="bg-gradient-to-r from-amber-500/10 via-blue-500/10 to-purple-500/10 dark:from-amber-950/30 dark:via-blue-950/30 dark:to-purple-950/30 p-4 rounded-xl border border-amber-200/80 dark:border-amber-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 print:hidden">
+        <div className="space-y-0.5">
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-xs uppercase tracking-wider text-amber-900 dark:text-amber-300 flex items-center gap-1.5">
+              ⚖️ Provisión Tributaria & Retenciones en la Fuente
+            </span>
+            <Badge className="bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border-amber-300 text-[10px]">
+              Sujeto a Modificación
+            </Badge>
+          </div>
+          <p className="text-xs text-slate-600 dark:text-slate-400">
+            Ajusta la tasa estimada de impuestos (Renta 35% + ReteICA + Retenciones/GMF). Por defecto: <strong>40%</strong>.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-3 w-full sm:w-auto bg-white dark:bg-slate-900 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Tasa de Impuestos:</span>
+          <input 
+            type="range" 
+            min="0" 
+            max="60" 
+            step="1"
+            value={taxRate} 
+            onChange={(e) => setTaxRate(Number(e.target.value))}
+            className="w-28 sm:w-36 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-600"
+          />
+          <div className="flex items-center gap-1 font-mono font-bold text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
+            <span>{taxRate}%</span>
+          </div>
+        </div>
+      </div>
+
       {isLoading ? (
         <div className="flex flex-col items-center justify-center p-24 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">
           <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-3" />
@@ -195,35 +244,33 @@ export default function Reports() {
       ) : (
         <>
           {/* Top Metric Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
             
             {/* Liquidez Real en Bancos */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Disponible Real en Bancos</span>
-                  <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
-                    <Building2 className="w-4 h-4" />
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-1.5">
+                  <span>Disponible Bancos</span>
+                  <div className="p-1 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded">
+                    <Building2 className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-blue-700 dark:text-blue-400 font-mono">{formatCOP(saldoBancos)}</div>
-                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
-                  <span>Dinero real para pagos operativos</span>
-                </div>
+                <div className="text-xl font-bold text-blue-700 dark:text-blue-400 font-mono">{formatCOP(saldoBancos)}</div>
+                <div className="mt-1 text-[11px] text-slate-500">Dinero real disponible</div>
               </CardContent>
             </Card>
 
             {/* Total Ingresos Cobrados */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Ingresos Totales (Recaudados)</span>
-                  <div className="p-1.5 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded-md">
-                    <ArrowUpRight className="w-4 h-4" />
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-1.5">
+                  <span>Ingresos Cobrados</span>
+                  <div className="p-1 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded">
+                    <ArrowUpRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-slate-900 dark:text-white font-mono">{formatCOP(totalIngresos)}</div>
-                <div className="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+                <div className="text-xl font-bold text-slate-900 dark:text-white font-mono">{formatCOP(totalIngresos)}</div>
+                <div className="mt-1 text-[11px] text-slate-500">
                   <span className="font-semibold text-emerald-600">{paidInvoices.length} facturas</span> cobradas
                 </div>
               </CardContent>
@@ -231,34 +278,46 @@ export default function Reports() {
 
             {/* Total Gastos */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Gastos Pagados (Egresos)</span>
-                  <div className="p-1.5 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded-md">
-                    <ArrowDownRight className="w-4 h-4" />
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-1.5">
+                  <span>Gastos Pagados</span>
+                  <div className="p-1 bg-rose-50 dark:bg-rose-950/50 text-rose-600 rounded">
+                    <ArrowDownRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="text-2xl font-bold text-rose-600 font-mono">{formatCOP(totalGastos)}</div>
-                <div className="mt-2 text-xs text-slate-500">
-                  Cámara de Comercio, Cloud y Caja
-                </div>
+                <div className="text-xl font-bold text-rose-600 font-mono">{formatCOP(totalGastos)}</div>
+                <div className="mt-1 text-[11px] text-slate-500">Cámara, Cloud y Caja</div>
               </CardContent>
             </Card>
 
-            {/* Utilidad Neta */}
+            {/* Provisión Impuestos (40%) */}
             <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span>Utilidad Neta del Período</span>
-                  <div className="p-1.5 bg-blue-50 dark:bg-blue-950/50 text-blue-600 rounded-md">
-                    <TrendingUp className="w-4 h-4" />
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-1.5">
+                  <span>Provisión Impuestos ({taxRate}%)</span>
+                  <div className="p-1 bg-amber-50 dark:bg-amber-950/50 text-amber-600 rounded">
+                    <ShieldCheck className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className={`text-2xl font-bold font-mono ${utilidadNeta >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600'}`}>
+                <div className="text-xl font-bold text-amber-600 font-mono">{formatCOP(provisionImpuestos)}</div>
+                <div className="mt-1 text-[11px] text-slate-500">Reserva fiscal obligatoria</div>
+              </CardContent>
+            </Card>
+
+            {/* Utilidad Neta Real */}
+            <Card className="border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between text-slate-500 text-[11px] font-semibold uppercase tracking-wider mb-1.5">
+                  <span>Utilidad Neta Real</span>
+                  <div className="p-1 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 rounded">
+                    <TrendingUp className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className={`text-xl font-bold font-mono ${utilidadNeta >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600'}`}>
                   {formatCOP(utilidadNeta)}
                 </div>
-                <div className="mt-2 text-xs text-slate-500">
-                  Margen Neto: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margenUtilidad.toFixed(1)}%</strong>
+                <div className="mt-1 text-[11px] text-slate-500">
+                  Margen: <strong className="text-slate-700 dark:text-slate-300 font-mono">{margenUtilidad.toFixed(1)}%</strong>
                 </div>
               </CardContent>
             </Card>
@@ -276,7 +335,7 @@ export default function Reports() {
                             <TrendingUp className="w-4 h-4 text-blue-600" /> Estado de Resultados (P&G)
                         </CardTitle>
                         <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-200">
-                          Operacional
+                          NIIF / Fiscal
                         </Badge>
                       </div>
                   </CardHeader>
@@ -365,10 +424,30 @@ export default function Reports() {
                                   </TableCell>
                               </TableRow>
 
-                              {/* Total Utilidad Neta */}
+                              {/* Sección 3: Utilidad Antes de Impuestos */}
+                              <TableRow className="border-t-2 border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-850">
+                                  <TableCell className="font-bold text-slate-800 dark:text-slate-200 text-sm">
+                                    Utilidad Antes de Impuestos (EBT)
+                                  </TableCell>
+                                  <TableCell className={`text-right font-mono font-bold text-base ${utilidadAntesImpuestos >= 0 ? 'text-slate-900 dark:text-white' : 'text-rose-600'}`}>
+                                    {formatCOP(utilidadAntesImpuestos)}
+                                  </TableCell>
+                              </TableRow>
+
+                              {/* Sección 4: Provisión de Impuestos (40% modificable) */}
+                              <TableRow className="bg-amber-50/40 dark:bg-amber-950/20">
+                                  <TableCell className="pl-6 text-sm text-amber-900 dark:text-amber-300 font-medium flex items-center justify-between">
+                                    <span>(-) Provisión Impuestos de Renta & Retenciones ({taxRate}%)</span>
+                                  </TableCell>
+                                  <TableCell className="text-right font-mono text-amber-700 dark:text-amber-400 font-semibold">
+                                    -{formatCOP(provisionImpuestos)}
+                                  </TableCell>
+                              </TableRow>
+
+                              {/* Total Utilidad Neta Real */}
                               <TableRow className="bg-slate-100 dark:bg-slate-800/80 border-t-2 border-slate-300 dark:border-slate-600">
                                   <TableCell className="font-black text-slate-900 dark:text-white text-sm uppercase tracking-wider py-4">
-                                    Utilidad Neta del Ejercicio
+                                    Utilidad Neta Real del Ejercicio (Post-Impuestos)
                                   </TableCell>
                                   <TableCell className={`text-right font-black text-xl font-mono py-4 ${utilidadNeta >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-600'}`}>
                                       {formatCOP(utilidadNeta)}
@@ -475,6 +554,23 @@ export default function Reports() {
                                     Cuentas por Pagar a Proveedores (CxP)
                                   </TableCell>
                                   <TableCell className="text-right font-mono text-rose-600 font-semibold">
+                                    {formatCOP(cuentasPorPagarProveedores)}
+                                  </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                  <TableCell className="pl-6 text-sm text-amber-900 dark:text-amber-300 font-medium">
+                                    Provisión Impuesto sobre la Renta & Retenciones por Pagar (Cuenta 2404 / 2615)
+                                    <div className="text-[10px] text-amber-600">Calculada al {taxRate}% sobre utilidades</div>
+                                  </TableCell>
+                                  <TableCell className="text-right font-mono text-amber-600 font-semibold">
+                                    {formatCOP(provisionImpuestos)}
+                                  </TableCell>
+                              </TableRow>
+                              <TableRow className="border-t border-slate-200 dark:border-slate-700 bg-slate-50/40">
+                                  <TableCell className="font-semibold text-slate-800 dark:text-slate-200 text-xs pl-6">
+                                    Total Pasivos Corrientes
+                                  </TableCell>
+                                  <TableCell className="text-right font-mono font-bold text-rose-600">
                                     {formatCOP(totalPasivos)}
                                   </TableCell>
                               </TableRow>
@@ -496,7 +592,7 @@ export default function Reports() {
                               </TableRow>
                               <TableRow>
                                   <TableCell className="pl-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
-                                    Resultado / Utilidad Neta del Ejercicio
+                                    Resultado / Utilidad Neta del Ejercicio (Post-Impuestos)
                                   </TableCell>
                                   <TableCell className={`text-right font-mono font-semibold ${utilidadNeta >= 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
                                     {formatCOP(utilidadNeta)}

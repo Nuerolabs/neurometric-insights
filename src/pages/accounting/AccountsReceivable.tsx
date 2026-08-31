@@ -63,6 +63,11 @@ export default function AccountsReceivable() {
   const [dueDate, setDueDate] = useState("");
   const [totalAmount, setTotalAmount] = useState("350000");
 
+  // State: Retenciones Tributarias en la Fuente (Opcional)
+  const [hasWithholding, setHasWithholding] = useState(false);
+  const [reteFuenteRate, setReteFuenteRate] = useState<number>(4); // 4% consultoría/servicios
+  const [reteIcaRate, setReteIcaRate] = useState<number>(0.966); // 0.966% ICA Barranquilla
+
   // State: Ya pagado al emitir
   const [isAlreadyPaid, setIsAlreadyPaid] = useState(true);
   const [createdPaymentDate, setCreatedPaymentDate] = useState(new Date().toISOString().split('T')[0]);
@@ -163,9 +168,9 @@ export default function AccountsReceivable() {
     }
   };
 
-  // Helper para extraer metadatos completos de la factura (NIT, contacto, volante, referencia)
+  // Helper para extraer metadatos completos de la factura (NIT, contacto, volante, retenciones)
   const parseInvoiceClientMeta = (inv: any) => {
-    if (!inv) return { doc: '', contact: '', email: '', phone: '', voucher_url: '', payment_ref: '', phase: '' };
+    if (!inv) return { doc: '', contact: '', email: '', phone: '', voucher_url: '', payment_ref: '', phase: '', rete_fuente: 0, rete_ica: 0 };
     try {
       if (inv.notes && inv.notes.startsWith('{')) {
         const parsed = JSON.parse(inv.notes);
@@ -176,7 +181,9 @@ export default function AccountsReceivable() {
           phone: parsed.phone || '',
           voucher_url: parsed.voucher_url || '',
           payment_ref: parsed.payment_ref || '',
-          phase: parsed.phase || ''
+          phase: parsed.phase || '',
+          rete_fuente: parsed.rete_fuente || 0,
+          rete_ica: parsed.rete_ica || 0
         };
       }
     } catch {}
@@ -190,7 +197,9 @@ export default function AccountsReceivable() {
       phone: matchedClient?.phone || '',
       voucher_url: '',
       payment_ref: '',
-      phase: ''
+      phase: '',
+      rete_fuente: 0,
+      rete_ica: 0
     };
   };
 
@@ -203,6 +212,10 @@ export default function AccountsReceivable() {
     }
 
     try {
+      const rawAmount = parseFloat(totalAmount) || 0;
+      const reteFuenteVal = hasWithholding ? Math.round(rawAmount * (reteFuenteRate / 100)) : 0;
+      const reteIcaVal = hasWithholding ? Math.round(rawAmount * (reteIcaRate / 100)) : 0;
+
       const metaNotes = JSON.stringify({
         client_doc: clientDoc,
         contact_person: clientContact,
@@ -210,7 +223,10 @@ export default function AccountsReceivable() {
         phone: clientPhone,
         phase: conceptType === 'IMPLEMENTATION' ? implementationPhase : undefined,
         payment_ref: isAlreadyPaid ? createdPaymentRef : undefined,
-        voucher_url: isAlreadyPaid ? createdVoucherData : undefined
+        voucher_url: isAlreadyPaid ? createdVoucherData : undefined,
+        rete_fuente: reteFuenteVal,
+        rete_ica: reteIcaVal,
+        has_withholding: hasWithholding
       });
 
       await createInvoiceMutation.mutateAsync({
@@ -624,9 +640,55 @@ export default function AccountsReceivable() {
                         <Input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} required className="h-9 text-xs mt-1 font-mono" />
                       </div>
                       <div>
-                        <Label className="text-xs font-bold text-slate-900 dark:text-white">Total (COP) *</Label>
+                        <Label className="text-xs font-bold text-slate-900 dark:text-white">Total Bruto (COP) *</Label>
                         <Input type="number" value={totalAmount} onChange={e => setTotalAmount(e.target.value)} required className="h-9 text-sm font-mono mt-1 font-bold text-slate-900 dark:text-white" />
                       </div>
+                    </div>
+
+                    {/* Módulo de Retención en la Fuente / ReteICA (Opcional) */}
+                    <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
+                      <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-300">
+                        <input 
+                          type="checkbox" 
+                          checked={hasWithholding} 
+                          onChange={e => setHasWithholding(e.target.checked)} 
+                          className="h-3.5 w-3.5 rounded text-blue-600"
+                        />
+                        ¿El cliente aplica Retención en la Fuente o ReteICA? (Opcional)
+                      </label>
+
+                      {hasWithholding && (
+                        <div className="mt-2.5 p-2.5 bg-slate-50 dark:bg-slate-850 rounded-lg border border-slate-200 dark:border-slate-800 grid grid-cols-2 gap-3 text-xs">
+                          <div>
+                            <Label className="text-[11px] font-semibold text-slate-600">ReteFuente (%)</Label>
+                            <Input 
+                              type="number" 
+                              step="0.1" 
+                              value={reteFuenteRate} 
+                              onChange={e => setReteFuenteRate(Number(e.target.value))} 
+                              className="h-8 text-xs font-mono mt-1" 
+                            />
+                            <span className="text-[10px] text-slate-400">Ej: 4% o 3.5%</span>
+                          </div>
+                          <div>
+                            <Label className="text-[11px] font-semibold text-slate-600">ReteICA (%)</Label>
+                            <Input 
+                              type="number" 
+                              step="0.001" 
+                              value={reteIcaRate} 
+                              onChange={e => setReteIcaRate(Number(e.target.value))} 
+                              className="h-8 text-xs font-mono mt-1" 
+                            />
+                            <span className="text-[10px] text-slate-400">Ej: 0.966% / 1%</span>
+                          </div>
+                          <div className="col-span-2 pt-1 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-slate-700 dark:text-slate-300">
+                            <span>Neto Estimado a Recibir en Banco:</span>
+                            <span className="font-mono font-bold text-sm text-emerald-600">
+                              {formatCOP(Math.max(0, parseFloat(totalAmount || '0') - Math.round(parseFloat(totalAmount || '0') * (reteFuenteRate / 100)) - Math.round(parseFloat(totalAmount || '0') * (reteIcaRate / 100))))}
+                            </span>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -1115,7 +1177,7 @@ export default function AccountsReceivable() {
                     <span>CONCEPTO / DESCRIPCIÓN DEL SERVICIO</span>
                     <span>VALOR</span>
                   </div>
-                  <div className="p-4 flex justify-between items-center">
+                  <div className="p-4 flex justify-between items-center border-b border-slate-100 dark:border-slate-800">
                     <div>
                       <p className="font-semibold text-slate-900 dark:text-white">{selectedInvoiceForReceipt.description || 'Servicios Tecnológicos de IA'}</p>
                       <p className="text-slate-500 text-[11px] mt-0.5">Concepto: {selectedInvoiceForReceipt.concept_type}</p>
@@ -1123,16 +1185,38 @@ export default function AccountsReceivable() {
                     </div>
                     <p className="font-mono font-bold text-sm">{formatCOP(selectedInvoiceForReceipt.total_amount)}</p>
                   </div>
+                  
+                  {/* Desglose Tributario si aplica Retención */}
+                  {(meta.rete_fuente > 0 || meta.rete_ica > 0) && (
+                    <div className="p-3 bg-slate-50/50 dark:bg-slate-850 space-y-1.5 text-xs text-slate-600 dark:text-slate-400">
+                      <div className="flex justify-between">
+                        <span>Valor Bruto Facturado:</span>
+                        <span className="font-mono">{formatCOP(selectedInvoiceForReceipt.total_amount)}</span>
+                      </div>
+                      {meta.rete_fuente > 0 && (
+                        <div className="flex justify-between text-amber-700 dark:text-amber-400">
+                          <span>(-) Retención en la Fuente Practicada:</span>
+                          <span className="font-mono">-{formatCOP(meta.rete_fuente)}</span>
+                        </div>
+                      )}
+                      {meta.rete_ica > 0 && (
+                        <div className="flex justify-between text-amber-700 dark:text-amber-400">
+                          <span>(-) Retención de ICA (ReteICA):</span>
+                          <span className="font-mono">-{formatCOP(meta.rete_ica)}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Total */}
                 <div className="flex justify-between items-center p-4 bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/50 rounded-xl">
                   <div>
-                    <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300">TOTAL A PAGAR (COP)</p>
+                    <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300">TOTAL NETO A RECIBIR (COP)</p>
                     <p className="text-[11px] text-emerald-600 dark:text-emerald-400">Estado: {selectedInvoiceForReceipt.status === 'PAID' ? 'PAGADA / CONFIRMADA' : 'PENDIENTE DE PAGO'}</p>
                   </div>
                   <p className="text-2xl font-bold font-mono text-emerald-700 dark:text-emerald-400">
-                    {formatCOP(selectedInvoiceForReceipt.total_amount)}
+                    {formatCOP(Math.max(0, Number(selectedInvoiceForReceipt.total_amount) - Number(meta.rete_fuente || 0) - Number(meta.rete_ica || 0)))}
                   </p>
                 </div>
               </div>

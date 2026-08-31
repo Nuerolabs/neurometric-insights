@@ -21,7 +21,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { useInvoices, usePettyCashVouchers, useBills } from "@/hooks/accounting/useErp";
+import { useInvoices, useBills } from "@/hooks/accounting/useErp";
+import { usePettyCashVouchers } from "@/hooks/accounting/usePettyCash";
 
 interface BankMovement {
   id: string;

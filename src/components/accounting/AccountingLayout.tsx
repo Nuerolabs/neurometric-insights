@@ -14,7 +14,11 @@ import {
     Banknote,
     LogOut,
     Menu,
-    X
+    X,
+    Calendar,
+    FileCheck,
+    Cpu,
+    Landmark
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -53,9 +57,21 @@ const sidebarNavItems = [
     group: "Contabilidad Central"
   },
   {
+    title: "Activos en Especie & NIIF",
+    href: "/contabilidad/activos",
+    icon: <Cpu className="h-4 w-4" />,
+    group: "Contabilidad Central"
+  },
+  {
     title: "Facturación & Clientes",
     href: "/contabilidad/facturacion",
     icon: <Receipt className="h-4 w-4" />,
+    group: "Tesorería"
+  },
+  {
+    title: "Conciliación Bancolombia",
+    href: "/contabilidad/conciliacion",
+    icon: <Building2 className="h-4 w-4" />,
     group: "Tesorería"
   },
   {
@@ -69,6 +85,18 @@ const sidebarNavItems = [
     href: "/contabilidad/caja-menor",
     icon: <Wallet className="h-4 w-4" />,
     group: "Tesorería"
+  },
+  {
+    title: "Calendario DIAN & Sitionuevo",
+    href: "/contabilidad/impuestos",
+    icon: <Calendar className="h-4 w-4" />,
+    group: "Impuestos & DIAN"
+  },
+  {
+    title: "Certificados de Retención",
+    href: "/contabilidad/certificados",
+    icon: <FileCheck className="h-4 w-4" />,
+    group: "Impuestos & DIAN"
   },
   {
     title: "Nómina",

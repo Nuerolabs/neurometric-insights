@@ -36,6 +36,10 @@ import AccountsReceivable from "./pages/accounting/AccountsReceivable";
 import AccountsPayable from "./pages/accounting/AccountsPayable";
 import Payroll from "./pages/accounting/Payroll";
 import AccountingLogin from "./pages/accounting/AccountingLogin";
+import TaxCalendar from "./pages/accounting/TaxCalendar";
+import BankReconciliation from "./pages/accounting/BankReconciliation";
+import TaxCertificates from "./pages/accounting/TaxCertificates";
+import FixedAssetsDepreciation from "./pages/accounting/FixedAssetsDepreciation";
 import { ProtectedAccountingRoute } from "./components/accounting/ProtectedAccountingRoute";
 
 const queryClient = new QueryClient();
@@ -129,9 +133,13 @@ const App = () => (
                   <Route path="patrimonio" element={<EquityDashboard />} />
                   <Route path="cuentas" element={<ChartOfAccounts />} />
                   <Route path="asientos" element={<JournalEntries />} />
+                  <Route path="activos" element={<FixedAssetsDepreciation />} />
                   <Route path="facturacion" element={<AccountsReceivable />} />
+                  <Route path="conciliacion" element={<BankReconciliation />} />
                   <Route path="cxp" element={<AccountsPayable />} />
                   <Route path="caja-menor" element={<PettyCash />} />
+                  <Route path="impuestos" element={<TaxCalendar />} />
+                  <Route path="certificados" element={<TaxCertificates />} />
                   <Route path="nomina" element={<Payroll />} />
                 </Route>
 

@@ -66,7 +66,7 @@ export default function AccountsReceivable() {
   // State: Retenciones Tributarias en la Fuente (Opcional)
   const [hasWithholding, setHasWithholding] = useState(false);
   const [reteFuenteRate, setReteFuenteRate] = useState<number>(4); // 4% consultoría/servicios
-  const [reteIcaRate, setReteIcaRate] = useState<number>(0.966); // 0.966% ICA Barranquilla
+  const [reteIcaRate, setReteIcaRate] = useState<number>(0.966); // ICA Sitionuevo, Magdalena
 
   // State: Ya pagado al emitir
   const [isAlreadyPaid, setIsAlreadyPaid] = useState(true);
@@ -1151,7 +1151,7 @@ export default function AccountsReceivable() {
                     <h3 className="font-bold text-sm text-slate-900 dark:text-white">NEUROLABS TECH SOLUTIONS S.A.S.</h3>
                     <p className="font-mono text-slate-600 dark:text-slate-400 mt-0.5">NIT: 901.882.253-1</p>
                     <p className="text-slate-500 text-[11px] mt-0.5">Representante Legal: Jesús David Cantillo Parejo</p>
-                    <p className="text-slate-500 text-[11px]">Barranquilla, Colombia • contabilidad@neurolabs.com.co</p>
+                    <p className="text-slate-500 text-[11px]">Sitionuevo, Magdalena, Colombia • contabilidad@neurolabs.com.co</p>
                   </div>
                   <div className="text-right">
                     <span className="px-2.5 py-1 bg-slate-900 text-white rounded font-mono font-bold text-xs">

@@ -975,7 +975,7 @@ export default function EquityDashboard() {
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-xl font-bold uppercase tracking-tight text-slate-900">NEUROLABS TECH SOLUTIONS S.A.S.</h1>
-              <p className="text-xs font-semibold text-slate-700">NIT: 901.882.253-1 • Barranquilla, Colombia</p>
+              <p className="text-xs font-semibold text-slate-700">NIT: 901.882.253-1 • Sitionuevo, Magdalena, Colombia</p>
               <p className="text-[11px] text-slate-600">Libro Oficial de Accionistas • Normas de Código de Comercio y NIIF</p>
             </div>
             <div className="text-right text-xs">
@@ -1004,7 +1004,7 @@ export default function EquityDashboard() {
             <div>
               <p className="font-bold text-slate-900 dark:text-white">JESÚS DAVID CANTILLO PAREJO</p>
               <p className="text-slate-500">Representante Legal Principal</p>
-              <p className="text-slate-500 text-[11px]">C.C. 1.080.822.532 de Barranquilla</p>
+              <p className="text-slate-500 text-[11px]">C.C. 1.080.822.532 • Sitionuevo, Magdalena</p>
               <p className="text-slate-400 text-[10px]">NEUROLABS TECH SOLUTIONS S.A.S.</p>
             </div>
           </div>
@@ -1014,7 +1014,7 @@ export default function EquityDashboard() {
             <div>
               <p className="font-bold text-slate-900 dark:text-white">SECRETARÍA GENERAL / REVISORÍA</p>
               <p className="text-slate-500">Certificación y Asentamiento en Libro</p>
-              <p className="text-slate-500 text-[11px]">Cámara de Comercio de Barranquilla</p>
+              <p className="text-slate-500 text-[11px]">Cámara de Comercio de Santa Marta para el Magdalena</p>
               <p className="text-slate-400 text-[10px]">Libro de Registro de Accionistas</p>
             </div>
           </div>

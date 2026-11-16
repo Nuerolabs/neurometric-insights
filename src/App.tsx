@@ -166,6 +166,10 @@ const App = () => (
                   <Route path="gestion-documental" element={<GestionDocumentalPage />} />
                 </Route>
 
+                {/* ── Módulo Autónomo / Independiente de Gestión Documental & RRHH ── */}
+                <Route path="/gestion-documental" element={<GestionDocumentalPage />} />
+                <Route path="/documentos" element={<GestionDocumentalPage />} />
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

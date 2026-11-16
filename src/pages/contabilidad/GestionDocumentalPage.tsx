@@ -16,7 +16,9 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  ArrowLeft,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface DocumentRecord {
   id: string;
@@ -148,7 +150,43 @@ export default function GestionDocumentalPage() {
   });
 
   return (
-    <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full font-sans">
+    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans flex flex-col">
+      {/* Standalone Header Bar */}
+      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm shadow-blue-500/20">
+            <FolderArchive className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-bold text-sm tracking-tight text-slate-900">NeuroLabs SGD</h1>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+                Sistema de Gestión Documental
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-500 hidden sm:block">Área Administrativa, Legal & Talento Humano (RRHH)</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            to="/contabilidad"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Ir a</span> ERP Contable
+          </Link>
+          <Link
+            to="/"
+            className="text-xs font-semibold text-slate-500 hover:text-slate-900 px-2 py-1.5"
+          >
+            Inicio
+          </Link>
+        </div>
+      </header>
+
+      {/* Main Content Body */}
+      <main className="flex-1 p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -567,6 +605,7 @@ export default function GestionDocumentalPage() {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 }

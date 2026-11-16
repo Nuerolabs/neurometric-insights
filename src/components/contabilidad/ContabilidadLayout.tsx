@@ -68,7 +68,7 @@ const navGroups: NavGroup[] = [
   {
     group: 'Gestión Documental & Maestras',
     items: [
-      { to: '/contabilidad/documentos', label: 'Archivo Digital & RRHH', icon: FolderArchive },
+      { to: '/gestion-documental', label: 'Archivo Digital & RRHH', icon: FolderArchive },
       { to: '/contabilidad/terceros', label: 'Directorio de Terceros (DV)', icon: Users2 },
       { to: '/contabilidad/centros-costos', label: 'Centros de Costos', icon: Network },
     ],

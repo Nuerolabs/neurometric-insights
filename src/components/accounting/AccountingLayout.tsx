@@ -108,7 +108,7 @@ const sidebarNavItems = [
   },
   {
     title: "Gestión Documental & RRHH",
-    href: "/contabilidad/documentos",
+    href: "/gestion-documental",
     icon: <FolderArchive className="h-4 w-4" />,
     group: "Gestión"
   },

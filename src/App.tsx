@@ -24,7 +24,7 @@ import PendientesVentas from "./pages/ventas/PendientesVentas";
 import GastosVentas from "./pages/ventas/GastosVentas";
 import BusinessDashboard from "./pages/ventas/BusinessDashboard";
 
-// ── Módulo Contable (ERP) ──
+// ── Módulo Contable Core (ERP) ──
 import AccountingLayout from "./components/accounting/AccountingLayout";
 import AccountingDashboard from "./pages/accounting/AccountingDashboard";
 import ChartOfAccounts from "./pages/accounting/ChartOfAccounts";
@@ -41,6 +41,13 @@ import BankReconciliation from "./pages/accounting/BankReconciliation";
 import TaxCertificates from "./pages/accounting/TaxCertificates";
 import FixedAssetsDepreciation from "./pages/accounting/FixedAssetsDepreciation";
 import { ProtectedAccountingRoute } from "./components/accounting/ProtectedAccountingRoute";
+
+// ── Extensiones Avanzadas NIIF & DIAN ──
+import DashboardContable from "./pages/contabilidad/DashboardContable";
+import AsientosPage from "./pages/contabilidad/AsientosPage";
+import TercerosPage from "./pages/contabilidad/TercerosPage";
+import TesoreriaPage from "./pages/contabilidad/TesoreriaPage";
+import ExogenaPage from "./pages/contabilidad/ExogenaPage";
 
 const queryClient = new QueryClient();
 
@@ -121,13 +128,16 @@ const App = () => (
                   }
                 />
                 
-                {/* ── Contabilidad (ERP) ── */}
+                {/* ── Contabilidad (ERP NeuroLabs) ── */}
                 <Route path="/contabilidad/login" element={<AccountingLogin />} />
-                <Route path="/contabilidad" element={
+                <Route
+                  path="/contabilidad"
+                  element={
                     <ProtectedAccountingRoute>
-                        <AccountingLayout />
+                      <AccountingLayout />
                     </ProtectedAccountingRoute>
-                }>
+                  }
+                >
                   <Route index element={<AccountingDashboard />} />
                   <Route path="reportes" element={<Reports />} />
                   <Route path="patrimonio" element={<EquityDashboard />} />
@@ -141,6 +151,16 @@ const App = () => (
                   <Route path="impuestos" element={<TaxCalendar />} />
                   <Route path="certificados" element={<TaxCertificates />} />
                   <Route path="nomina" element={<Payroll />} />
+
+                  {/* Nuevas Extensiones NIIF & DIAN */}
+                  <Route path="terceros" element={<TercerosPage />} />
+                  <Route path="exogena" element={<ExogenaPage />} />
+                  <Route path="tesoreria" element={<TesoreriaPage />} />
+                  <Route path="recibos" element={<TesoreriaPage />} />
+                  <Route path="egresos" element={<TesoreriaPage />} />
+                  <Route path="asientos-niif" element={<AsientosPage />} />
+                  <Route path="periodos" element={<DashboardContable />} />
+                  <Route path="centros-costos" element={<TercerosPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

@@ -18,7 +18,9 @@ import {
     Calendar,
     FileCheck,
     Cpu,
-    Landmark
+    Landmark,
+    FolderArchive,
+    ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
@@ -103,6 +105,24 @@ const sidebarNavItems = [
     href: "/contabilidad/nomina",
     icon: <Users className="h-4 w-4" />,
     group: "Gestión"
+  },
+  {
+    title: "Gestión Documental & RRHH",
+    href: "/contabilidad/documentos",
+    icon: <FolderArchive className="h-4 w-4" />,
+    group: "Gestión"
+  },
+  {
+    title: "Directorio de Terceros (DV)",
+    href: "/contabilidad/terceros",
+    icon: <Users className="h-4 w-4" />,
+    group: "Gestión"
+  },
+  {
+    title: "Pre-validador Exógena DIAN",
+    href: "/contabilidad/exogena",
+    icon: <ShieldCheck className="h-4 w-4" />,
+    group: "Impuestos & DIAN"
   }
 ];
 

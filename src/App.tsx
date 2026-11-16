@@ -48,6 +48,7 @@ import AsientosPage from "./pages/contabilidad/AsientosPage";
 import TercerosPage from "./pages/contabilidad/TercerosPage";
 import TesoreriaPage from "./pages/contabilidad/TesoreriaPage";
 import ExogenaPage from "./pages/contabilidad/ExogenaPage";
+import GestionDocumentalPage from "./pages/contabilidad/GestionDocumentalPage";
 
 const queryClient = new QueryClient();
 
@@ -161,6 +162,8 @@ const App = () => (
                   <Route path="asientos-niif" element={<AsientosPage />} />
                   <Route path="periodos" element={<DashboardContable />} />
                   <Route path="centros-costos" element={<TercerosPage />} />
+                  <Route path="documentos" element={<GestionDocumentalPage />} />
+                  <Route path="gestion-documental" element={<GestionDocumentalPage />} />
                 </Route>
 
                 <Route path="*" element={<NotFound />} />

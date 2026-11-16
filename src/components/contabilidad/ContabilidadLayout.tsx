@@ -18,6 +18,7 @@ import {
   X,
   ShieldCheck,
   Globe2,
+  FolderArchive,
 } from 'lucide-react';
 
 interface ContabilidadLayoutProps {
@@ -65,8 +66,9 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    group: 'Maestras Corporativas',
+    group: 'Gestión Documental & Maestras',
     items: [
+      { to: '/contabilidad/documentos', label: 'Archivo Digital & RRHH', icon: FolderArchive },
       { to: '/contabilidad/terceros', label: 'Directorio de Terceros (DV)', icon: Users2 },
       { to: '/contabilidad/centros-costos', label: 'Centros de Costos', icon: Network },
     ],

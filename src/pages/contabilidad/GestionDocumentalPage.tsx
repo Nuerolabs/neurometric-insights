@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   FolderArchive,
   FileText,
@@ -17,95 +18,183 @@ import {
   Clock,
   Sparkles,
   ArrowLeft,
+  Eye,
+  FileSpreadsheet,
+  Lock,
+  Share2,
+  ExternalLink,
+  ChevronRight,
+  HardDrive,
+  Check,
+  X,
+  FileCode,
+  Tag,
+  KeyRound,
+  FileBadge,
+  SlidersHorizontal,
+  LayoutGrid,
+  List,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
-interface DocumentRecord {
+export interface EnterpriseDocument {
   id: string;
-  code: string;
+  radicado: string; // ej. SGD-2026-ACT-004
   title: string;
-  category: 'RRHH_CERTIFICADOS' | 'RRHH_CONTRATOS' | 'ACTAS_SOCIOS' | 'LEGAL_CAMARA_RUT' | 'SEGURIDAD_SOCIAL';
-  holderName: string; // Nombre de empleado, socio o entidad
-  documentId?: string;
+  serie: '100_GOBIERNO' | '200_LEGAL_TRIBUTARIO' | '300_RRHH_LABORAL' | '400_CONTABLE_PILA' | '500_TECH_PROPIEDAD_INT';
+  serieName: string;
+  holderName: string;
+  holderId?: string;
   issueDate: string;
   expirationDate?: string;
-  status: 'VIGENTE' | 'POR_RENOVAR' | 'VENCIDO' | 'CUSTODIADO';
+  confidentiality: 'PUBLICO' | 'CONFIDENCIAL' | 'ESTRATEGICO_SOCIOS';
+  status: 'VIGENTE' | 'POR_RENOVAR' | 'CUSTODIADO' | 'EN_REVISION';
+  fileType: 'PDF' | 'DOCX' | 'XLSX';
   fileSize: string;
+  sha256Hash: string;
+  signedBy: string;
+  retentionYears: number; // Tablas de Retención Documental (TRD)
+  description?: string;
 }
 
-const SEED_DOCUMENTS: DocumentRecord[] = [
+const SEED_CORP_DOCUMENTS: EnterpriseDocument[] = [
   {
-    id: 'doc-1',
-    code: 'ACT-2026-001',
+    id: 'doc-001',
+    radicado: 'SGD-2026-ACT-004',
     title: 'Acta de Asamblea General Extraordinaria de Socios N° 004',
-    category: 'ACTAS_SOCIOS',
+    serie: '100_GOBIERNO',
+    serieName: '100 - Gobierno Corporativo & Socios',
     holderName: 'Junta de Socios NeuroLabs Tech Solutions',
     issueDate: '2026-01-15',
+    confidentiality: 'ESTRATEGICO_SOCIOS',
     status: 'CUSTODIADO',
-    fileSize: '1.4 MB (PDF Firmado)',
+    fileType: 'PDF',
+    fileSize: '2.4 MB',
+    sha256Hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+    signedBy: 'Jesús Cantillo (Presidente) / Juceth Parejo (Secretaria)',
+    retentionYears: 20,
+    description: 'Aprobación de balances de apertura, ratificación de estatutos corporativos e inyección de activos de cómputo GPU.',
   },
   {
-    id: 'doc-2',
-    code: 'RUT-2026-DIAN',
-    title: 'Registro Único Tributario (RUT) Actualizado 2026 - NIT 901847291-4',
-    category: 'LEGAL_CAMARA_RUT',
+    id: 'doc-002',
+    radicado: 'SGD-2026-RUT-001',
+    title: 'Registro Único Tributario (RUT) DIAN - NIT 901.847.291-4',
+    serie: '200_LEGAL_TRIBUTARIO',
+    serieName: '200 - Gestión Jurídica & Tributaria',
     holderName: 'NeuroLabs Tech Solutions S.A.S.',
     issueDate: '2026-01-10',
+    confidentiality: 'PUBLICO',
     status: 'VIGENTE',
-    fileSize: '820 KB (PDF)',
+    fileType: 'PDF',
+    fileSize: '840 KB',
+    sha256Hash: '7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+    signedBy: 'DIAN Sede Electrónica',
+    retentionYears: 10,
+    description: 'RUT formalizado con actividades 6201 (Edición de programas), 6202 (Consultoría informática) y régimen responsable de IVA.',
   },
   {
-    id: 'doc-3',
-    code: 'CAM-2026-BQL',
+    id: 'doc-003',
+    radicado: 'SGD-2026-CAM-011',
     title: 'Certificado de Existencia y Representación Legal (Cámara de Comercio)',
-    category: 'LEGAL_CAMARA_RUT',
+    serie: '200_LEGAL_TRIBUTARIO',
+    serieName: '200 - Gestión Jurídica & Tributaria',
     holderName: 'Cámara de Comercio de Barranquilla',
     issueDate: '2026-11-01',
     expirationDate: '2026-12-01',
+    confidentiality: 'PUBLICO',
     status: 'POR_RENOVAR',
-    fileSize: '650 KB (PDF Certificado)',
+    fileType: 'PDF',
+    fileSize: '650 KB',
+    sha256Hash: 'b45cffe084dd3d20d928bee85e7b0f21',
+    signedBy: 'Secretaría General CCB',
+    retentionYears: 5,
+    description: 'Certificado con código de verificación para licitaciones y aperturas de cuentas corporativas. Vence a los 30 días.',
   },
   {
-    id: 'doc-4',
-    code: 'CL-2026-012',
+    id: 'doc-004',
+    radicado: 'SGD-2026-CL-089',
     title: 'Certificado Laboral - Ing. Software & Arquitectura de IA',
-    category: 'RRHH_CERTIFICADOS',
-    holderName: 'Jesus David Cantillo Parejo',
-    documentId: '1080022532',
+    serie: '300_RRHH_LABORAL',
+    serieName: '300 - Talento Humano & Contratación',
+    holderName: 'Jesús David Cantillo Parejo',
+    holderId: 'CC 1.080.022.532',
     issueDate: '2026-11-16',
+    confidentiality: 'CONFIDENCIAL',
     status: 'VIGENTE',
-    fileSize: '420 KB (PDF Generado)',
+    fileType: 'PDF',
+    fileSize: '410 KB',
+    sha256Hash: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e',
+    signedBy: 'Jesús Cantillo (Representante Legal)',
+    retentionYears: 10,
+    description: 'Certificación de funciones técnicas, fecha de ingreso (01/02/2024), contrato a término indefinido y honorarios ejecutivos.',
   },
   {
-    id: 'doc-5',
-    code: 'CON-2025-003',
+    id: 'doc-005',
+    radicado: 'SGD-2025-CON-003',
     title: 'Contrato Individual de Trabajo a Término Indefinido',
-    category: 'RRHH_CONTRATOS',
-    holderName: 'Maria Angelica Dominguez',
-    documentId: '1082938472',
+    serie: '300_RRHH_LABORAL',
+    serieName: '300 - Talento Humano & Contratación',
+    holderName: 'María Angélica Domínguez',
+    holderId: 'CC 1.082.938.472',
     issueDate: '2025-02-01',
+    confidentiality: 'CONFIDENCIAL',
     status: 'VIGENTE',
-    fileSize: '2.1 MB (PDF Firmado)',
+    fileType: 'PDF',
+    fileSize: '1.9 MB',
+    sha256Hash: 'd41d8cd98f00b204e9800998ecf8427e',
+    signedBy: 'NeuroLabs S.A.S. / María Domínguez',
+    retentionYears: 20,
+    description: 'Contrato laboral regido por el Código Sustantivo del Trabajo con cláusulas de confidencialidad y cesión de propiedad de código.',
   },
   {
-    id: 'doc-6',
-    code: 'PIL-2026-10',
-    title: 'Planilla Integrada de Liquidación de Aportes (PILA) - Seguridad Social Octubre',
-    category: 'SEGURIDAD_SOCIAL',
-    holderName: 'Aportes en Línea / EPS Sura / Colfondos / ARL Positiva',
+    id: 'doc-006',
+    radicado: 'SGD-2026-PIL-104',
+    title: 'Soporte y Planilla PILA Integrada de Seguridad Social (Octubre 2026)',
+    serie: '400_CONTABLE_PILA',
+    serieName: '400 - Contabilidad & Seguridad Social',
+    holderName: 'Aportes en Línea / EPS Sura / ARL Positiva',
     issueDate: '2026-11-05',
+    confidentiality: 'CONFIDENCIAL',
     status: 'VIGENTE',
-    fileSize: '950 KB (Soporte Bancario)',
+    fileType: 'PDF',
+    fileSize: '950 KB',
+    sha256Hash: '9e107d9d372bb6826bd81d3542a419d6',
+    signedBy: 'Operador de Información PILA Aportes en Línea',
+    retentionYears: 10,
+    description: 'Comprobante bancario de pago de aportes parafiscales y cotizaciones a salud, pensión y riesgos laborales.',
+  },
+  {
+    id: 'doc-007',
+    radicado: 'SGD-2026-NDA-021',
+    title: 'Acuerdo de Confidencialidad y Protección de Algoritmos (NDA Mutuo)',
+    serie: '500_TECH_PROPIEDAD_INT',
+    serieName: '500 - Tecnología & Propiedad Intelectual',
+    holderName: 'CerebroQuant Enterprise Partners',
+    issueDate: '2026-03-12',
+    confidentiality: 'ESTRATEGICO_SOCIOS',
+    status: 'VIGENTE',
+    fileType: 'PDF',
+    fileSize: '1.2 MB',
+    sha256Hash: 'c4ca4238a0b923820dcc509a6f75849b',
+    signedBy: 'NeuroLabs Legal / Director Legal Socio',
+    retentionYears: 15,
+    description: 'Blindaje de propiedad intelectual sobre modelos de scoring de crédito, arquitectura de agentes y pipelines de datos.',
   },
 ];
 
 export default function GestionDocumentalPage() {
-  const [activeTab, setActiveTab] = useState<'REPOSITORIO' | 'GENERADOR_LABORAL' | 'VENCIMIENTOS' | 'NUEVA_ACTA'>('REPOSITORIO');
-  const [documents, setDocuments] = useState<DocumentRecord[]>(SEED_DOCUMENTS);
+  const [documents, setDocuments] = useState<EnterpriseDocument[]>(SEED_CORP_DOCUMENTS);
+  const [selectedDoc, setSelectedDoc] = useState<EnterpriseDocument | null>(SEED_CORP_DOCUMENTS[3]);
+  const [activeSerie, setActiveSerie] = useState<string>('TODAS');
   const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('TODOS');
+  const [statusFilter, setStatusFilter] = useState<string>('TODOS');
+  const [viewMode, setViewMode] = useState<'LIST' | 'GRID'>('LIST');
 
-  // Estado del Generador de Certificado Laboral
+  // Modales
+  const [showCertModal, setShowCertModal] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
+
+  // Formulario del Generador Laboral
   const [certEmployee, setCertEmployee] = useState('Jesús David Cantillo Parejo');
   const [certDocType, setCertDocType] = useState('Cédula de Ciudadanía');
   const [certDocNumber, setCertDocNumber] = useState('1.080.022.532');
@@ -116,496 +205,895 @@ export default function GestionDocumentalPage() {
   const [certSalary, setCertSalary] = useState('4.500.000');
   const [certAddressee, setCertAddressee] = useState('A QUIEN PUEDA INTERESAR');
 
-  const handlePrintCertificate = () => {
-    window.print();
-  };
-
-  const handleSaveCertificate = () => {
-    const newDoc: DocumentRecord = {
-      id: `doc-${Date.now()}`,
-      code: `CL-2026-${Math.floor(100 + Math.random() * 900)}`,
-      title: `Certificado Laboral - ${certPosition}`,
-      category: 'RRHH_CERTIFICADOS',
-      holderName: certEmployee,
-      documentId: certDocNumber,
-      issueDate: new Date().toISOString().split('T')[0],
-      status: 'VIGENTE',
-      fileSize: 'PDF Generado',
-    };
-    setDocuments([newDoc, ...documents]);
-    alert('¡Certificado registrado en el archivo documental!');
-    setActiveTab('REPOSITORIO');
-  };
+  // Formulario de Radicación de Nuevo Documento
+  const [newTitle, setNewTitle] = useState('');
+  const [newSerie, setNewSerie] = useState<'100_GOBIERNO' | '200_LEGAL_TRIBUTARIO' | '300_RRHH_LABORAL' | '400_CONTABLE_PILA' | '500_TECH_PROPIEDAD_INT'>('100_GOBIERNO');
+  const [newHolder, setNewHolder] = useState('');
+  const [newConfidentiality, setNewConfidentiality] = useState<'PUBLICO' | 'CONFIDENCIAL' | 'ESTRATEGICO_SOCIOS'>('CONFIDENCIAL');
+  const [newDescription, setNewDescription] = useState('');
 
   const filteredDocs = documents.filter((doc) => {
     const matchesSearch =
       doc.title.toLowerCase().includes(search.toLowerCase()) ||
       doc.holderName.toLowerCase().includes(search.toLowerCase()) ||
-      doc.code.toLowerCase().includes(search.toLowerCase());
+      doc.radicado.toLowerCase().includes(search.toLowerCase());
 
-    const matchesCategory =
-      categoryFilter === 'TODOS' || doc.category === categoryFilter;
+    const matchesSerie = activeSerie === 'TODAS' || doc.serie === activeSerie;
+    const matchesStatus = statusFilter === 'TODOS' || doc.status === statusFilter;
 
-    return matchesSearch && matchesCategory;
+    return matchesSearch && matchesSerie && matchesStatus;
   });
 
+  const handleIssueCertificate = () => {
+    const radNumber = `SGD-2026-CL-${Math.floor(100 + Math.random() * 900)}`;
+    const newDoc: EnterpriseDocument = {
+      id: `doc-${Date.now()}`,
+      radicado: radNumber,
+      title: `Certificado Laboral - ${certPosition}`,
+      serie: '300_RRHH_LABORAL',
+      serieName: '300 - Talento Humano & Contratación',
+      holderName: certEmployee,
+      holderId: certDocNumber,
+      issueDate: new Date().toISOString().split('T')[0],
+      confidentiality: 'CONFIDENCIAL',
+      status: 'VIGENTE',
+      fileType: 'PDF',
+      fileSize: '430 KB',
+      sha256Hash: Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      signedBy: 'Jesús David Cantillo Parejo (Representante Legal)',
+      retentionYears: 10,
+      description: `Certificado laboral expedido con destino a ${certAddressee}. Devenga asignación de $${certSalary} COP.`,
+    };
+
+    setDocuments([newDoc, ...documents]);
+    setSelectedDoc(newDoc);
+    setShowCertModal(false);
+    setShowPreviewModal(true);
+  };
+
+  const handleUploadDoc = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTitle || !newHolder) return;
+
+    const radNumber = `SGD-2026-RAD-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newDoc: EnterpriseDocument = {
+      id: `doc-${Date.now()}`,
+      radicado: radNumber,
+      title: newTitle,
+      serie: newSerie,
+      serieName:
+        newSerie === '100_GOBIERNO'
+          ? '100 - Gobierno Corporativo & Socios'
+          : newSerie === '200_LEGAL_TRIBUTARIO'
+          ? '200 - Gestión Jurídica & Tributaria'
+          : newSerie === '300_RRHH_LABORAL'
+          ? '300 - Talento Humano & Contratación'
+          : newSerie === '400_CONTABLE_PILA'
+          ? '400 - Contabilidad & Seguridad Social'
+          : '500 - Tecnología & Propiedad Intelectual',
+      holderName: newHolder,
+      issueDate: new Date().toISOString().split('T')[0],
+      confidentiality: newConfidentiality,
+      status: 'CUSTODIADO',
+      fileType: 'PDF',
+      fileSize: '1.8 MB',
+      sha256Hash: Array.from({ length: 32 }, () => Math.floor(Math.random() * 16).toString(16)).join(''),
+      signedBy: 'Representación Legal NeuroLabs S.A.S.',
+      retentionYears: 10,
+      description: newDescription || 'Documento oficial indexado con metadatos de custodia corporativa.',
+    };
+
+    setDocuments([newDoc, ...documents]);
+    setSelectedDoc(newDoc);
+    setShowUploadModal(false);
+    setNewTitle('');
+    setNewHolder('');
+    setNewDescription('');
+  };
+
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans flex flex-col">
-      {/* Standalone Header Bar */}
-      <header className="h-16 bg-white border-b border-slate-200 px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-xs">
+    <div className="min-h-screen bg-[#0a0f1d] text-slate-100 font-sans flex flex-col selection:bg-blue-500 selection:text-white">
+      {/* ── TOP EXECUTIVE BAR ── */}
+      <header className="h-16 border-b border-slate-800 bg-[#0f172a]/95 backdrop-blur-md px-4 lg:px-8 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold shadow-sm shadow-blue-500/20">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/20">
             <FolderArchive className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-sm tracking-tight text-slate-900">NeuroLabs SGD</h1>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                Sistema de Gestión Documental
+              <span className="font-extrabold text-sm tracking-tight text-white uppercase">NeuroLabs SGD</span>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                Enterprise Content Management (ECM)
               </span>
             </div>
-            <p className="text-[11px] text-slate-500 hidden sm:block">Área Administrativa, Legal & Talento Humano (RRHH)</p>
+            <p className="text-[11px] text-slate-400 hidden sm:block">
+              Custodia Jurídica, Gobierno Corporativo & Certificación Laboral
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowCertModal(true)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-lg shadow-sm shadow-blue-600/30 transition-all cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-blue-200" />
+            <span>Emitir Certificado Laboral</span>
+          </button>
+
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Radicar Documento</span>
+          </button>
+
+          <div className="h-5 w-px bg-slate-800 mx-1 hidden sm:block" />
+
           <Link
             to="/contabilidad"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Ir a</span> ERP Contable
-          </Link>
-          <Link
-            to="/"
-            className="text-xs font-semibold text-slate-500 hover:text-slate-900 px-2 py-1.5"
-          >
-            Inicio
+            <ArrowLeft className="w-3.5 h-3.5 text-slate-400" />
+            <span className="hidden md:inline">ERP</span> Contable
           </Link>
         </div>
       </header>
 
-      {/* Main Content Body */}
-      <main className="flex-1 p-6 md:p-8 space-y-6 max-w-7xl mx-auto w-full">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
-            <FolderArchive className="w-6 h-6 text-blue-600" />
-            Gestión Documental, Trámites & RRHH
-          </h1>
-          <p className="text-xs md:text-sm text-slate-500 mt-1">
-            Custodia institucional de actas de asamblea, contratos, certificados laborales y archivo corporativo de NeuroLabs.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setActiveTab('GENERADOR_LABORAL')}
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors cursor-pointer"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            Generar Certificado Laboral
-          </button>
-        </div>
-      </div>
+      {/* ── MAIN WORKSPACE CONTAINER ── */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        {/* ── LEFT SIDEBAR: EXPEDIENTE TREE & REPOSITORY METRICS ── */}
+        <aside className="w-full lg:w-72 bg-[#0d1424] border-r border-slate-800 flex flex-col flex-shrink-0">
+          <div className="p-4 border-b border-slate-800/80">
+            <div className="bg-slate-900/80 rounded-xl p-3 border border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span className="flex items-center gap-1.5 font-medium">
+                  <HardDrive className="w-3.5 h-3.5 text-blue-400" />
+                  Bóveda Criptográfica
+                </span>
+                <span className="text-[11px] font-mono font-bold text-slate-200">12.8 / 100 GB</span>
+              </div>
+              <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-500 to-cyan-400 h-full w-[13%]" />
+              </div>
+              <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
+                <span>Cifrado SHA-256 + AES</span>
+                <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Activo
+                </span>
+              </div>
+            </div>
+          </div>
 
-      {/* Tabs Bar */}
-      <div className="flex border-b border-slate-200 gap-2 overflow-x-auto text-xs font-semibold">
-        <button
-          onClick={() => setActiveTab('REPOSITORIO')}
-          className={`pb-3 px-3 transition-colors border-b-2 flex items-center gap-2 ${
-            activeTab === 'REPOSITORIO'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <FileText className="w-4 h-4" />
-          Archivo Central ({documents.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('GENERADOR_LABORAL')}
-          className={`pb-3 px-3 transition-colors border-b-2 flex items-center gap-2 ${
-            activeTab === 'GENERADOR_LABORAL'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <FileCheck2 className="w-4 h-4" />
-          Generador de Certificados RRHH
-        </button>
-        <button
-          onClick={() => setActiveTab('VENCIMIENTOS')}
-          className={`pb-3 px-3 transition-colors border-b-2 flex items-center gap-2 ${
-            activeTab === 'VENCIMIENTOS'
-              ? 'border-blue-600 text-blue-600'
-              : 'border-transparent text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          <Clock className="w-4 h-4" />
-          Control de Vigencias & Renovaciones
-        </button>
-      </div>
+          {/* Series Documentales (TRD) Navigation */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-1 text-xs">
+            <p className="px-2.5 py-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+              Series Documentales (TRD)
+            </p>
 
-      {/* ── TAB 1: REPOSITORIO CENTRAL ── */}
-      {activeTab === 'REPOSITORIO' && (
-        <div className="space-y-4">
-          {/* Filters & Search */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
+            <button
+              onClick={() => setActiveSerie('TODAS')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === 'TODAS'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <FolderArchive className="w-4 h-4 text-blue-400" />
+                <span>Todos los Expedientes</span>
+              </span>
+              <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveSerie('100_GOBIERNO')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === '100_GOBIERNO'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2 truncate">
+                <Users className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                <span className="truncate">100 - Gobierno & Socios</span>
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.filter((d) => d.serie === '100_GOBIERNO').length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveSerie('200_LEGAL_TRIBUTARIO')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === '200_LEGAL_TRIBUTARIO'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2 truncate">
+                <Building2 className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                <span className="truncate">200 - Legal, DIAN & RUT</span>
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.filter((d) => d.serie === '200_LEGAL_TRIBUTARIO').length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveSerie('300_RRHH_LABORAL')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === '300_RRHH_LABORAL'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2 truncate">
+                <FileCheck2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                <span className="truncate">300 - Talento Humano / Certificados</span>
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.filter((d) => d.serie === '300_RRHH_LABORAL').length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveSerie('400_CONTABLE_PILA')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === '400_CONTABLE_PILA'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2 truncate">
+                <FileSpreadsheet className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                <span className="truncate">400 - Contabilidad & PILA</span>
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.filter((d) => d.serie === '400_CONTABLE_PILA').length}
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveSerie('500_TECH_PROPIEDAD_INT')}
+              className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all text-left ${
+                activeSerie === '500_TECH_PROPIEDAD_INT'
+                  ? 'bg-blue-600/15 text-blue-400 font-semibold border border-blue-500/20'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+              }`}
+            >
+              <span className="flex items-center gap-2 truncate">
+                <Lock className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                <span className="truncate">500 - Software, NDAs & IP</span>
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
+                {documents.filter((d) => d.serie === '500_TECH_PROPIEDAD_INT').length}
+              </span>
+            </button>
+          </div>
+
+          {/* Quick Legal Guardrail Badge */}
+          <div className="p-4 border-t border-slate-800/80 bg-slate-900/40 text-[11px] text-slate-400 space-y-1">
+            <div className="flex items-center gap-1.5 text-slate-300 font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Marco Legal Vigente</span>
+            </div>
+            <p className="text-[10px] text-slate-500 leading-tight">
+              Cumplimiento Ley 594/2000 (Archivo General de la Nación) y Ley 527/1999 (Firmas Digitales).
+            </p>
+          </div>
+        </aside>
+
+        {/* ── CENTER: ENTERPRISE DOCUMENT EXPLORER ── */}
+        <section className="flex-1 flex flex-col min-w-0 bg-[#0a0f1d] overflow-hidden">
+          {/* Action Bar & Search */}
+          <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row gap-3 items-center justify-between bg-[#0e1628]/50">
+            <div className="relative w-full sm:w-96">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
               <input
                 type="text"
-                placeholder="Buscar por código (ej. ACT-2026), título o titular..."
+                placeholder="Buscar por radicado, título, titular o cédula..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full pl-9 pr-4 py-2 text-xs bg-slate-900 border border-slate-700/80 rounded-lg text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500"
               />
             </div>
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-3 py-2 text-xs border border-slate-200 rounded-xl bg-white font-semibold text-slate-700"
-            >
-              <option value="TODOS">Todas las Áreas</option>
-              <option value="ACTAS_SOCIOS">Actas de Socios & Asamblea</option>
-              <option value="RRHH_CERTIFICADOS">Certificados Laborales (RRHH)</option>
-              <option value="RRHH_CONTRATOS">Contratos Laborales</option>
-              <option value="LEGAL_CAMARA_RUT">RUT & Cámara de Comercio</option>
-              <option value="SEGURIDAD_SOCIAL">Seguridad Social & PILA</option>
-            </select>
-          </div>
 
-          {/* Table */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-50/70 border-b border-slate-100 text-slate-500 font-semibold">
-                  <tr>
-                    <th className="py-3 px-4">Código / Radicado</th>
-                    <th className="py-3 px-4">Título del Documento</th>
-                    <th className="py-3 px-4">Titular / Dependencia</th>
-                    <th className="py-3 px-4">Expedición</th>
-                    <th className="py-3 px-4">Estado</th>
-                    <th className="py-3 px-4 text-center">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {filteredDocs.map((doc) => (
-                    <tr key={doc.id} className="hover:bg-slate-50/50">
-                      <td className="py-3 px-4">
-                        <span className="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                          {doc.code}
-                        </span>
-                        <p className="text-[10px] text-slate-400 mt-1">{doc.fileSize}</p>
-                      </td>
-                      <td className="py-3 px-4">
-                        <p className="font-semibold text-slate-900">{doc.title}</p>
-                        <span className="inline-block text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded mt-0.5 font-medium">
-                          {doc.category.replace(/_/g, ' ')}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4">
-                        <p className="font-semibold text-slate-800">{doc.holderName}</p>
-                        {doc.documentId && (
-                          <p className="text-[10px] text-slate-400 font-mono">CC: {doc.documentId}</p>
-                        )}
-                      </td>
-                      <td className="py-3 px-4 text-slate-600 font-mono">
-                        {doc.issueDate}
-                      </td>
-                      <td className="py-3 px-4">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold ${
-                            doc.status === 'VIGENTE'
-                              ? 'bg-emerald-100 text-emerald-800'
-                              : doc.status === 'POR_RENOVAR'
-                              ? 'bg-amber-100 text-amber-800'
-                              : doc.status === 'CUSTODIADO'
-                              ? 'bg-blue-100 text-blue-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
-                        >
-                          {doc.status === 'POR_RENOVAR' && <AlertTriangle className="w-3 h-3" />}
-                          {doc.status === 'VIGENTE' && <CheckCircle2 className="w-3 h-3" />}
-                          {doc.status}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-center">
-                        <button
-                          onClick={() => alert(`Descargando documento ${doc.code}...`)}
-                          className="p-1.5 text-slate-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors cursor-pointer"
-                          title="Descargar o Ver Documento"
-                        >
-                          <Download className="w-4 h-4" />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-3 py-2 text-xs bg-slate-900 border border-slate-700/80 rounded-lg text-slate-300 font-medium focus:outline-none"
+              >
+                <option value="TODOS">Todos los Estados</option>
+                <option value="VIGENTE">Vigente</option>
+                <option value="POR_RENOVAR">Por Renovar (&lt; 30d)</option>
+                <option value="CUSTODIADO">Custodiado</option>
+              </select>
+
+              <div className="flex border border-slate-700 rounded-lg overflow-hidden bg-slate-900">
+                <button
+                  onClick={() => setViewMode('LIST')}
+                  className={`p-1.5 transition-colors ${
+                    viewMode === 'LIST' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                  title="Vista de Lista Detallada"
+                >
+                  <List className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode('GRID')}
+                  className={`p-1.5 transition-colors ${
+                    viewMode === 'GRID' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                  title="Vista de Cuadrícula / Tarjetas"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
 
-      {/* ── TAB 2: GENERADOR DE CERTIFICADOS LABORALES RRHH ── */}
-      {activeTab === 'GENERADOR_LABORAL' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Form Side */}
-          <div className="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-              <FileCheck2 className="w-4 h-4 text-blue-600" />
-              Parámetros del Certificado Laboral
-            </h2>
+          {/* Document Content List */}
+          <div className="flex-1 overflow-y-auto p-4">
+            {viewMode === 'LIST' ? (
+              <div className="bg-slate-900/60 rounded-xl border border-slate-800/80 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="bg-[#0f172a] text-slate-400 font-semibold border-b border-slate-800">
+                      <tr>
+                        <th className="py-3 px-4">Radicado Oficial</th>
+                        <th className="py-3 px-4">Título del Documento</th>
+                        <th className="py-3 px-4">Serie / Área</th>
+                        <th className="py-3 px-4">Titular / Empleado</th>
+                        <th className="py-3 px-4">Fecha</th>
+                        <th className="py-3 px-4">Estado</th>
+                        <th className="py-3 px-4 text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {filteredDocs.map((doc) => {
+                        const isSelected = selectedDoc?.id === doc.id;
+                        return (
+                          <tr
+                            key={doc.id}
+                            onClick={() => setSelectedDoc(doc)}
+                            className={`cursor-pointer transition-colors ${
+                              isSelected
+                                ? 'bg-blue-600/15 border-l-2 border-blue-500'
+                                : 'hover:bg-slate-800/40'
+                            }`}
+                          >
+                            <td className="py-3 px-4 font-mono font-bold text-blue-400 whitespace-nowrap">
+                              {doc.radicado}
+                            </td>
+                            <td className="py-3 px-4">
+                              <p className="font-semibold text-slate-200 line-clamp-1">{doc.title}</p>
+                              <p className="text-[10px] text-slate-500 font-mono mt-0.5">{doc.fileSize} · SHA-256 verificado</p>
+                            </td>
+                            <td className="py-3 px-4 text-slate-400 whitespace-nowrap">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 border border-slate-700/60">
+                                {doc.serie.split('_')[1]}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-slate-300">
+                              <p className="font-medium truncate max-w-xs">{doc.holderName}</p>
+                              {doc.holderId && <p className="text-[10px] text-slate-500 font-mono">{doc.holderId}</p>}
+                            </td>
+                            <td className="py-3 px-4 text-slate-400 font-mono whitespace-nowrap">
+                              {doc.issueDate}
+                            </td>
+                            <td className="py-3 px-4 whitespace-nowrap">
+                              <span
+                                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                                  doc.status === 'VIGENTE'
+                                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                    : doc.status === 'POR_RENOVAR'
+                                    ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                                    : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                                }`}
+                              >
+                                {doc.status === 'POR_RENOVAR' && <AlertTriangle className="w-3 h-3" />}
+                                {doc.status === 'VIGENTE' && <CheckCircle2 className="w-3 h-3" />}
+                                {doc.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-center whitespace-nowrap">
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedDoc(doc);
+                                  setShowPreviewModal(true);
+                                }}
+                                className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                                title="Previsualizar Expediente"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filteredDocs.map((doc) => (
+                  <div
+                    key={doc.id}
+                    onClick={() => setSelectedDoc(doc)}
+                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                      selectedDoc?.id === doc.id
+                        ? 'bg-blue-600/10 border-blue-500 shadow-md shadow-blue-500/10'
+                        : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className="font-mono text-[10px] font-bold text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded">
+                        {doc.radicado}
+                      </span>
+                      <span
+                        className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                          doc.status === 'VIGENTE'
+                            ? 'bg-emerald-500/10 text-emerald-400'
+                            : 'bg-amber-500/10 text-amber-400'
+                        }`}
+                      >
+                        {doc.status}
+                      </span>
+                    </div>
+
+                    <h3 className="font-semibold text-xs text-white mt-2.5 line-clamp-2">
+                      {doc.title}
+                    </h3>
+
+                    <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">
+                      {doc.holderName}
+                    </p>
+
+                    <div className="pt-3 mt-3 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500 font-mono">
+                      <span>{doc.fileSize}</span>
+                      <span>{doc.issueDate}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ── RIGHT PANEL: EXECUTIVE DOCUMENT INSPECTOR ── */}
+        {selectedDoc && (
+          <aside className="w-full lg:w-96 bg-[#0f172a] border-l border-slate-800 flex flex-col p-5 overflow-y-auto space-y-5">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <FileBadge className="w-3.5 h-3.5 text-blue-400" />
+                Ficha Técnica de Custodia
+              </span>
+              <button
+                onClick={() => setShowPreviewModal(true)}
+                className="text-xs font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 cursor-pointer"
+              >
+                <span>Ver Completo</span>
+                <ExternalLink className="w-3 h-3" />
+              </button>
+            </div>
+
+            {/* Document Header info */}
+            <div>
+              <span className="font-mono text-xs font-bold text-blue-400 bg-blue-500/10 border border-blue-500/20 px-2 py-0.5 rounded">
+                {selectedDoc.radicado}
+              </span>
+              <h2 className="text-sm font-bold text-white mt-2 leading-snug">
+                {selectedDoc.title}
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                {selectedDoc.description || 'Sin notas descriptivas adicionales.'}
+              </p>
+            </div>
+
+            {/* Security & Verification Metadata Card */}
+            <div className="bg-slate-900/80 rounded-xl p-3.5 border border-slate-800 space-y-2.5 text-xs">
+              <div className="flex justify-between items-center text-slate-400">
+                <span>Nivel de Acceso:</span>
+                <span className="font-bold text-slate-200 bg-slate-800 px-2 py-0.5 rounded text-[10px]">
+                  {selectedDoc.confidentiality}
+                </span>
+              </div>
+
+              <div className="flex justify-between items-center text-slate-400">
+                <span>Retención TRD:</span>
+                <span className="font-mono text-slate-200">{selectedDoc.retentionYears} Años en Archivo</span>
+              </div>
+
+              <div className="flex justify-between items-center text-slate-400">
+                <span>Firmado / Avalado por:</span>
+                <span className="text-slate-200 text-right truncate max-w-[160px] font-medium">
+                  {selectedDoc.signedBy}
+                </span>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800">
+                <span className="text-[10px] text-slate-500 font-mono uppercase block mb-1">
+                  Hash Criptográfico SHA-256 (Ley 527/1999):
+                </span>
+                <p className="font-mono text-[10px] text-slate-400 break-all bg-slate-950 p-2 rounded border border-slate-800">
+                  {selectedDoc.sha256Hash}
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="space-y-2 pt-2">
+              <button
+                onClick={() => setShowPreviewModal(true)}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl text-xs shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span>Imprimir / Exportar Oficial</span>
+              </button>
+
+              <button
+                onClick={() => alert(`Enlace seguro de descarga generado para ${selectedDoc.radicado}. Válido por 48 horas.`)}
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-xl text-xs border border-slate-700 transition-colors cursor-pointer"
+              >
+                <Share2 className="w-3.5 h-3.5" />
+                <span>Compartir Enlace Cifrado</span>
+              </button>
+            </div>
+          </aside>
+        )}
+      </div>
+
+      {/* ── MODAL 1: EMITIR CERTIFICADO LABORAL (RRHH) ── */}
+      {showCertModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-[#0f172a] rounded-2xl max-w-xl w-full p-6 border border-slate-800 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2">
+                <FileCheck2 className="w-5 h-5 text-blue-400" />
+                <h3 className="text-sm font-bold text-white">Generar Certificado Laboral Institucional</h3>
+              </div>
+              <button
+                onClick={() => setShowCertModal(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 font-semibold mb-1">Nombre Completo del Colaborador</label>
+                <label className="block text-slate-400 font-semibold mb-1">Nombre Completo del Colaborador</label>
                 <input
                   type="text"
                   value={certEmployee}
                   onChange={(e) => setCertEmployee(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg font-semibold"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Tipo Documento</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Tipo de Documento</label>
                   <select
                     value={certDocType}
                     onChange={(e) => setCertDocType(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                   >
-                    <option value="Cédula de Ciudadanía">Cédula (C.C.)</option>
-                    <option value="Cédula de Extranjería">Cédula Ext. (C.E.)</option>
+                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
                     <option value="Pasaporte">Pasaporte</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Número de Documento</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Número de Cédula</label>
                   <input
                     type="text"
                     value={certDocNumber}
                     onChange={(e) => setCertDocNumber(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg font-mono font-semibold"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Lugar de Expedición</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Lugar de Expedición</label>
                   <input
                     type="text"
                     value={certDocExpedition}
                     onChange={(e) => setCertDocExpedition(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Fecha de Ingreso</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Fecha de Ingreso</label>
                   <input
                     type="text"
                     value={certStartDate}
                     onChange={(e) => setCertStartDate(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-600 font-semibold mb-1">Cargo Desempeñado</label>
+                <label className="block text-slate-400 font-semibold mb-1">Cargo Oficial</label>
                 <input
                   type="text"
                   value={certPosition}
                   onChange={(e) => setCertPosition(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg font-semibold"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Tipo de Contrato</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Tipo de Contrato</label>
                   <select
                     value={certContractType}
                     onChange={(e) => setCertContractType(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg bg-white"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
                   >
                     <option value="Término Indefinido">Término Indefinido</option>
                     <option value="Término Fijo">Término Fijo</option>
                     <option value="Prestación de Servicios">Prestación de Servicios</option>
-                    <option value="Obra o Labor">Obra o Labor</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-600 font-semibold mb-1">Salario Básico (COP)</label>
+                  <label className="block text-slate-400 font-semibold mb-1">Asignación Mensual (COP)</label>
                   <input
                     type="text"
                     value={certSalary}
                     onChange={(e) => setCertSalary(e.target.value)}
-                    className="w-full px-3 py-2 border border-slate-200 rounded-lg font-mono font-semibold"
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white font-mono"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-600 font-semibold mb-1">Destinatario de la Carta</label>
+                <label className="block text-slate-400 font-semibold mb-1">Destinatario</label>
                 <input
                   type="text"
                   value={certAddressee}
                   onChange={(e) => setCertAddressee(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg uppercase"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white uppercase"
                 />
               </div>
 
-              <div className="pt-3 flex gap-2">
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
                 <button
                   type="button"
-                  onClick={handlePrintCertificate}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
+                  onClick={() => setShowCertModal(false)}
+                  className="px-4 py-2 text-slate-400 hover:text-white"
                 >
-                  <Printer className="w-4 h-4" />
-                  Imprimir / PDF
+                  Cancelar
                 </button>
                 <button
                   type="button"
-                  onClick={handleSaveCertificate}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+                  onClick={handleIssueCertificate}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-sm"
                 >
-                  <CheckCircle2 className="w-4 h-4" />
-                  Guardar en Archivo
+                  Radicar & Previsualizar
                 </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Document Preview (A4 Paper Styling) */}
-          <div className="lg:col-span-7 bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-md text-slate-900 font-serif space-y-6 leading-relaxed relative print:m-0 print:border-none print:shadow-none">
-            {/* Watermark / Header */}
-            <div className="flex items-center justify-between border-b-2 border-blue-600 pb-4">
-              <div>
-                <h3 className="font-sans text-lg font-extrabold tracking-tight text-blue-900 uppercase">
-                  NeuroLabs Tech Solutions S.A.S.
-                </h3>
-                <p className="font-sans text-xs text-slate-600">NIT: 901.847.291 - 4 | Barranquilla - Colombia</p>
-                <p className="font-sans text-[11px] text-slate-500">Gestión de Talento Humano & Área Administrativa</p>
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white font-sans font-black text-xl">
-                NL
-              </div>
-            </div>
-
-            <div className="text-center pt-4">
-              <h4 className="font-sans text-sm font-bold uppercase tracking-widest text-slate-800">
-                El Departamento de Gestión Humana
-              </h4>
-              <p className="font-sans text-xs font-semibold uppercase text-slate-500 mt-0.5">
-                Certifica:
-              </p>
-            </div>
-
-            <div className="text-justify text-xs md:text-sm text-slate-800 space-y-4 pt-2">
-              <p>
-                Que el (la) señor(a) <strong className="font-sans font-bold text-slate-900 uppercase">{certEmployee}</strong>, 
-                identificado(a) con {certDocType} número <strong className="font-mono font-bold text-slate-900">{certDocNumber}</strong> expedida en {certDocExpedition}, 
-                labora para nuestra compañía desde el día <strong className="font-sans font-bold">{certStartDate}</strong>, mediante un contrato de trabajo a <strong className="font-sans font-bold">{certContractType}</strong>, 
-                desempeñando a la fecha el cargo de <strong className="font-sans font-bold uppercase">{certPosition}</strong>.
-              </p>
-
-              <p>
-                Para el cumplimiento de sus funciones, devenga una asignación básica mensual de:
-              </p>
-
-              <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-center font-sans font-bold text-slate-900 text-sm">
-                ${certSalary} PESOS MONEDA CORRIENTE (COP)
-              </div>
-
-              <p className="pt-2">
-                La presente constancia se expide a solicitud del interesado con destino a <strong className="font-sans font-bold">{certAddressee}</strong>, a los {new Date().getDate()} días del mes de Noviembre del año 2026.
-              </p>
-            </div>
-
-            {/* Signature Area */}
-            <div className="pt-12 border-t border-slate-100 flex items-end justify-between">
-              <div>
-                <div className="w-48 border-b-2 border-slate-800 pb-1 mb-2">
-                  <p className="font-sans font-bold text-xs uppercase tracking-tight text-blue-900">
-                    Jesús D. Cantillo Parejo
-                  </p>
-                </div>
-                <p className="font-sans text-xs font-bold text-slate-900">JESÚS DAVID CANTILLO PAREJO</p>
-                <p className="font-sans text-[11px] text-slate-600">Representante Legal & CEO</p>
-                <p className="font-sans text-[10px] text-slate-400">NeuroLabs Tech Solutions S.A.S.</p>
-                <p className="font-sans text-[10px] text-slate-400">contacto@neurolabs.com.co</p>
-              </div>
-
-              {/* QR Code Verification badge */}
-              <div className="text-right font-sans">
-                <div className="w-16 h-16 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center text-[9px] text-slate-400 p-1 text-center ml-auto">
-                  Sello Digital Seguro
-                </div>
-                <p className="text-[9px] font-mono text-slate-400 mt-1">Validador: NL-RH-2026</p>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── TAB 3: CONTROL DE VENCIMIENTOS Y VIGENCIAS ── */}
-      {activeTab === 'VENCIMIENTOS' && (
-        <div className="space-y-4">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-            <div className="text-xs text-amber-900">
-              <span className="font-bold">Semáforo de Vigencias Legales y Trámites</span>
-              <p className="mt-0.5 text-amber-700">
-                Monitorea documentos con fecha de caducidad jurídica o comercial (ej. Certificados de Cámara de Comercio con más de 30 días, vigencia de pólizas o renovaciones contractuales).
-              </p>
+      {/* ── MODAL 2: RADICAR NUEVO DOCUMENTO (SGD) ── */}
+      {showUploadModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-[#0f172a] rounded-2xl max-w-lg w-full p-6 border border-slate-800 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <Plus className="w-4 h-4 text-blue-400" />
+                Radicar Expediente en Archivo Central
+              </h3>
+              <button
+                onClick={() => setShowUploadModal(false)}
+                className="text-slate-400 hover:text-white p-1"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900">Cámara de Comercio (Existencia Legal)</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">
-                  Caduca en 14 días
-                </span>
+            <form onSubmit={handleUploadDoc} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Título del Documento o Acta</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ej: Acta N° 005 - Nombramiento de Junta Directiva"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                />
               </div>
-              <p className="text-xs text-slate-500">
-                Fecha de expedición: 01/11/2026. Los bancos y entidades DIAN exigen certificado no mayor a 30 días de expedición.
-              </p>
-              <div className="pt-2 flex justify-between items-center text-xs">
-                <span className="text-slate-400 font-mono">CAM-2026-BQL</span>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Serie Documental</label>
+                  <select
+                    value={newSerie}
+                    onChange={(e) => setNewSerie(e.target.value as any)}
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                  >
+                    <option value="100_GOBIERNO">100 - Gobierno & Socios</option>
+                    <option value="200_LEGAL_TRIBUTARIO">200 - Legal & DIAN</option>
+                    <option value="300_RRHH_LABORAL">300 - Talento Humano</option>
+                    <option value="400_CONTABLE_PILA">400 - Contable & PILA</option>
+                    <option value="500_TECH_PROPIEDAD_INT">500 - Tecnología & IP</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Nivel de Confidencialidad</label>
+                  <select
+                    value={newConfidentiality}
+                    onChange={(e) => setNewConfidentiality(e.target.value as any)}
+                    className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                  >
+                    <option value="PUBLICO">Público</option>
+                    <option value="CONFIDENCIAL">Confidencial</option>
+                    <option value="ESTRATEGICO_SOCIOS">Estratégico Socios</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Titular, Empleado o Dependencia</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ej: Asamblea de Accionistas / Nombre de Colaborador"
+                  value={newHolder}
+                  onChange={(e) => setNewHolder(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Notas / Descripción</label>
+                <textarea
+                  rows={2}
+                  placeholder="Descripción de custodia legal..."
+                  value={newDescription}
+                  onChange={(e) => setNewDescription(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-white"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-800 flex justify-end gap-2">
                 <button
-                  onClick={() => alert('Generando enlace a Cámara de Comercio...')}
-                  className="text-blue-600 hover:text-blue-700 font-semibold cursor-pointer"
+                  type="button"
+                  onClick={() => setShowUploadModal(false)}
+                  className="px-4 py-2 text-slate-400 hover:text-white"
                 >
-                  Tramitar Renovación &rarr;
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg shadow-sm"
+                >
+                  Asignar Radicado & Guardar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL 3: EXECUTIVE PRINT-READY HIGH-FIDELITY VIEWER ── */}
+      {showPreviewModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 overflow-y-auto">
+          <div className="max-w-3xl w-full my-8 space-y-4">
+            {/* Top Toolbar */}
+            <div className="flex items-center justify-between text-white bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+              <span className="text-xs font-mono font-bold text-blue-400">
+                Visualizador Oficial: {selectedDoc?.radicado}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => window.print()}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-lg cursor-pointer"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  Imprimir / Guardar PDF
+                </button>
+                <button
+                  onClick={() => setShowPreviewModal(false)}
+                  className="text-slate-400 hover:text-white p-1.5 cursor-pointer"
+                >
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-900">RUT DIAN (Registro Único Tributario)</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                  Vigencia Indefinida
-                </span>
+            {/* Official Letterhead Paper Document */}
+            <div className="bg-white p-12 md:p-16 rounded-2xl shadow-2xl text-slate-900 font-serif space-y-6 leading-relaxed relative print:m-0 print:border-none print:shadow-none">
+              {/* Institutional Header */}
+              <div className="flex items-center justify-between border-b-2 border-slate-900 pb-5">
+                <div>
+                  <h1 className="font-sans text-xl font-extrabold tracking-tight text-slate-950 uppercase">
+                    NeuroLabs Tech Solutions S.A.S.
+                  </h1>
+                  <p className="font-sans text-xs text-slate-600 font-medium">NIT: 901.847.291 - 4 | Barranquilla - Colombia</p>
+                  <p className="font-sans text-[11px] text-slate-500">Dirección de Talento Humano & Representación Legal</p>
+                </div>
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 flex items-center justify-center text-white font-sans font-black text-2xl shadow-inner">
+                  NL
+                </div>
               </div>
-              <p className="text-xs text-slate-500">
-                Estado: Actualizado con responsabilidades O-13, O-15 y actividades de desarrollo de software e IA.
-              </p>
-              <div className="pt-2 flex justify-between items-center text-xs">
-                <span className="text-slate-400 font-mono">RUT-2026-DIAN</span>
-                <span className="text-emerald-600 font-semibold">✓ Verificado DIAN</span>
+
+              {/* Title */}
+              <div className="text-center pt-6 space-y-1">
+                <h2 className="font-sans text-sm font-extrabold uppercase tracking-widest text-slate-900">
+                  La Dirección de Talento Humano
+                </h2>
+                <p className="font-sans text-xs font-bold uppercase text-slate-600 tracking-wider">
+                  Hace Constar:
+                </p>
+              </div>
+
+              {/* Body */}
+              <div className="text-justify text-xs md:text-sm text-slate-800 space-y-4 pt-4 leading-relaxed font-normal">
+                <p>
+                  Que el (la) señor(a) <strong className="font-sans font-bold text-slate-950 uppercase">{certEmployee}</strong>, 
+                  identificado(a) con {certDocType} número <strong className="font-mono font-bold text-slate-950">{certDocNumber}</strong> de {certDocExpedition}, 
+                  labora para nuestra compañía desde el día <strong className="font-sans font-semibold text-slate-900">{certStartDate}</strong>, mediante contrato de trabajo a <strong className="font-sans font-semibold text-slate-900">{certContractType}</strong>, 
+                  desempeñándose a la fecha en el cargo de:
+                </p>
+
+                <div className="py-2.5 px-4 bg-slate-50 border-l-4 border-slate-900 font-sans font-bold text-slate-950 uppercase tracking-wide text-xs">
+                  {certPosition}
+                </div>
+
+                <p>
+                  Para el cumplimiento de sus labores directivas y técnicas, devenga una asignación mensual fija de:
+                </p>
+
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-center font-sans font-extrabold text-slate-900 text-sm">
+                  ${certSalary} PESOS MONEDA CORRIENTE (COP)
+                </div>
+
+                <p className="pt-2">
+                  La presente constancia se expide a solicitud de la persona interesada con destino a <strong className="font-sans font-bold text-slate-950">{certAddressee}</strong>, en la ciudad de Barranquilla, República de Colombia, a los {new Date().getDate()} días del mes de Noviembre del año 2026.
+                </p>
+              </div>
+
+              {/* Signature and Verification */}
+              <div className="pt-14 border-t border-slate-200 flex items-end justify-between">
+                <div>
+                  <div className="w-56 border-b-2 border-slate-900 pb-1 mb-2">
+                    <p className="font-sans font-bold text-sm tracking-tighter text-slate-900 uppercase">
+                      Jesús D. Cantillo Parejo
+                    </p>
+                  </div>
+                  <p className="font-sans text-xs font-bold text-slate-950 uppercase">Jesús David Cantillo Parejo</p>
+                  <p className="font-sans text-[11px] text-slate-600 font-semibold">Representante Legal & CEO</p>
+                  <p className="font-sans text-[10px] text-slate-500 font-mono">C.C. 1.080.022.532 de Sitionuevo</p>
+                  <p className="font-sans text-[10px] text-slate-400">NeuroLabs Tech Solutions S.A.S.</p>
+                </div>
+
+                <div className="text-right font-sans space-y-1">
+                  <div className="w-20 h-20 border-2 border-dashed border-slate-400 rounded-xl flex flex-col items-center justify-center p-1.5 text-center ml-auto bg-slate-50">
+                    <span className="text-[9px] font-bold text-slate-700 leading-tight">SELLO DIGITAL SEGURO</span>
+                    <span className="text-[8px] font-mono text-slate-400 mt-0.5">NL-VERIFIED</span>
+                  </div>
+                  <p className="text-[9px] font-mono text-slate-400 font-bold">Radicado: {selectedDoc?.radicado}</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       )}
-      </main>
     </div>
   );
 }

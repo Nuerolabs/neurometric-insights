@@ -18,6 +18,7 @@ export default {
         heading: ['"Inter"', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
         body: ['"Inter"', 'system-ui', 'sans-serif'],
         mono: ['"IBM Plex Mono"', '"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        script: ['"Dancing Script"', '"Caveat"', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -74,7 +74,7 @@ export default function TesoreriaPage() {
                 Genera las líneas de diario en las cuentas 421005 (Ingreso) o 530505 (Gasto) al cruzar el pago.
               </p>
             </div>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700">
+            <span className="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-200">
               TRM Oficial COP/USD
             </span>
           </div>
@@ -214,7 +214,7 @@ export default function TesoreriaPage() {
                 <tbody className="divide-y divide-slate-100">
                   {fxResult.generatedLines.map((line, idx) => (
                     <tr key={idx} className="hover:bg-slate-50/50">
-                      <td className="py-2.5 px-4 font-mono font-bold text-blue-600">
+                      <td className="py-2.5 px-4 font-mono font-bold text-slate-900">
                         {line.account_code}
                         <span className="block text-[10px] text-slate-400 font-normal">
                           {line.account_name}

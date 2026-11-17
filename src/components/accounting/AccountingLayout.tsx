@@ -183,8 +183,8 @@ export default function AccountingLayout() {
             <div className="flex items-center gap-2.5">
                 <img src="/logo.png" alt="NeuroLabs" className="h-7 w-7 object-contain" />
                 <div>
-                  <h1 className="font-bold text-sm leading-none text-slate-900 dark:text-white">NeuroLabs</h1>
-                  <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold tracking-wider uppercase">ERP & Contabilidad</span>
+                  <h1 className="font-extrabold text-sm leading-none text-slate-950 uppercase dark:text-white">NeuroLabs</h1>
+                  <span className="text-[9px] text-slate-500 font-semibold tracking-wider uppercase">TECH SOLUTIONS S.A.S.</span>
                 </div>
             </div>
             <button 
@@ -213,7 +213,7 @@ export default function AccountingLayout() {
                         cn(
                           "flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-semibold transition-colors",
                           isActive 
-                            ? "bg-slate-900 text-white shadow-sm dark:bg-blue-600 dark:text-white" 
+                            ? "bg-slate-950 text-white shadow-sm dark:bg-slate-100 dark:text-slate-950" 
                             : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white"
                         )
                       }

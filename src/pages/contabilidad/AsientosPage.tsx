@@ -120,7 +120,7 @@ export default function AsientosPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
-              <Scale className="w-6 h-6 text-blue-600" />
+              <Scale className="w-6 h-6 text-slate-900" />
               Comprobante de Diario & Partida Doble
             </h1>
             <p className="text-xs md:text-sm text-slate-500 mt-1">
@@ -133,7 +133,7 @@ export default function AsientosPage() {
               disabled={!validation.isValid}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs font-semibold text-white shadow-xs transition-all ${
                 validation.isValid
-                  ? 'bg-blue-600 hover:bg-blue-700 cursor-pointer'
+                  ? 'bg-slate-950 hover:bg-slate-800 cursor-pointer'
                   : 'bg-slate-300 text-slate-500 cursor-not-allowed'
               }`}
             >
@@ -195,7 +195,7 @@ export default function AsientosPage() {
               type="text"
               value={consecutive}
               onChange={(e) => setConsecutive(e.target.value)}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-mono"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-950 focus:border-slate-950 font-mono"
             />
           </div>
           <div>
@@ -206,7 +206,7 @@ export default function AsientosPage() {
               type="date"
               value={entryDate}
               onChange={(e) => setEntryDate(e.target.value)}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-950 focus:border-slate-950"
             />
           </div>
           <div>
@@ -217,7 +217,7 @@ export default function AsientosPage() {
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-950 focus:border-slate-950"
             />
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function AsientosPage() {
                 {lines.map((line, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/50">
                     <td className="py-3 px-4">
-                      <span className="font-mono font-bold text-blue-600">{line.account_code}</span>
+                      <span className="font-mono font-bold text-slate-900">{line.account_code}</span>
                       <p className="text-[11px] text-slate-500 truncate max-w-xs">{line.account_name}</p>
                     </td>
                     <td className="py-3 px-4">
@@ -339,9 +339,9 @@ export default function AsientosPage() {
               <button
                 type="button"
                 onClick={handleAddLine}
-                className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors cursor-pointer"
+                className="w-full flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg transition-colors cursor-pointer shadow-2xs"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 text-slate-700" />
                 Agregar Línea
               </button>
             </div>

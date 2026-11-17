@@ -129,7 +129,7 @@ export default function TercerosPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
-              <Users2 className="w-6 h-6 text-blue-600" />
+              <Users2 className="w-6 h-6 text-slate-900" />
               Directorio Centralizado de Terceros
             </h1>
             <p className="text-xs md:text-sm text-slate-500 mt-1">
@@ -138,7 +138,7 @@ export default function TercerosPage() {
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-slate-950 hover:bg-slate-800 rounded-lg shadow-sm transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             Nuevo Tercero DIAN
@@ -153,7 +153,7 @@ export default function TercerosPage() {
             placeholder="Buscar por razón social, nombre o número de documento / NIT..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-2.5 text-xs bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-slate-950 focus:border-slate-950"
           />
         </div>
 
@@ -177,7 +177,7 @@ export default function TercerosPage() {
                       <span className="font-mono font-bold text-slate-900">
                         {tp.document_type} {tp.document_number}
                         {tp.verification_digit !== undefined && (
-                          <span className="text-blue-600 font-semibold"> - {tp.verification_digit}</span>
+                          <span className="text-slate-950 font-bold"> - {tp.verification_digit}</span>
                         )}
                       </span>
                       <p className="text-[10px] text-slate-400 uppercase mt-0.5">{tp.party_types.join(', ')}</p>
@@ -189,7 +189,7 @@ export default function TercerosPage() {
                       )}
                     </td>
                     <td className="py-3 px-4">
-                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700">
+                      <span className="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-800 border border-slate-200">
                         {tp.tax_regime.replace(/_/g, ' ')}
                       </span>
                       <p className="text-[10px] font-mono text-slate-400 mt-1">
@@ -222,7 +222,7 @@ export default function TercerosPage() {
             <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-xl border border-slate-100 space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                  <Building className="w-4 h-4 text-blue-600" />
+                  <Building className="w-4 h-4 text-slate-900" />
                   Registrar Tercero con Validación DIAN
                 </h2>
                 <button
@@ -263,7 +263,7 @@ export default function TercerosPage() {
                         className="flex-1 px-3 py-2 border border-slate-200 rounded-lg font-mono"
                       />
                       {docType === 'NIT' && (
-                        <div className="px-3 py-2 bg-blue-50 text-blue-700 font-mono font-bold rounded-lg border border-blue-200 flex items-center gap-1">
+                        <div className="px-3 py-2 bg-slate-100 text-slate-950 font-mono font-bold rounded-lg border border-slate-300 flex items-center gap-1">
                           <span className="text-[10px] text-slate-400">DV:</span>
                           <span>{computedDV !== null ? computedDV : '—'}</span>
                         </div>
@@ -345,7 +345,7 @@ export default function TercerosPage() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-xs"
+                    className="px-4 py-2 bg-slate-950 hover:bg-slate-800 text-white rounded-lg font-semibold shadow-xs cursor-pointer"
                   >
                     Guardar Tercero DIAN
                   </button>

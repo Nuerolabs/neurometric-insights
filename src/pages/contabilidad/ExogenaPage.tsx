@@ -95,7 +95,7 @@ export default function ExogenaPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 flex items-center gap-2.5">
-              <ShieldCheck className="w-6 h-6 text-indigo-600" />
+              <ShieldCheck className="w-6 h-6 text-slate-900" />
               Pre-validador Información Exógena DIAN (Medios Magnéticos)
             </h1>
             <p className="text-xs md:text-sm text-slate-500 mt-1">
@@ -113,7 +113,7 @@ export default function ExogenaPage() {
             </select>
             <button
               onClick={handleExportCSV}
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-slate-950 hover:bg-slate-800 rounded-lg shadow-sm transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               Exportar CSV DIAN
@@ -137,7 +137,7 @@ export default function ExogenaPage() {
             <span className="text-[11px] font-bold text-slate-400 uppercase">
               Total Retención Renta Practicada
             </span>
-            <p className="text-2xl font-bold text-indigo-600 mt-1 font-mono">
+            <p className="text-2xl font-bold text-slate-900 mt-1 font-mono">
               {formatCOP(totalRete)}
             </p>
             <p className="text-[11px] text-slate-500 mt-0.5">Reportado en Formulario 350 DIAN</p>
@@ -179,7 +179,7 @@ export default function ExogenaPage() {
               <tbody className="divide-y divide-slate-100">
                 {rows.map((r, idx) => (
                   <tr key={idx} className="hover:bg-slate-50/50">
-                    <td className="py-3 px-4 font-mono font-bold text-indigo-600">{r.concepto}</td>
+                    <td className="py-3 px-4 font-mono font-bold text-slate-900">{r.concepto}</td>
                     <td className="py-3 px-4 font-mono font-semibold text-slate-800">
                       [{r.tipoDoc}] {r.numeroDoc}
                     </td>
@@ -193,7 +193,7 @@ export default function ExogenaPage() {
                     <td className="py-3 px-4 text-right font-mono font-bold text-slate-900">
                       {formatCOP(r.pagoDeducible)}
                     </td>
-                    <td className="py-3 px-4 text-right font-mono font-bold text-indigo-700">
+                    <td className="py-3 px-4 text-right font-mono font-bold text-slate-950">
                       {formatCOP(r.retencionRentaPracticada)}
                     </td>
                   </tr>

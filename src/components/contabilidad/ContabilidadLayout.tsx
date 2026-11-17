@@ -119,27 +119,25 @@ export function ContabilidadLayout({ children }: ContabilidadLayoutProps) {
         }`}
       >
         {/* Brand Header */}
-        <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-100">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20">
-            <Building2 className="w-4 h-4" />
-          </div>
-          <div>
-            <h1 className="font-bold text-sm tracking-tight text-slate-900">ERP NeuroLabs</h1>
-            <p className="text-[11px] text-slate-500 font-medium">NIIF & Normativa DIAN</p>
+        <div className="h-16 flex items-center gap-3 px-5 border-b border-slate-200 bg-white">
+          <img src="/logo.png" alt="NeuroLabs Logo" className="w-8 h-8 object-contain" />
+          <div className="min-w-0">
+            <h1 className="font-extrabold text-sm tracking-tight text-slate-950 uppercase leading-none">NeuroLabs</h1>
+            <p className="text-[9px] font-semibold tracking-[0.18em] text-slate-500 uppercase mt-0.5">TECH SOLUTIONS S.A.S.</p>
           </div>
         </div>
 
         {/* User Badge */}
-        <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/70">
+        <div className="px-5 py-3 border-b border-slate-200 bg-slate-50">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-semibold text-xs flex items-center justify-center">
+            <div className="w-7 h-7 rounded-md bg-slate-950 text-white font-bold text-xs flex items-center justify-center shadow-xs">
               {currentUser.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-slate-800 truncate">{currentUser}</p>
+              <p className="text-xs font-semibold text-slate-900 truncate">{currentUser}</p>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                <p className="text-[10px] text-slate-500">Sesión Corporativa</p>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                <p className="text-[10px] text-slate-500 font-medium">Sesión NIIF / DIAN Activa</p>
               </div>
             </div>
           </div>
@@ -167,11 +165,11 @@ export function ContabilidadLayout({ children }: ContabilidadLayoutProps) {
                       onClick={() => setSidebarOpen(false)}
                       className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                         isActive
-                          ? 'bg-blue-50 text-blue-700 font-semibold shadow-xs'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                          ? 'bg-slate-950 text-white font-semibold shadow-xs'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-blue-600' : 'text-slate-400'}`} />
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                       <span>{item.label}</span>
                     </NavLink>
                   );

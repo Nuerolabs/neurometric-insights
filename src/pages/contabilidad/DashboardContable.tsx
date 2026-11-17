@@ -38,7 +38,7 @@ export default function DashboardContable() {
           <div className="flex items-center gap-2">
             <Link
               to="/contabilidad/asientos"
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-slate-950 hover:bg-slate-800 rounded-lg shadow-sm transition-colors cursor-pointer"
             >
               <Scale className="w-3.5 h-3.5" />
               Nuevo Asiento Partida Doble
@@ -47,11 +47,11 @@ export default function DashboardContable() {
         </div>
 
         {/* Status Banner */}
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-start gap-3">
-          <ShieldCheck className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-          <div className="text-xs text-emerald-900">
+        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex items-start gap-3">
+          <ShieldCheck className="w-5 h-5 text-slate-900 mt-0.5 flex-shrink-0" />
+          <div className="text-xs text-slate-800">
             <span className="font-bold">Periodo Contable Activo: Noviembre 2026 (Abierto)</span>
-            <p className="mt-0.5 text-emerald-700">
+            <p className="mt-0.5 text-slate-600">
               Reglas de inmutabilidad y partida doble activas. Validación automática de Módulo 11 para NITs y causación NIIF habilitada.
             </p>
           </div>
@@ -62,7 +62,7 @@ export default function DashboardContable() {
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between text-slate-500">
               <span className="text-xs font-semibold uppercase tracking-wider">Flujo de Caja YTD</span>
-              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-900 flex items-center justify-center">
                 <DollarSign className="w-4 h-4" />
               </div>
             </div>
@@ -107,13 +107,13 @@ export default function DashboardContable() {
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
             <div className="flex items-center justify-between text-slate-500">
               <span className="text-xs font-semibold uppercase tracking-wider">Retenciones x Pagar</span>
-              <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-slate-100 text-slate-900 flex items-center justify-center">
                 <FileCheck2 className="w-4 h-4" />
               </div>
             </div>
             <div className="mt-3">
               <p className="text-2xl font-bold text-slate-900">{formatMoney(8640000)}</p>
-              <p className="text-xs text-amber-600 font-medium mt-1">
+              <p className="text-xs text-amber-700 font-medium mt-1">
                 Formulario 350 DIAN próximo
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function DashboardContable() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Scale className="w-4 h-4 text-blue-600" />
+              <Scale className="w-4 h-4 text-slate-900" />
               Contabilidad Central
             </h3>
             <p className="text-xs text-slate-500">
@@ -133,7 +133,7 @@ export default function DashboardContable() {
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 to="/contabilidad/asientos"
-                className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center justify-between p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                className="text-xs font-semibold text-slate-900 hover:text-slate-950 flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 <span>Crear Comprobante Diario</span>
                 <span>&rarr;</span>
@@ -150,7 +150,7 @@ export default function DashboardContable() {
 
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <DollarSign className="w-4 h-4 text-emerald-600" />
+              <DollarSign className="w-4 h-4 text-slate-900" />
               Tesorería & Multimoneda
             </h3>
             <p className="text-xs text-slate-500">
@@ -159,7 +159,7 @@ export default function DashboardContable() {
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 to="/contabilidad/conciliacion"
-                className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center justify-between p-2 rounded-lg hover:bg-emerald-50 transition-colors"
+                className="text-xs font-semibold text-slate-900 hover:text-slate-950 flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 <span>Cruce de Facturas & Cálculo TRM</span>
                 <span>&rarr;</span>
@@ -176,7 +176,7 @@ export default function DashboardContable() {
 
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs space-y-4">
             <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-indigo-600" />
+              <ShieldCheck className="w-4 h-4 text-slate-900" />
               Impuestos & DIAN
             </h3>
             <p className="text-xs text-slate-500">
@@ -185,7 +185,7 @@ export default function DashboardContable() {
             <div className="pt-2 flex flex-col gap-2">
               <Link
                 to="/contabilidad/exogena"
-                className="text-xs font-semibold text-indigo-600 hover:text-indigo-700 flex items-center justify-between p-2 rounded-lg hover:bg-indigo-50 transition-colors"
+                className="text-xs font-semibold text-slate-900 hover:text-slate-950 flex items-center justify-between p-2 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 <span>Pre-validador Exógena (Formato 1001)</span>
                 <span>&rarr;</span>
